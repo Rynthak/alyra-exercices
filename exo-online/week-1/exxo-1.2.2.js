@@ -44,5 +44,5 @@ for(let i =0;i < res.length;i++){
 		transacCombinaison=res[i];
 	}
 }
-console.log(maxTips);
-console.log(transacCombinaison); 
+console.log("Nombre max de tips: "+maxTips);
+console.table(transacCombinaison); 
