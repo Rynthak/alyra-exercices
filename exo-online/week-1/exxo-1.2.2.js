@@ -45,4 +45,10 @@ for(let i =0;i < res.length;i++){
 	}
 }
 console.log("Nombre max de tips: "+maxTips);
+console.log("Compléxité de l'ago 2 exp "+aTab.length+" soit "+Math.pow(2, aTab.length))
 console.table(transacCombinaison); 
+
+console.log("Une autre méthode plus tactique consiste à trier le tableau de transaction dans l'ordre croissant selon le rapport de rentabilité size/tips .")
+console.log("Puis on parcourt le tableau jusqu'à que la taille du bloc soit atteinte ");
+
+
