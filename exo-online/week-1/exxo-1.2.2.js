@@ -19,7 +19,7 @@ aTab.push({"size": 1000,"tips": 2800});
 aTab.push({"size": 1300,"tips": 5000});
 aTab.push({"size": 600,"tips": 1500});
 
-//Calcul du combinatoire de tableau avec prise en compte du nom dépassement de la taille du bloc
+//Calcul du combinatoire de tableau avec prise en compte du non dépassement de la taille du bloc
  
 for (let i = 0; i < Math.pow(2, aTab.length); i++) {
 	let bin = (i).toString(2), set = [];
@@ -33,7 +33,7 @@ for (let i = 0; i < Math.pow(2, aTab.length); i++) {
             set.tips+=aTab[j].tips;
         }
     }
-    //On affecte la combinaison si la somme des bloc des transactions est inférieur à la somme du bloc total
+    //On affecte la combinaison si la somme de la taille des transactions est inférieur à la somme du bloc total
     if(set.blocksize<=maxSize && transacCombinaison.maxTips<=set.tips){
     	transacCombinaison.table=set;
     	transacCombinaison.maxTips=set.tips;
