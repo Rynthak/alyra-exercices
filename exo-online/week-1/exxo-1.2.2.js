@@ -47,3 +47,27 @@ console.log("Une autre méthode plus tactique consiste à trier le tableau de tr
 console.log("Puis on parcourt le tableau jusqu'à que la taille du bloc soit atteinte ");
 
 
+
+
+aTab.sort(function(a,b){
+	return a.size/a.tips-b.size/b.tips;
+});
+//console.table(aTab);
+let transacCombinaisonProfitability = {maxTips: 0, table:[],size:0};
+
+for (let i = 0; i < aTab.length; i++) {
+	if(transacCombinaisonProfitability.size+aTab[i].size<=maxSize){
+		transacCombinaisonProfitability.table.push(aTab[i]);
+		transacCombinaisonProfitability.maxTips+=aTab[i].tips;
+		transacCombinaisonProfitability.size=transacCombinaisonProfitability.size+aTab[i].size;
+    }else{
+    	break;
+    }
+}
+console.log("Nombre max de tips: "+transacCombinaisonProfitability.maxTips);
+console.log("Compléxité de l'ago O(n.log(n)) avec n ="+aTab.length+" soit "+ (aTab.length *Math.log(aTab.length)));
+console.table(transacCombinaisonProfitability.table); 
+
+
+
+
