@@ -15,8 +15,14 @@ var calcBitcoinAdsr = function(){
 	let ramdomA = window.crypto.getRandomValues(array);
 	let ramdom=ramdomA[0].toString();
 	let SHA256=CryptoJS.SHA256(ramdom);
-	console.log(ramdom);
-	console.log(SHA256.toString());
+	let RIPEMD160=CryptoJS.RIPEMD160(ramdom);
+	
+	 
+	//SHA256 de ramdom
+	console.log(SHA256.toString()+" = SHA256 ("+ramdom+")");
+	console.log(RIPEMD160.toString()+" = RIPEMD160 ("+ramdom+")");
+	
+	
 }
 loadJS('https://cdnjs.cloudflare.com/ajax/libs/crypto-js/3.1.9-1/crypto-js.min.js', calcBitcoinAdsr, document.body);
 
