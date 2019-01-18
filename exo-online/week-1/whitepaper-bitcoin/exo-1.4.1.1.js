@@ -22,8 +22,9 @@ function conversion(value){
 		indian.push(baseHexa[temp]);
 		
 	}
-	if(unit<=1){
-		indian.push(baseHexa[unit]);
+	 
+	if(indian.length%2!=0){
+		indian.push(0);
 	}
 	let big ="0x"
 	let little = "0x";
