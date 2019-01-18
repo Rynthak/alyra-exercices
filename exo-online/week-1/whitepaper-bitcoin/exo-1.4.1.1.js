@@ -15,34 +15,31 @@ function conversion(value){
 	let bigIndian="";
 	let indian =[];
 	
-	while( unit>0){
-		temp = (unit  % 16);
-		
+	while(unit){
+		temp = (unit  % 16);		
 		unit = ~~(unit/16);
-		indian.push(baseHexa[temp]);
-		
-	}
-	 
+		indian.push(baseHexa[temp]);		
+	}	 
 	if(indian.length%2!=0){
 		indian.push(0);
 	}
 	let big ="0x"
 	let little = "0x";
-	let couple =[];
+	let pair =[];
 	let j= 0;
 	for(i=indian.length-1;i>=0;i--){
-		if(couple[j]==undefined){
-			couple[j]=""
+		if(pair[j]==undefined){
+			pair[j]=""
 		}
-		if(couple[j].length==2){
+		if(pair[j].length==2){
 			j++;
-			couple[j]="";
+			pair[j]="";
 		}
-		couple[j]=couple[j]+indian[i];
+		pair[j]=pair[j]+indian[i];
 		
 	}
-	console.log("0x " + couple.join(" ")+" - (big endian)");
-	console.log("0x " + couple.reverse().join(" ")+" - (little endian)");
+	console.log("0x " + pair.join(" ")+" - (big endian)");
+	console.log("0x " + pair.reverse().join(" ")+" - (little endian)");
 }
 
 conversion(466321);
