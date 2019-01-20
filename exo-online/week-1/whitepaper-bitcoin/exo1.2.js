@@ -73,4 +73,4 @@ function conversion(value){
 	
 }
 
-conversion(466321);
+conversion(300);
