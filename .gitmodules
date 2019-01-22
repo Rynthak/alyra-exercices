@@ -1,0 +1,3 @@
+[submodule "exo-online/week-2/day-1/Bitcoin-Programming-with-BitcoinJS"]
+	path = exo-online/week-2/day-1/Bitcoin-Programming-with-BitcoinJS
+	url = https://github.com/bitcoin-studio/Bitcoin-Programming-with-BitcoinJS.git
