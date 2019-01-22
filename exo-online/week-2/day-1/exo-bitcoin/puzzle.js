@@ -22,3 +22,33 @@ console.log('p2sh.address  ', p2sh.address)
 //bitcoin-cli generate 1
 
 //bitcoin-cli getrawtransaction fa3b58e53bca1c3b63c634b62bdd233aa0c6c3eddbb98d2bb69327bc5f76a289 true
+
+
+const keyPairAlice0 = bitcoin.ECPair.fromWIF(alice[0].wif, network)
+const p2wpkhAlice0 = bitcoin.payments.p2wpkh({pubkey: keyPairAlice0.publicKey, network})
+
+
+const txb = new bitcoin.TransactionBuilder(network)
+
+
+console.log(txb);
+// 'TX_ID' = bitcoin-cli getrawtransaction fa3b58e53bca1c3b63c634b62bdd233aa0c6c3eddbb98d2bb69327bc5f76a289 true
+//txid
+txb.addInput('fa3b58e53bca1c3b63c634b62bdd233aa0c6c3eddbb98d2bb69327bc5f76a289', 0);
+
+
+txb.addOutput(p2wpkhAlice0.address, 999e5);
+
+
+const tx = txb.buildIncomplete();
+
+
+const InputScriptP2SH = bitcoin.script.compile([bitcoin.opcodes.OP_2, bitcoin.opcodes.OP_3, p2sh.redeem.output])
+tx.setInputScript(0, InputScriptP2SH)
+
+console.log('tx.toHex()  ', tx.toHex());
+
+//020000000116b232cc1230b35ceda5740b073b8058017f5bf91915f830e42e772b9987382e0000000006525303935587ffffffff01605af40500000000160014fb8820f35effa054399540b8ca86040d8ddaa4d500000000
+
+
+//bitcoin-cli sendrawtransaction 020000000116b232cc1230b35ceda5740b073b8058017f5bf91915f830e42e772b9987382e0000000006525303935587ffffffff01605af40500000000160014fb8820f35effa054399540b8ca86040d8ddaa4d500000000
