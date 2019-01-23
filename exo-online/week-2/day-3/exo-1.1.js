@@ -11,6 +11,13 @@ avec max ( (2¹⁶ - 1) * 2²⁰⁸ ≈ 2,7 * 10⁶⁷) ;
 
 */
 
+/* Cible = CiblePrécédente x (bloc[Actuel].date - block[Actuel-2016].date) /(deux semaines en secondes)*/
+ 
+
 function calculerDifficulte(cible){
+	let max = 2.7 * Math.pow(10,67)
 	
+	console.log(max/cible);
 }
+
+calculerDifficulte(1147152896345386682952518188670047452875537662186691235300769792000);
