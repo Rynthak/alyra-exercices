@@ -1,18 +1,51 @@
 <!doctype html>
 <html lang="fr">
-  <head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" />
-    <title>Défi #1 : Outil d’analyse bitcoin</title>
-  </head>
-  <body>
-    <h1>Défi #1 : Outil d’analyse bitcoin</h1>
+<head>
+<meta charset="utf-8">
+<meta name="viewport"
+	content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<link rel="stylesheet"
+	href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" />
+<title>Défi #1 : Outil d’analyse bitcoin</title>
+</head>
+<body>
+	<h1>Défi #1 : Outil d’analyse bitcoin</h1>
+	<div class="container">
+		<div class="row">
+			<div class="col-lg">
+				<form action="#">
+					<div class="form-group">
+						<label for="value_to_convert">Valeur à convertir:</label> 
+						<input type="text" class="form-control" id="value_to_convert">
+					</div>
+					<div class="form-group">
+						<label for="type_convert">Type de convertion:</label> 
+						<select class="d-block w-100" id="type_convert">
+			             <option value="">--Choisir--</option>
+			             <option value="1">Hexadécimal -> Décimal</option>
+			             <option value="2">Décimal -> Hexadécimal</option>
+			             <option value="3">Hexadécimal little endian -> Hexadécimal</option>
+			             <option value="4">VarInt -> Décimal</option>
+			             <option value="5">Champ Bits -> Cible correspondante</option>
+			             <option value="6">Cible -> Difficulté</option>
+			             <option value="7">Script en Hexadécimal -> Op codes correspondants.</option>
+			            
+			           </select>
+					</div>
+					<button type="button" class="btn btn-primary">Convertir</button>
+				</form>
+			</div>
 
-     
-    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"></script>
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
-  	<script src='assets/script.js'></script>
-  </body>
+		</div>
+	</div>
+
+
+
+	<script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"></script>
+	<script
+		src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"></script>
+	<script
+		src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
+	<script src='assets/script.js'></script>
+</body>
 </html>
