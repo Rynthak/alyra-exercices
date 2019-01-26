@@ -50,8 +50,10 @@ function LittleEndianToHex(endian){
 function VarIntToDecimal(value){
 	
 }
-function BitsFieldToTarget(value){
-	
+function BitsFieldToTarget(HexValue){
+	let max = 2.7 * Math.pow(10,67)	;	 	
+	let target=max/parseInt(HexValue.substring(4,HexValue.length)+("00".repeat(parseInt(HexValue.substring(2,4),16)-3)),16);
+	alert(target);
 }
 
 function printResult(value, text) {
