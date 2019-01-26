@@ -24,7 +24,7 @@ $(function() {
 			TargetToDifficulty(value_to_convert);
 			break;
 		case "7":
-			LittleEndianToHex(value_to_convert);
+			ScriptHexaToOpcode(value_to_convert);
 			break;
 
 		}
@@ -50,10 +50,18 @@ function LittleEndianToHex(endian){
 function VarIntToDecimal(value){
 	
 }
-function BitsFieldToTarget(HexValue){
+function BitsFieldToTarget(BitsFields){
+	parseInt(BitsFields.substring(4,BitsFields.length)+("00".repeat(parseInt(BitsFields.substring(2,4),16)-3)),16);
+	alert(BitsFields);
+}
+function TargetToDifficulty(Target){
 	let max = 2.7 * Math.pow(10,67)	;	 	
-	let target=max/parseInt(HexValue.substring(4,HexValue.length)+("00".repeat(parseInt(HexValue.substring(2,4),16)-3)),16);
-	alert(target);
+	let difficulty=max/Target;
+	alert(difficulty);
+}
+
+function ScriptHexaToOpcode(HexValue){
+	
 }
 
 function printResult(value, text) {
