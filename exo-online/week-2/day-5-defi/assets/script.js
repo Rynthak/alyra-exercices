@@ -48,8 +48,49 @@ function LittleEndianToHex(endian){
 	alert(r);		
 }
 function VarIntToDecimal(value){
-	
+	let b = numbersToArrayBuffer(value, 'hex');
+	console.log((b));
 }
+function numbersToArrayBuffer (numbers) {
+	  var buffer = new Uint8Array(numbers.length)
+
+	  for (var i = 0; i < view.length; i++) {
+		  buffer[i] = numbers[i]
+	  }
+	  let offset=0;
+	  
+	  var first = buffer.readUInt8(offset)
+
+	  // 8 bit
+	  if (first < 0xfd) {
+	    decode.bytes = 1
+	    return first
+
+	  // 16 bit
+	  } else if (first === 0xfd) {
+	    decode.bytes = 3
+	    return buffer.readUInt16LE(offset + 1)
+
+	  // 32 bit
+	  } else if (first === 0xfe) {
+	    decode.bytes = 5
+	    return buffer.readUInt32LE(offset + 1)
+
+	  // 64 bit
+	  } else {
+	    decode.bytes = 9
+	    var lo = buffer.readUInt32LE(offset + 1)
+	    var hi = buffer.readUInt32LE(offset + 5)
+	    var number = hi * 0x0100000000 + lo
+	    checkUInt53(number)
+
+	    return number
+	  }
+	  
+	  
+}
+
+
 function BitsFieldToTarget(BitsFields){
 	parseInt(BitsFields.substring(4,BitsFields.length)+("00".repeat(parseInt(BitsFields.substring(2,4),16)-3)),16);
 	alert(BitsFields);
@@ -59,6 +100,7 @@ function TargetToDifficulty(Target){
 	let difficulty=max/Target;
 	alert(difficulty);
 }
+
 
 function ScriptHexaToOpcode(HexValue){
 	
