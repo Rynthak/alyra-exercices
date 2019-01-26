@@ -32,20 +32,47 @@ $(function() {
 	});
 	
 
-	
+	$("#convert_block_button").click(function(e) {
+		let blockHex=$("#block_hex").val();
+		let header=blockHex.substring(0,159);
+		let block=blockHex.substring(160);
+		
+		
+		
+		//$("#header").html(header);
+		$("#body").html(block);
+		
+		let textHeader="Header<br>";
+		textHeader+=header+'<br>';
+		let version = LittleEndianToHex(header.substring(0,7));
+		 
+		
+		textHeader+='Version='+HexToDecimal(version)+'<br>';
+		
+		textHeader+='previous block header hash='+(LittleEndianToHex(header.substring(8,72),''))+'<br>';
+		textHeader+='merkle root hash='+LittleEndianToHex(header.substring(72,136),'')+'<br>';
+		
+		$("#header").html(textHeader);
+		
+		
+		
+		
+		
+		
+	});
 
 });
 
 function HexToDecimal(value) {
-	alert(parseInt(value, 16));
+	return (parseInt(value, 16));
 }
 function DecimalToHex(value) {
 	let convert = parseInt(value).toString(16) ;
 	alert(convert);
 }
-function LittleEndianToHex(endian){
-	var r = '0x'+endian.match(/../g).reverse().join('');
-	alert(r);		
+function LittleEndianToHex(endian,prefix="0x"){
+	var r = prefix+endian.match(/../g).reverse().join('');
+	return r;	
 }
 function VarIntToDecimal(value){
 	let b = numbersToArrayBuffer(value, 'hex');
