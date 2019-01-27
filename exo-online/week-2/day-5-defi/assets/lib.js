@@ -31,6 +31,7 @@ function BlockBody(raw_hexBody){
 		this.transacTab.push(oTransac);
 		console.log(oTransac);
 		this.raw_hex=this.raw_hex.substring(oTransac.sizeBytes);
+		break;
 		 
 	}
 		
@@ -109,22 +110,17 @@ function OutPoint(raw_hex){
 	this.hash = raw_hex.substring(0,64);
 	this.index = raw_hex.substring(64,72);
 	
-	if(this.hash =='0'.repeat(64)){
-		this.coinbase=true;
-	}
-	
-	//Script Bytest 
-	
+	if(this.hash =='0'.repeat(64)){//pinut non coin base
+		this.coinbase=true;		
+	} 	
 	let script_bytesTemp=VarIntToDecimal(this.raw_hex.substring(72));
-	
+		
 	this.ScriptSigSize=script_bytesTemp.nbO;	
 	this.size+=script_bytesTemp.lengthVarint;
 	
 	let tempScriptlImitPosition=72+script_bytesTemp.lengthVarint+(this.ScriptSigSize*2);
 	this.ScriptSig=this.raw_hex.substring(72+script_bytesTemp.lengthVarint,tempScriptlImitPosition);	
-	this.size+=this.ScriptSigSize*2;
-	
-	 
+	this.size+=this.ScriptSigSize*2;		 
 	
 	this.sequence=this.raw_hex.substring(tempScriptlImitPosition,tempScriptlImitPosition+8);	
 	this.size+=8
@@ -143,8 +139,9 @@ function OutPut(raw_hex){
 	
 	//Extraction du Pk script;
 	this.raw_hex=this.raw_hex.substring(16);
+	  
 	let pk_scriptBytesTemp=VarIntToDecimal(this.raw_hex);
-	
+	 
 	this.pk_scriptBytes=pk_scriptBytesTemp.nbO;	
 	this.size+=pk_scriptBytesTemp.lengthVarint;
 	this.size+=this.pk_scriptBytes*2;
