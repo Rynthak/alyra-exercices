@@ -65,6 +65,8 @@ $(function() {
 		
 		let textBody="Body<br>";
 		textBody+=block+'<br>';
+		textBody+='nbTransac='+VarIntToDecimal(block)+'<br>';
+		
 		
 		//Calcul du nombre de transaction
 		$("#body").html(textBody);
@@ -92,12 +94,10 @@ function VarIntToDecimal(value){
 	}
 	let varIntVal=varint.substring(0,2);
 	let valTemp="";
-	//console.log(varIntVal,varint,varint.substring(2,6));return;
+	
 	switch(varIntVal){
 		case "fd":
-			
 			valTemp=HexToDecimal(LittleEndianToHex(varint.substring(2,6)))
-			
 		break;
 		
 		case "fe":
@@ -112,11 +112,8 @@ function VarIntToDecimal(value){
 			valTemp=HexToDecimal(LittleEndianToHex(varint))
 		break;
 		
-		
 	}
-	
 	return valTemp;
-	
 }
 
 function BitsFieldToTarget(BitsFields){
