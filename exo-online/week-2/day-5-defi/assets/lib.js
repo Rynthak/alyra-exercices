@@ -24,13 +24,14 @@ function BlockBody(raw_hexBody){
 	this.offsetVarint=varIntTemp.lengthVarint;
 	//On récupère les transac
 	this.transacTab= [];
+	this.raw_hex=this.raw_hex.substring(this.offsetVarint);
 	for(let i=0;i<this.nb_transac;i++){
-		let temp=this.raw_hex.substring(this.offsetVarint);
-		let oTransac=new Transaction(temp);		 
+		
+		let oTransac=new Transaction(this.raw_hex);		 
 		this.transacTab.push(oTransac);
 		console.log(oTransac);
 		this.raw_hex=this.raw_hex.substring(oTransac.sizeBytes);
-		break;
+		 
 	}
 		
 	
