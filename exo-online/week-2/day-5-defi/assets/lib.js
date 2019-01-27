@@ -47,10 +47,10 @@ function Transaction(raw_hex){
 	 
 	this.raw_hex=this.raw_hex.substring(8);
 	this.sizeBytes+=8
-	
+	//Double hash 256 on raw ex @todo
+	 
 	//test if segwit
-	if(this.raw_hex.substring(0,4)=="0001"){
-		 
+	if(this.raw_hex.substring(0,4)=="0001"){		 
 		this.raw_hex=this.raw_hex.substring(4);
 		this.sizeBytes+=4;
 		this.segwit=true;
