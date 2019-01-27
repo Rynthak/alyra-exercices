@@ -26,12 +26,13 @@ function BlockBody(raw_hexBody){
 	this.transacTab= [];
 	for(let i=0;i<this.nb_transac;i++){
 		let temp=this.raw_hex.substring(this.offsetVarint);
-		let oTransac=new Transaction(temp);
-		console.log(oTransac);
+		let oTransac=new Transaction(temp);		 
 		this.transacTab.push(oTransac);
+		console.log(oTransac);
+		this.raw_hex=this.raw_hex.substring(oTransac.sizeBytes);
 		break;
 	}
-	
+		
 	
 }
 function Transaction(raw_hex){
@@ -48,16 +49,18 @@ function Transaction(raw_hex){
 	this.version=HexToDecimal(LittleEndianToHex(this.raw_hex.substring(0,8)));
 	 
 	this.raw_hex=this.raw_hex.substring(8);
-	 
+	this.sizeBytes+=8
 	
 	//test if segwit
 	if(this.raw_hex.substring(0,4)=="0001"){
 		 
 		this.raw_hex=this.raw_hex.substring(4);
+		this.sizeBytes+=4;
 	}
 	let tempVarint=VarIntToDecimal(this.raw_hex)
 	this.nbInputs=tempVarint.nbO;	 
 	this.raw_hex=this.raw_hex.substring(tempVarint.lengthVarint); 
+	this.sizeBytes+=tempVarint.lengthVarint;
 	 
 	
 	this.inputs = [];
@@ -70,11 +73,12 @@ function Transaction(raw_hex){
 		}
 		tempInput.outpoint=oOutPoint;
 		this.raw_hex=this.raw_hex.substring(oOutPoint.size);
+		this.sizeBytes+=oOutPoint.size;
 		this.inputs.push(tempInput);
 	}
 	 
 	//On passe aux output
-	console.log(this.raw_hex);
+	 
 	let tempVarintOutpout=VarIntToDecimal(this.raw_hex)
 	this.nbOutputs=tempVarintOutpout.nbO;
 	this.raw_hex=this.raw_hex.substring(tempVarintOutpout.lengthVarint);
@@ -87,13 +91,15 @@ function Transaction(raw_hex){
 		let oOutPut=new OutPut(this.raw_hex);		
 		tempOutPut.output=oOutPut;
 		this.raw_hex=this.raw_hex.substring(oOutPut.size);
+		this.sizeBytes+=oOutPut.size;
 		this.outputs.push(tempOutPut);
 		
 	}
-	console.log(this.raw_hex.substring(0,8));
+	 
 	this.locktime=timeConverter(HexToDecimal(LittleEndianToHex(this.raw_hex.substring(0,8))));
-	
-	
+	this.raw_hex=this.raw_hex.substring(8);
+	this.sizeBytes+=8;
+	 
 }
 function OutPoint(raw_hex){
 	this.size=72;
