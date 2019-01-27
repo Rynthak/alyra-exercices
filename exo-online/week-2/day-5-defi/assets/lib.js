@@ -69,11 +69,12 @@ function Transaction(raw_hex){
 			this.coinbase=true;
 		}
 		tempInput.outpoint=oOutPoint;
-		this.raw_hex=this.raw_hex.substring(OutPoint.size);
+		this.raw_hex=this.raw_hex.substring(oOutPoint.size);
 		this.inputs.push(tempInput);
 	}
 	 
-	
+	//On passe aux output
+	console.log(this.raw_hex);
 	let tempVarintOutpout=VarIntToDecimal(this.raw_hex)
 	this.nbOutputs=tempVarintOutpout.nbO;
 	this.raw_hex=this.raw_hex.substring(tempVarintOutpout.lengthVarint);
@@ -87,16 +88,17 @@ function Transaction(raw_hex){
 		tempOutPut.output=oOutPut;
 		this.raw_hex=this.raw_hex.substring(oOutPut.size);
 		this.outputs.push(tempOutPut);
+		
 	}
 	
 	
 }
 function OutPoint(raw_hex){
-	this.size=72+4;
+	this.size=72;
 	this.raw_hex=raw_hex;
 	this.coinbase=false;
 	this.hash = raw_hex.substring(0,64);
-	this.index = raw_hex.substring(64,71);
+	this.index = raw_hex.substring(64,72);
 	
 	if(this.hash =='0'.repeat(64)){
 		this.coinbase=true;
@@ -107,12 +109,16 @@ function OutPoint(raw_hex){
 	let script_bytesTemp=VarIntToDecimal(this.raw_hex.substring(72));
 	
 	this.ScriptSigSize=script_bytesTemp.nbO;	
+	this.size+=script_bytesTemp.lengthVarint;
+	
 	let tempScriptlImitPosition=72+script_bytesTemp.lengthVarint+(this.ScriptSigSize*2);
-	this.ScriptSig=this.raw_hex.substring(72+script_bytesTemp.lengthVarint,tempScriptlImitPosition);
+	this.ScriptSig=this.raw_hex.substring(72+script_bytesTemp.lengthVarint,tempScriptlImitPosition);	
+	this.size+=this.ScriptSigSize*2;
 	
-	this.sequence=this.raw_hex.substring(tempScriptlImitPosition,tempScriptlImitPosition+8);
+	 
 	
-	this.size=this.size+tempScriptlImitPosition;
+	this.sequence=this.raw_hex.substring(tempScriptlImitPosition,tempScriptlImitPosition+8);	
+	this.size+=8
 	
 	return this;
 }
@@ -120,9 +126,29 @@ function OutPoint(raw_hex){
 function OutPut(raw_hex){
 	this.size=72;
 	this.raw_hex=raw_hex;	 
-	this.hash = raw_hex.substring(64);
-	this.index = raw_hex.substring(63,71);
+	
+	//Nombre de satochi.
+	this.value=HexToDecimal(LittleEndianToHex(this.raw_hex.substring(0,16)));
+	this.value=this.value/Math.pow(10,8);
+	this.size+=16;
+	
+	//Extraction du Pk script;
+	this.raw_hex=this.raw_hex.substring(16);
+	let pk_scriptBytesTemp=VarIntToDecimal(this.raw_hex);
+	
+	this.pk_scriptBytes=pk_scriptBytesTemp.nbO;	
+	this.size+=pk_scriptBytesTemp.lengthVarint;
+	this.size+=this.pk_scriptBytes*2;
+	
+	this.raw_hex=this.raw_hex.substring(pk_scriptBytesTemp.lengthVarint);
+	//Récupération du pk script
+	
+	this.pk_script=new Script(this.raw_hex.substring(0,this.pk_scriptBytes*2));
+	
+	return this;
 }
 
-
+function Script(raw_hex){
+	this.raw_hex=raw_hex;
+}
  
