@@ -41,12 +41,7 @@ function Transaction(raw_hex){
 	this.sizeBytes=0;
 	this.raw_hex=raw_hex;
 	this.coinbase=false;
-	
-	this.segwit=false;
-	let offset=0;
-	
-	
-	
+		
 	//Récupération du numéro de version
 	this.version=HexToDecimal(LittleEndianToHex(this.raw_hex.substring(0,8)));
 	 
@@ -58,6 +53,7 @@ function Transaction(raw_hex){
 		 
 		this.raw_hex=this.raw_hex.substring(4);
 		this.sizeBytes+=4;
+		this.segwit=true;
 	}
 	let tempVarint=VarIntToDecimal(this.raw_hex)
 	this.nbInputs=tempVarint.nbO;	 
@@ -101,6 +97,9 @@ function Transaction(raw_hex){
 	this.locktime=timeConverter(HexToDecimal(LittleEndianToHex(this.raw_hex.substring(0,8))));
 	this.raw_hex=this.raw_hex.substring(8);
 	this.sizeBytes+=8;
+	
+	this.size=this.sizeBytes;
+	this.sizeBytes=this.size/2;
 	 
 }
 function OutPoint(raw_hex){
