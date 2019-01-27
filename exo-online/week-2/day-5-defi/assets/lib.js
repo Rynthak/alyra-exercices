@@ -90,6 +90,8 @@ function Transaction(raw_hex){
 		this.outputs.push(tempOutPut);
 		
 	}
+	console.log(this.raw_hex.substring(0,8));
+	this.locktime=timeConverter(HexToDecimal(LittleEndianToHex(this.raw_hex.substring(0,8))));
 	
 	
 }
@@ -124,7 +126,7 @@ function OutPoint(raw_hex){
 }
 
 function OutPut(raw_hex){
-	this.size=72;
+	this.size=0;
 	this.raw_hex=raw_hex;	 
 	
 	//Nombre de satochi.
