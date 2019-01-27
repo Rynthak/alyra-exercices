@@ -25,15 +25,20 @@ function BlockBody(raw_hexBody){
 	//On récupère les transac
 	this.transacTab= [];
 	this.raw_hex=this.raw_hex.substring(this.offsetVarint);
-	for(let i=0;i<this.nb_transac;i++){
-		
-		let oTransac=new Transaction(this.raw_hex);		 
-		this.transacTab.push(oTransac);
-		console.log(oTransac);
-		this.raw_hex=this.raw_hex.substring(oTransac.size);
-		//break;
-		 
+	try{
+		for(let i=0;i<this.nb_transac;i++){
+			
+			let oTransac=new Transaction(this.raw_hex);		 
+			this.transacTab.push(oTransac);
+			console.log(oTransac);
+			this.raw_hex=this.raw_hex.substring(oTransac.size);
+			//break;
+			 
+		}
+	}catch(e){
+		console.log(e);
 	}
+	return this;
 		
 	
 }

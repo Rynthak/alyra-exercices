@@ -49,8 +49,9 @@ $(function() {
 
 	$("#convert_block_button").click(function(e) {
 		let blockHex=$("#block_hex").val();
+		 
 		let oBlock= new Block(blockHex)
-			
+		 
 		//Parse Block Header
 		let textHeader="Header<br>";
 		textHeader+="Header Hex Format :"+oBlock.header.raw_hex+'<br>';		
