@@ -63,10 +63,23 @@ $(function() {
 		
 		//Block Body
 		
+		let nbTransac=VarIntToDecimal(block).nbO;
+		let offsetVarint=VarIntToDecimal(block).lengthVarint;
 		let textBody="Body<br>";
 		textBody+=block+'<br>';
-		textBody+='nbTransac='+VarIntToDecimal(block)+'<br>';
+		textBody+='nbTransac='+nbTransac+'<br>';
 		
+		//On enlève le varInt du body
+		
+		
+		console.log(block);
+		//Decoupage des transaction
+		for(let i=0;i<nbTransac;i++){
+			textBody+='Transac #='+(i+1)+'<br>';
+			block=block.substring(offsetVarint);
+			parseTransaction(block,offsetVarint,textBody);
+			textBody+="<hr>";
+		}
 		
 		//Calcul du nombre de transaction
 		$("#body").html(textBody);
@@ -74,6 +87,9 @@ $(function() {
 	});
 
 });
+function parseTransaction(block,offsetVarint){
+	
+}
 
 function HexToDecimal(value) {
 	return (parseInt(value, 16));
@@ -94,18 +110,23 @@ function VarIntToDecimal(value){
 	}
 	let varIntVal=varint.substring(0,2);
 	let valTemp="";
+	let sizeVarint=4;
+	
 	
 	switch(varIntVal){
 		case "fd":
 			valTemp=HexToDecimal(LittleEndianToHex(varint.substring(2,6)))
+			sizeVarint=6;
 		break;
 		
 		case "fe":
 			valTemp=HexToDecimal(LittleEndianToHex(varint.substring(2,10)))
+			sizeVarint=10;
 		break;
 		
 		case "ff":
 			valTemp=HexToDecimal(LittleEndianToHex(varint.substring(2,18)))
+			sizeVarint=18;
 		break;
 		
 		default:
@@ -113,7 +134,7 @@ function VarIntToDecimal(value){
 		break;
 		
 	}
-	return valTemp;
+	return {'lengthVarint':sizeVarint,'nbO':valTemp};
 }
 
 function BitsFieldToTarget(BitsFields){
