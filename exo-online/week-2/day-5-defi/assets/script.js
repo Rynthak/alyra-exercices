@@ -87,6 +87,7 @@ $(function() {
 	});
 
 });
+//Parse Transac Hex
 function parseTransaction(block,offsetVarint){
 	
 }
