@@ -30,8 +30,8 @@ function BlockBody(raw_hexBody){
 		let oTransac=new Transaction(this.raw_hex);		 
 		this.transacTab.push(oTransac);
 		console.log(oTransac);
-		this.raw_hex=this.raw_hex.substring(oTransac.sizeBytes);
-		break;
+		this.raw_hex=this.raw_hex.substring(oTransac.size);
+		//break;
 		 
 	}
 		
@@ -80,7 +80,7 @@ function Transaction(raw_hex){
 	let tempVarintOutpout=VarIntToDecimal(this.raw_hex)
 	this.nbOutputs=tempVarintOutpout.nbO;
 	this.raw_hex=this.raw_hex.substring(tempVarintOutpout.lengthVarint);
-	
+	this.sizeBytes+=tempVarintOutpout.lengthVarint;
 	this.outputs=[];
 	
 	for(let i =0 ; i< this.nbOutputs;i++){
@@ -94,9 +94,13 @@ function Transaction(raw_hex){
 		
 	}
 	 
-	this.locktime=timeConverter(HexToDecimal(LittleEndianToHex(this.raw_hex.substring(0,8))));
+	this.locktime=(HexToDecimal(LittleEndianToHex(this.raw_hex.substring(0,8))));
 	this.raw_hex=this.raw_hex.substring(8);
 	this.sizeBytes+=8;
+	
+	if(this.coinbase==true){
+		this.sizeBytes+=68;
+	}
 	
 	this.size=this.sizeBytes;
 	this.sizeBytes=this.size/2;
