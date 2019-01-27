@@ -31,6 +31,18 @@ $(function() {
 
 	});
 	
+	$("#block_hex_file").change(function(e){
+		var file = e.target.files[0];
+		  if (!file) {
+		    return;
+		  }
+		  var reader = new FileReader();
+		  reader.onload = function(e) {
+		    var contents = e.target.result;	     
+		    $("#block_hex").val(contents);
+		  };
+		  reader.readAsText(file);
+	})
 
 	$("#convert_block_button").click(function(e) {
 		let blockHex=$("#block_hex").val();
@@ -98,7 +110,7 @@ function VarIntToDecimal(value){
 	}
 	let varIntVal=varint.substring(0,2);
 	let valTemp="";
-	let sizeVarint=4;
+	let sizeVarint=2;
 	
 	
 	switch(varIntVal){
@@ -143,6 +155,10 @@ function ScriptHexaToOpcode(HexValue){
 function printResult(value, text) {
 
 }
+ 
+
+
+
 function timeConverter(UNIX_timestamp){
 	  var a = new Date(UNIX_timestamp * 1000);
 	  var months = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
@@ -154,4 +170,4 @@ function timeConverter(UNIX_timestamp){
 	  var sec = a.getSeconds();
 	  var time = date + ' ' + month + ' ' + year + ' ' + hour + ':' + min + ':' + sec ;
 	  return time;
-	}
+}
