@@ -40,7 +40,7 @@ $(function() {
 		
 		
 		//$("#header").html(header);
-		$("#body").html(block);
+		
 		
 		let textHeader="Header<br>";
 		textHeader+=header+'<br>';
@@ -51,13 +51,23 @@ $(function() {
 		
 		textHeader+='previous block header hash='+(LittleEndianToHex(header.substring(8,72),''))+'<br>';
 		textHeader+='merkle root hash='+LittleEndianToHex(header.substring(72,136),'')+'<br>';
+		textHeader+='time='+HexToDecimal(LittleEndianToHex(header.substring(136,144)))+'<br>';
+		textHeader+='time='+timeConverter(HexToDecimal(LittleEndianToHex(header.substring(136,144))))+'<br>';
 		
+		textHeader+='nBits='+BitsFieldToTarget((LittleEndianToHex(header.substring(144,151))))+'<br>';
+		 //console.log(LittleEndianToHex(header.substring(144,151)));
+		textHeader+='nonce='+HexToDecimal((header.substring(151,159)))+'<br>';
+		 
 		$("#header").html(textHeader);
 		
 		
+		//Block Body
 		
+		let textBody="Body<br>";
+		textBody+=block+'<br>';
 		
-		
+		//Calcul du nombre de transaction
+		$("#body").html(textBody);
 		
 	});
 
@@ -75,52 +85,43 @@ function LittleEndianToHex(endian,prefix="0x"){
 	return r;	
 }
 function VarIntToDecimal(value){
-	let b = numbersToArrayBuffer(value, 'hex');
-	console.log((b));
+	let prefix=value.substring(0,2)
+	let varint=value;
+	if(prefix=="0x"){
+		varint=varint.substring(2);
+	}
+	let varIntVal=varint.substring(0,2);
+	let valTemp="";
+	//console.log(varIntVal,varint,varint.substring(2,6));return;
+	switch(varIntVal){
+		case "fd":
+			
+			valTemp=HexToDecimal(LittleEndianToHex(varint.substring(2,6)))
+			
+		break;
+		
+		case "fe":
+			valTemp=HexToDecimal(LittleEndianToHex(varint.substring(2,10)))
+		break;
+		
+		case "ff":
+			valTemp=HexToDecimal(LittleEndianToHex(varint.substring(2,18)))
+		break;
+		
+		default:
+			valTemp=HexToDecimal(LittleEndianToHex(varint))
+		break;
+		
+		
+	}
+	
+	return valTemp;
+	
 }
-function numbersToArrayBuffer (numbers) {
-	  var buffer = new Uint8Array(numbers.length)
-
-	  for (var i = 0; i < view.length; i++) {
-		  buffer[i] = numbers[i]
-	  }
-	  let offset=0;
-	  
-	  var first = buffer.readUInt8(offset)
-
-	  // 8 bit
-	  if (first < 0xfd) {
-	    decode.bytes = 1
-	    return first
-
-	  // 16 bit
-	  } else if (first === 0xfd) {
-	    decode.bytes = 3
-	    return buffer.readUInt16LE(offset + 1)
-
-	  // 32 bit
-	  } else if (first === 0xfe) {
-	    decode.bytes = 5
-	    return buffer.readUInt32LE(offset + 1)
-
-	  // 64 bit
-	  } else {
-	    decode.bytes = 9
-	    var lo = buffer.readUInt32LE(offset + 1)
-	    var hi = buffer.readUInt32LE(offset + 5)
-	    var number = hi * 0x0100000000 + lo
-	    checkUInt53(number)
-
-	    return number
-	  }
-	  
-	  
-}
-
 
 function BitsFieldToTarget(BitsFields){
-	parseInt(BitsFields.substring(4,BitsFields.length)+("00".repeat(parseInt(BitsFields.substring(2,4),16)-3)),16);
-	alert(BitsFields);
+	return parseInt(BitsFields.substring(4,BitsFields.length)+("00".repeat(parseInt(BitsFields.substring(2,4),16)-3)),16);
+	 
 }
 function TargetToDifficulty(Target){
 	let max = 2.7 * Math.pow(10,67)	;	 	
@@ -136,3 +137,15 @@ function ScriptHexaToOpcode(HexValue){
 function printResult(value, text) {
 
 }
+function timeConverter(UNIX_timestamp){
+	  var a = new Date(UNIX_timestamp * 1000);
+	  var months = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+	  var year = a.getFullYear();
+	  var month = months[a.getMonth()];
+	  var date = a.getDate();
+	  var hour = a.getHours();
+	  var min = a.getMinutes();
+	  var sec = a.getSeconds();
+	  var time = date + ' ' + month + ' ' + year + ' ' + hour + ':' + min + ':' + sec ;
+	  return time;
+	}
