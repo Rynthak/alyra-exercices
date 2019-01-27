@@ -120,7 +120,9 @@ function OutPoint(raw_hex){
 	
 	let tempScriptlImitPosition=72+script_bytesTemp.lengthVarint+(this.ScriptSigSize*2);
 	this.ScriptSig=this.raw_hex.substring(72+script_bytesTemp.lengthVarint,tempScriptlImitPosition);	
-	this.size+=this.ScriptSigSize*2;		 
+	this.size+=this.ScriptSigSize*2;	
+	
+	
 	
 	this.sequence=this.raw_hex.substring(tempScriptlImitPosition,tempScriptlImitPosition+8);	
 	this.size+=8
@@ -151,10 +153,16 @@ function OutPut(raw_hex){
 	
 	this.pk_script=new Script(this.raw_hex.substring(0,this.pk_scriptBytes*2));
 	
+	
+	
+	
 	return this;
 }
 
 function Script(raw_hex){
 	this.raw_hex=raw_hex;
+	
+	this.asm=bytesToAsm(hexStringToBytes(this.raw_hex)).join(' ');
+	
 }
  
