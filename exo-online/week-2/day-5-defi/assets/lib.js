@@ -30,7 +30,7 @@ function BlockBody(raw_hexBody){
 			
 			let oTransac=new Transaction(this.raw_hex);		 
 			this.transacTab.push(oTransac);
-			console.log(oTransac);
+			 
 			this.raw_hex=this.raw_hex.substring(oTransac.size);
 			//break;
 			 

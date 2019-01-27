@@ -70,9 +70,15 @@ $(function() {
 		let textBody="Body<br>";
 		textBody+="Body Raw Hex="+oBlock.body.raw_hex+'<br>';
 		textBody+='nbTransac='+oBlock.body.nb_transac+'<br>';
-		 //On enlève le varInt du body
-		
 		 
+		textBody+='<br><hr>';
+		for(let i=0 ; i<oBlock.body.transacTab.length;i++){
+			textBody+="Transaction #"+(i+1)+"<br>";
+			textBody+="<pre>"+JSON.stringify(oBlock.body.transacTab[i], undefined, 2)+"</pre>"
+			textBody+="<br><hr>";
+		}
+		
+		
 		
 		textBody+='<hr>'
 		//Calcul du nombre de transaction
