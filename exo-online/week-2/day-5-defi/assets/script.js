@@ -135,7 +135,7 @@ function BitsFieldToTarget(BitsFields){
 function TargetToDifficulty(Target){
 	let max = 2.7 * Math.pow(10,67)	;	 	
 	let difficulty=max/Target;
-	alert(difficulty);
+	return (difficulty);
 }
 
 
