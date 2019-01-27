@@ -164,8 +164,7 @@ function OutPut(raw_hex){
 
 function Script(raw_hex){
 	this.raw_hex=raw_hex;
-	
-	this.asm=bytesToAsm(hexStringToBytes(this.raw_hex)).join(' ');
+	this.asm=ScriptHexaToOpcode(this.raw_hex)
 	
 }
  

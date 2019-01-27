@@ -12,7 +12,9 @@
 	<h1>Défi #1 : Outil d’analyse bitcoin</h1>
 	<div class="container">
 		<div class="row">
-			<div class="col-lg">
+			
+			<div class="col-lg-6">
+				<h2>Calculette</h2>
 				<form action="#">
 					<div class="form-group">
 						<label for="value_to_convert">Valeur à convertir:</label> 
@@ -33,19 +35,33 @@
 			           </select>
 					</div>
 					<button type="button" id="convert_button" class="btn btn-primary">Convertir</button>
+					
+					
+					
 				</form>			
 				
-				<form action="#">
-					
-					<input type="file" id="block_hex_file" />
-					<textarea rows="10" cols="100" id="block_hex"></textarea>
-					<button type="button" id="convert_block_button" class="btn btn-primary">Décoder Block</button>
-					<div id="header"></div>
-					<hr>
-					<div id="body"></div>
-				</form>
+				
 			</div>
-
+			<div class="col-lg-6">
+				<div id="result-div" class="jumbotron d-none jumbotron-fluid">
+					<div class="container">
+					   <h1 class="display-4" >Résultat</h1>
+					   <p class="lead" id="result"></p>
+					 </div>
+				</div>
+			</div>
+			
+			<div class="col-lg-12">
+					<h2>Parse Block</h2>
+					<form action="#">						
+						<input type="file" id="block_hex_file" />
+						<textarea rows="10" cols="100" id="block_hex"></textarea>
+						<button type="button" id="convert_block_button" class="btn btn-primary">Décoder Block</button>
+						<div id="header"></div>
+						<hr>
+						<div id="body"></div>
+					</form>
+			</div>
 		</div>
 	</div>
 	<script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"></script>

@@ -3,31 +3,34 @@ $(function() {
 	$("#convert_button").click(function() {
 		let type_convert = $("#type_convert").val();
 		let value_to_convert = $("#value_to_convert").val();
+		let val="";
 		switch (type_convert) {
 
 		case "1":
-			HexToDecimal(value_to_convert);
+			val=HexToDecimal(value_to_convert);
 			break;
 		case "2":
-			DecimalToHex(value_to_convert);
+			val="0x"+DecimalToHex(value_to_convert).toUpperCase();
 			break;
 		case "3":
-			LittleEndianToHex(value_to_convert);
+			val="0x"+LittleEndianToHex(value_to_convert,'').toUpperCase();
 			break;
 		case "4":
-			VarIntToDecimal(value_to_convert);
+			val=VarIntToDecimal(value_to_convert).nbO;
 			break;
 		case "5":
-			BitsFieldToTarget(value_to_convert);
+			val=BitsFieldToTarget(value_to_convert);
 			break;
 		case "6":
-			TargetToDifficulty(value_to_convert);
+			val=TargetToDifficulty(value_to_convert);
 			break;
 		case "7":
-			ScriptHexaToOpcode(value_to_convert);
+			val=ScriptHexaToOpcode(value_to_convert);
 			break;
 
 		}
+		$("#result-div").removeClass('d-none');
+		$("#result").html(val);
 
 	});
 	
@@ -66,18 +69,9 @@ $(function() {
 		let textBody="Body<br>";
 		textBody+="Body Raw Hex="+oBlock.body.raw_hex+'<br>';
 		textBody+='nbTransac='+oBlock.body.nb_transac+'<br>';
+		 //On enlève le varInt du body
 		
-		//On enlève le varInt du body
-		
-		/*
-		console.log(block);
-		//Decoupage des transaction
-		for(let i=0;i<nbTransac;i++){
-			textBody+='Transac #='+(i+1)+'<br>';
-			block=block.substring(offsetVarint);
-			parseTransaction(block,offsetVarint,textBody);
-			textBody+="<hr>";
-		}*/
+		 
 		
 		textBody+='<hr>'
 		//Calcul du nombre de transaction
@@ -86,21 +80,18 @@ $(function() {
 	});
 
 });
-//Parse Transac Hex
-function parseTransaction(block,offsetVarint){
-	
-}
+ 
 
 function HexToDecimal(value) {
 	return (parseInt(value, 16));
 }
 function DecimalToHex(value) {
-	let convert = parseInt(value).toString(16) ;
-	alert(convert);
+	return parseInt(value).toString(16) ;
+	 
 }
 function LittleEndianToHex(endian,prefix="0x"){
-	var r = prefix+endian.match(/../g).reverse().join('');
-	return r;	
+	return prefix+endian.match(/../g).reverse().join('');
+		
 }
 function VarIntToDecimal(value){
 	let prefix=value.substring(0,2)
@@ -149,15 +140,8 @@ function TargetToDifficulty(Target){
 
 
 function ScriptHexaToOpcode(HexValue){
-	
+	return bytesToAsm(hexStringToBytes(HexValue)).join(' ');
 }
-
-function printResult(value, text) {
-
-}
- 
-
-
 
 function timeConverter(UNIX_timestamp){
 	  var a = new Date(UNIX_timestamp * 1000);
