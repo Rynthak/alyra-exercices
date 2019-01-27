@@ -46,25 +46,18 @@ $(function() {
 		textHeader+='nBits='+oBlock.header.nBits+'<br>';		 
 		textHeader+='Nonce='+oBlock.header.nonce+'<br>';	
 		textHeader+='<hr>'
-		$("#header").html(textHeader);
+		$("#header").html(textHeader);		
 		
+		//Parse Block Body
 		
-		
-		
-		
-		
-		/*
-		//Block Body
-		
-		let nbTransac=VarIntToDecimal(block).nbO;
-		let offsetVarint=VarIntToDecimal(block).lengthVarint;
+		 
 		let textBody="Body<br>";
-		textBody+=block+'<br>';
-		textBody+='nbTransac='+nbTransac+'<br>';
+		textBody+="Body Raw Hex="+oBlock.body.raw_hex+'<br>';
+		textBody+='nbTransac='+oBlock.body.nb_transac+'<br>';
 		
 		//On enlève le varInt du body
 		
-		
+		/*
 		console.log(block);
 		//Decoupage des transaction
 		for(let i=0;i<nbTransac;i++){
@@ -72,10 +65,11 @@ $(function() {
 			block=block.substring(offsetVarint);
 			parseTransaction(block,offsetVarint,textBody);
 			textBody+="<hr>";
-		}
+		}*/
 		
+		textBody+='<hr>'
 		//Calcul du nombre de transaction
-		$("#body").html(textBody);*/
+		$("#body").html(textBody); 
 		
 	});
 
@@ -124,7 +118,7 @@ function VarIntToDecimal(value){
 		break;
 		
 		default:
-			valTemp=HexToDecimal(LittleEndianToHex(varint))
+			valTemp=HexToDecimal(LittleEndianToHex(varint.substring(0,2)))
 		break;
 		
 	}
