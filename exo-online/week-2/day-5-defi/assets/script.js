@@ -34,33 +34,26 @@ $(function() {
 
 	$("#convert_block_button").click(function(e) {
 		let blockHex=$("#block_hex").val();
-		let header=blockHex.substring(0,159);
-		let block=blockHex.substring(160);
-		
-		
-		
-		//$("#header").html(header);
-		
-		
+		let oBlock= new Block(blockHex)
+			
+		//Parse Block Header
 		let textHeader="Header<br>";
-		textHeader+=header+'<br>';
-		let version = LittleEndianToHex(header.substring(0,7));
-		 
-		
-		textHeader+='Version='+HexToDecimal(version)+'<br>';
-		
-		textHeader+='previous block header hash='+(LittleEndianToHex(header.substring(8,72),''))+'<br>';
-		textHeader+='merkle root hash='+LittleEndianToHex(header.substring(72,136),'')+'<br>';
-		textHeader+='time='+HexToDecimal(LittleEndianToHex(header.substring(136,144)))+'<br>';
-		textHeader+='time='+timeConverter(HexToDecimal(LittleEndianToHex(header.substring(136,144))))+'<br>';
-		
-		textHeader+='nBits='+BitsFieldToTarget((LittleEndianToHex(header.substring(144,151))))+'<br>';
-		 //console.log(LittleEndianToHex(header.substring(144,151)));
-		textHeader+='nonce='+HexToDecimal((header.substring(151,159)))+'<br>';
-		 
+		textHeader+="Header Hex Format :"+oBlock.header.raw_hex+'<br>';		
+		textHeader+='Version='+oBlock.header.version+'<br>';		
+		textHeader+='Previous block header hash='+oBlock.header.previousBlockHash+'<br>';
+		textHeader+='Merkle root hash='+oBlock.header.merkle_root+'<br>';		
+		textHeader+='Time='+oBlock.header.time+'<br>';		
+		textHeader+='nBits='+oBlock.header.nBits+'<br>';		 
+		textHeader+='Nonce='+oBlock.header.nonce+'<br>';	
+		textHeader+='<hr>'
 		$("#header").html(textHeader);
 		
 		
+		
+		
+		
+		
+		/*
 		//Block Body
 		
 		let nbTransac=VarIntToDecimal(block).nbO;
@@ -82,7 +75,7 @@ $(function() {
 		}
 		
 		//Calcul du nombre de transaction
-		$("#body").html(textBody);
+		$("#body").html(textBody);*/
 		
 	});
 
