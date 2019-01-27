@@ -127,7 +127,7 @@ function OutPoint(raw_hex){
 	
 	
 	
-	this.sequence=this.raw_hex.substring(tempScriptlImitPosition,tempScriptlImitPosition+8);	
+	this.sequence=(HexToDecimal(LittleEndianToHex(this.raw_hex.substring(tempScriptlImitPosition,tempScriptlImitPosition+8))));	
 	this.size+=8
 	
 	return this;
