@@ -62,7 +62,8 @@ $(function() {
 			textHeader+='Previous block header hash='+oBlock.header.previousBlockHash+'<br>';
 			textHeader+='Merkle root hash='+oBlock.header.merkle_root+'<br>';		
 			textHeader+='Time='+oBlock.header.time+'<br>';		
-			textHeader+='nBits='+oBlock.header.nBits+'<br>';		 
+			textHeader+='nBits='+oBlock.header.nBits+'<br>';
+			textHeader+='difficulty='+oBlock.header.difficulty+'<br>';	
 			textHeader+='Nonce='+oBlock.header.nonce+'<br>';	
 			textHeader+='<hr>'
 			$("#header").html(textHeader);		
@@ -162,14 +163,7 @@ function ScriptHexaToOpcode(HexValue){
 }
 
 function timeConverter(UNIX_timestamp){
-	  var a = new Date(UNIX_timestamp * 1000);
-	  var months = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
-	  var year = a.getFullYear();
-	  var month = months[a.getMonth()];
-	  var date = a.getDate();
-	  var hour = a.getHours();
-	  var min = a.getMinutes();
-	  var sec = a.getSeconds();
-	  var time = date + ' ' + month + ' ' + year + ' ' + hour + ':' + min + ':' + sec ;
-	  return time;
+	  var d = new Date(0);
+	  d.setUTCSeconds(UNIX_timestamp);	   
+	  return d.toUTCString();
 }
