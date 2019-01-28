@@ -48,41 +48,52 @@ $(function() {
 	})
 
 	$("#convert_block_button").click(function(e) {
-		let blockHex=$("#block_hex").val();
-		 
-		let oBlock= new Block(blockHex)
-		 
-		//Parse Block Header
-		let textHeader="Header<br>";
-		textHeader+="Header Hex Format :"+oBlock.header.raw_hex+'<br>';		
-		textHeader+='Version='+oBlock.header.version+'<br>';		
-		textHeader+='Previous block header hash='+oBlock.header.previousBlockHash+'<br>';
-		textHeader+='Merkle root hash='+oBlock.header.merkle_root+'<br>';		
-		textHeader+='Time='+oBlock.header.time+'<br>';		
-		textHeader+='nBits='+oBlock.header.nBits+'<br>';		 
-		textHeader+='Nonce='+oBlock.header.nonce+'<br>';	
-		textHeader+='<hr>'
-		$("#header").html(textHeader);		
+		let HexValue=$("#block_hex").val();
+		var radioValue = $("input[name='type_hex']:checked"). val();
 		
-		//Parse Block Body
-		
+		if(radioValue=="block"){
 		 
-		let textBody="Body<br>";
-		textBody+="Body Raw Hex="+oBlock.body.raw_hex+'<br>';
-		textBody+='nbTransac='+oBlock.body.nb_transac+'<br>';
-		 
-		textBody+='<br><hr>';
-		for(let i=0 ; i<oBlock.body.transacTab.length;i++){
-			textBody+="Transaction #"+(i+1)+"<br>";
-			textBody+="<pre>"+JSON.stringify(oBlock.body.transacTab[i], undefined, 2)+"</pre>"
-			textBody+="<br><hr>";
+			let oBlock= new Block(HexValue)
+			 
+			//Parse Block Header
+			let textHeader="Header<br>";
+			textHeader+="Header Hex Format :"+oBlock.header.raw_hex+'<br>';		
+			textHeader+='Version='+oBlock.header.version+'<br>';		
+			textHeader+='Previous block header hash='+oBlock.header.previousBlockHash+'<br>';
+			textHeader+='Merkle root hash='+oBlock.header.merkle_root+'<br>';		
+			textHeader+='Time='+oBlock.header.time+'<br>';		
+			textHeader+='nBits='+oBlock.header.nBits+'<br>';		 
+			textHeader+='Nonce='+oBlock.header.nonce+'<br>';	
+			textHeader+='<hr>'
+			$("#header").html(textHeader);		
+			
+			//Parse Block Body
+			
+			 
+			let textBody="Body<br>";
+			textBody+="Body Raw Hex="+oBlock.body.raw_hex+'<br>';
+			textBody+='nbTransac='+oBlock.body.nb_transac+'<br>';
+			 
+			textBody+='<br><hr>';
+			for(let i=0 ; i<oBlock.body.transacTab.length;i++){
+				textBody+="Transaction #"+(i+1)+"<br>";
+				textBody+="<pre>"+JSON.stringify(oBlock.body.transacTab[i], undefined, 2)+"</pre>"
+				textBody+="<br><hr>";
+			}
+			
+			
+			
+			textBody+='<hr>'
+			//Calcul du nombre de transaction
+			$("#body").html(textBody);
+
+		}else{
+			let textBody="Transaction Decode<br><hr>"
+			let oTransaction= new Transaction(HexValue,true)
+			textBody+="<pre>"+JSON.stringify(oTransaction, undefined, 2)+"</pre>"
+			$("#body").html(textBody);
 		}
 		
-		
-		
-		textBody+='<hr>'
-		//Calcul du nombre de transaction
-		$("#body").html(textBody); 
 		
 	});
 

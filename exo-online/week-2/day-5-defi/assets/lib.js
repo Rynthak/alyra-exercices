@@ -42,11 +42,17 @@ function BlockBody(raw_hexBody){
 		
 	
 }
-function Transaction(raw_hex){
+function Transaction(raw_hex,singleTransaction=false){
 	this.sizeBytes=0;
 	this.raw_hex=raw_hex;
 	this.coinbase=false;
-		
+	this.txid="To Calc";	
+	
+	if(singleTransaction==true){
+		this.txid=CryptoJS.SHA256(CryptoJS.SHA256(this.raw_hex).toString()).toString();	
+		 
+	}
+	
 	//Récupération du numéro de version
 	this.version=HexToDecimal(LittleEndianToHex(this.raw_hex.substring(0,8)));
 	 
