@@ -110,15 +110,49 @@ function Transaction(raw_hex,singleTransaction=false){
 	this.locktime=(HexToDecimal(LittleEndianToHex(this.raw_hex.substring(0,8))));
 	this.raw_hex=this.raw_hex.substring(8);
 	this.sizeBytes+=8;
-	
-	if(this.coinbase==true){
-		this.sizeBytes+=68;
+	this.segWithSequence="";
+	if(this.segwit==true){
+		
+		this.witness=new Segwit(this.raw_hex,this.inputs.length)
 	}
 	
 	this.size=this.sizeBytes;
 	this.sizeBytes=this.size/2;
 	 
 }
+function Segwit(raw_hex,input_length){
+	//Gestion du Segwit - Witness
+	this.raw_hex=raw_hex;
+	this.input_length=input_length;
+	this.segwit_value=""
+	this.sizeBytes=0;
+	
+	for(let i=0;i<this.input_length;i++){
+		
+		 //Récupération du premier varint pour l'input i	
+		 let tempVarIntField=VarIntToDecimal(this.raw_hex);
+		 this.sizeBytes+=tempVarIntField.lengthVarint;
+		 let valueSegwitVarint=VarIntToDecimal(this.raw_hex);
+		 
+		 this.sizeBytes+=valueSegwitVarint.lengthVarint;
+		 this.segwit_value+=this.raw_hex.substring(0,valueSegwitVarint.lengthVarint);
+		 this.raw_hex=this.raw_hex.substring(valueSegwitVarint.lengthVarint);
+		 if(valueSegwitVarint.nb0==0)continue;
+		
+		 for(let j = 0 ;j<valueSegwitVarint.nb0;j++){
+			 //
+			 let tempVarIntFieldSecond=VarIntToDecimal(this.raw_hex); 
+			 this.sizeBytes+=tempVarIntFieldSecond.lengthVarint;
+			 this.segwit_value+=this.raw_hex.substring(0,tempVarIntFieldSecond.lengthVarint);
+			 this.raw_hex=this.raw_hex.substring(tempVarIntFieldSecond.lengthVarint);
+			 
+			 this.segwit_value+=this.raw_hex.substring(0,tempVarIntFieldSecond.lengthVarint);
+			 
+		 }
+	}
+}
+
+
 function OutPoint(raw_hex){
 	this.size=72;
 	this.raw_hex=raw_hex;
