@@ -20,8 +20,7 @@ contract SceneOuverte {
 		if(tour>12){
 			return ("FIN");
 		}
-		
-		require( bytes(passagesArtistes[tour]).length > 0,"Aucun artiste pour ce tour");
+		 
 		return passagesArtistes[tour];
 	}
 	
