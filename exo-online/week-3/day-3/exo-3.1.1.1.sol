@@ -13,8 +13,10 @@ contract SceneOuverte {
 		}
 	}
 	
-	function passerArtisteSuivant() public {		
-		tour+=1;
+	function passerArtisteSuivant() public {
+		if(tour<13){		
+			tour+=1;		
+		}
 	}
 	function artisteEnCours() public constant returns(string){		
 		if(tour>12){
