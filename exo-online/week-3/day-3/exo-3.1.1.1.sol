@@ -1,3 +1,16 @@
+/* 
+ * Exercice 3.1.1.1 Passer à l’artiste suivant
+
+Modifier la fonction passer ArtisteSuivant() pour qu’elle ne fasse rien après le dernier passage.
+
+Modifier la fonction la fonction artisteEnCours() pour qu’elle retourne le nom de l’artiste en cours s’il y en a un, et “FIN” sinon.
+
+Aide: Le nombre d’artistes inscrits se calcule à partir du maximum et des places libres
+
+ 
+ * 
+ * 
+ * */
 pragma solidity ^0.4.25;
 contract SceneOuverte {
 	
@@ -18,12 +31,8 @@ contract SceneOuverte {
 			tour+=1;		
 		}
 	}
-	function artisteEnCours() public constant returns(string){		
-		if(tour>12){
-			return ("FIN");
-		}
-		 
-		return passagesArtistes[tour];
+	function artisteEnCours() public constant returns(string){
+		return (tour>12)?"FIN":passagesArtistes[tour];
 	}
 	
 }
