@@ -89,7 +89,7 @@ contract CagnotteFestival {
 	/* Exercice 3.2.2 - Ajouter des sponsors à une liste */
 	function sponsoriser(string memory nom) payable{
 		require(creneauxLibresSponsor > 0,"Plus de place pour le sponsor");
-		require(msg.value>=30000000000000000000,"Montant inférieurs à 30 ether");
+		require(msg.value>=30*10**18,"Montant inférieurs à 30 ether");
 			
 		sponsors[12-creneauxLibresSponsor]=nom;
 		creneauxLibresSponsor--;		 
