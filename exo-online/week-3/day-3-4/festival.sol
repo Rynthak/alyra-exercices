@@ -3,6 +3,10 @@ pragma solidity ^0.4.25;
  * @title SafeMath
  * @dev Unsigned math operations with safety checks that revert on error
  */
+ /* 
+  * Exercice 3.2.3 - Importer la librairie SafeMath
+
+  */
 library SafeMath {
     /**
      * @dev Multiplies two unsigned integers, reverts on overflow.
