@@ -1,7 +1,7 @@
 pragma solidity ^0.5.3;
 
 import "github.com/OpenZeppelin/zeppelin-solidity/contracts/math/SafeMath.sol";
-
+//ERC 20 TOKEN
 contract JetonMinimal{
 	
 	mapping (address=>uint256) public comptes;
