@@ -8,7 +8,7 @@ contract JetonMinimal{
 	using SafeMath for uint; // 
 	address public owner;
 	uint256 dateEmission=0;
-	event Transfert(uint256,address payeur,address destinataire);
+	event Transfert(uint256 value,address payeur,address destinataire);
 	
 	constructor(uint256 nombreItial) public{
 		comptes[msg.sender]=nombreItial;
@@ -19,7 +19,7 @@ contract JetonMinimal{
 		require(int(comptes[msg.sender]-value)>0,"Pas assez de jetons");
 		comptes[destinataire]=comptes[destinataire].add(value);
 		comptes[msg.sender]=comptes[msg.sender].sub(value);
-		emit Transfert(valeur,msg.sender,destinataire);
+		emit Transfert(value,msg.sender,destinataire);
 	}
 	
 	function minting(address destinataire,uint256 value) public{
