@@ -13,17 +13,22 @@ contract CagnotteFestival {
 	uint creneauxLibresSponsor = 12;
 	
 	uint256 sponsorRecette;
-	uint256 depenseLimitPerDay=10**18;
+	uint256 depenseLimitPerDay=1 ether;
 	uint256 dateNow;
+	uint nbPlacesFestival;
 	uint256 actualDepense;
 	uint constant DAY_IN_SECONDS = 86400;
 	
 	uint256 dateLiquidation= 1549297714;
 	
-	constructor() public {
+	
+	 
+	
+	constructor(uint256 date, uint nbPlaces) public {
 		organisateurs[msg.sender]=100;
 		organisateursList.push(msg.sender);
-		
+		dateLiquidation=date+2 weeks;
+		nbPlacesFestival=nbPlaces;
 	}
 	
 	function acheterTicket() public payable{
@@ -39,7 +44,10 @@ contract CagnotteFestival {
 		destinataire.transfer(montant);
 	}
 	
-	
+	function () payable external(){
+		
+	}
+
 	/*Exercice 3.2.1 - Donner le statut d'organisateurs */
 	function transfererOrga(address orga, uint parts) public {  
 		require(organisateurs[msg.sender]>=parts,"Operation not allowed");
@@ -55,7 +63,7 @@ contract CagnotteFestival {
 	/* Exercice 3.2.2 - Ajouter des sponsors à une liste */
 	function sponsoriser(string memory nom) payable{
 		require(creneauxLibresSponsor > 0,"Plus de place pour le sponsor");
-		require(msg.value>=30*10**18,"Montant inférieurs à 30 ether");
+		require(msg.value>=30 ether,"Montant inférieurs à 30 ether");
 		//Recette des sponsors dépensable
 		sponsorRecette+=msg.value;
 		

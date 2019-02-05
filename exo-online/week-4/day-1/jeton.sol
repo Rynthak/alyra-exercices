@@ -19,7 +19,7 @@ contract JetonMinimal{
 		require(int(comptes[msg.sender]-value)>0,"Pas assez de jetons");
 		comptes[destinataire]=comptes[destinataire].add(value);
 		comptes[msg.sender]=comptes[msg.sender].sub(value);
-		emit Transfert(valeur,msg.sender,destinataire)
+		emit Transfert(valeur,msg.sender,destinataire);
 	}
 	
 	function minting(address destinataire,uint256 value) public{
