@@ -10,5 +10,8 @@
   "license": "ISC",
   "dependencies": {
     "live-server": "^1.2.1"
+  },
+  "devDependencies": {
+    "ethers": "^4.0.23"
   }
 }

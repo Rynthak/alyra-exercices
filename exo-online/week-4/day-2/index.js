@@ -149,6 +149,10 @@ async function createMetaMaskDapp(){
 	 
 	contractWithSigner=contract.connect(provider.getSigner(addresses[0]));
 	
+	contract.on('Transfert', ( value, payeur, destinataire,event) => {
+	    alert('I received ' + value.toString() + ' tokens from ' + payeur +" to "+destinataire);
+	});
+	
 	let tx = await contractWithSigner.transfert('0x744CC80c758B53e6698885ad60B4689C370BCc64',2);
 	
 	console.log(tx.hash);
@@ -165,13 +169,15 @@ async function createMetaMaskDapp(){
 	//On écoute l'évenement
 	console.log("Val account new value: "+temp.toString());
 	
-	contract.on('Transfert', ( value, payeur, destinataire,event) => {
-	    alert('I received ' + value.toString() + ' tokens from ' + payeur +" to "+destinataire);
-	});
+	
 	 
 }
 
 $("#cdwmt").click(createMetaMaskDapp);
+
+
+
+$("#cdwmt").click(createMetaMaskDappWallet);
 
 
 
