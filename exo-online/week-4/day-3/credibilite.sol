@@ -35,7 +35,7 @@ contract Credibilite {
    		require(devoirsExists[dev]==false,"Petit tricheur ce dévoir existe déjà"); 
    		require(cred[msg.sender]==0,"Tu as déjà rendu ton devoir");  		
    		order = devoirs.length;
-   		cred[msg.sender]=(order==0)?cred[msg.sender].add(30):cred[msg.sender].add(10);
+   		cred[msg.sender]=(order==0)?cred[msg.sender].add(30):((order==1)?cred[msg.sender].add(20):cred[msg.sender].add(10));
    		devoirs.push(dev);
    		devoirsExists[dev]=true;
    		order=order.add(1);  		
