@@ -13,6 +13,29 @@ contract Credibilite {
    mapping (address => uint256) public cred;
 
    bytes32[] private devoirs;
+    
+    
+   /* Exercice 4.1.1 Rédiger un contrat Crédibilité pour remettre des devoirs */
    
+   function produireHash(string memory url) public pure returns(bytes32){
+   		return keccak256(bytes(url));
+   }
+   
+   function transfer(address destinataire, uint256 valeur) public{   		
+   		require(cred[msg.sender] > valeur);
+   		require(cred[destinataire] > 0);    		
+   		cred[msg.sender]= cred[msg.sender].sub(valeur);
+   		cred[destinataire]  = cred[destinataire].add(valeur);	
+   }
+   
+   function remettre(bytes32 dev) public returns(uint256){
+   		
+   		uint256 order = devoirs.length;
+   		cred[msg.sender]=(order==0)?cred[msg.sender].add(30):cred[msg.sender].add(10);
+   		devoirs.push(dev); 
+   		order=order.add(1);  		
+   		return order;
+   }
+   /* End exercice 4.1.1 */
  
 }
