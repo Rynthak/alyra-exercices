@@ -12,7 +12,7 @@ $(function() {
 	$('[data-rel="send_dev"]').click(function(e){
 		let urlDev=$("#url_dev").val().trim();
 		
-		if(url_dev==""){
+		if(urlDev==""){
 			alert("Veuillez saisir l'url de votre devoir");
 			return false;
 		}
@@ -20,6 +20,19 @@ $(function() {
 		createMetaMaskDapp(event);
 		
 	});
+	$('[data-rel="send_dev_event"]').click(function(e){
+		let urlDev=$("#url_dev_event").val().trim();
+		
+		if(urlDev==""){
+			alert("Veuillez saisir l'url de votre devoir(event)");
+			return false;
+		}
+		let event={data:{functionToCall:[sendDevEvent]}};
+		createMetaMaskDapp(event);
+		
+	});
+	 
+	
 	
 	
 });
@@ -65,6 +78,35 @@ let sendDev = async function(){
 };
 
 
+let sendDevEvent = async function(){
+	let contratCredibilite=new ethers.Contract(contractAddressEvent, abiContractEvent, dapp.provider);
+	
+	
+	let urlDev=$("#url_dev_event").val().trim();
+	//Récupération du hash du devoir
+	let hashDevoir = await contratCredibilite.produireHash(urlDev);
+	
+	
+	//Envoie du hash du devoir
+	//console.log(hashDevoir.toString());
+	
+	contratCredibilite.on('Remise', (dev, eleve) => {
+		$.growl({ title: "Remise de devoir", message: "Le devoir "+dev+" a été remis par "+eleve });
+	});
+	
+	contractWithSigner=contratCredibilite.connect(dapp.provider.getSigner());
+	let tx = await contractWithSigner.remettre(hashDevoir.toString());
+	
+	
+	
+	
+	console.log(tx.hash);
+	
+	await tx.wait();
+};
+
+
+
 let myBalance = async function(){
 	 dapp.provider.getBalance(dapp.address).then((balance) => {
 	   let etherString = ethers.utils.formatEther(balance);
@@ -102,7 +144,7 @@ async function createMetaMaskDapp(event) {
 	   const provider = new ethers.providers.Web3Provider(ethereum);
 	   dapp = { address, provider };
 	   
-	   console.log(event.data);
+	   
 	   $.each(event.data.functionToCall,function(index, value){
 		   value();
 	   })

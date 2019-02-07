@@ -4,6 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport"content="width=device-width, initial-scale=1, shrink-to-fit=no">
 <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" />
+<link rel="stylesheet" href="/assets/jquery.growl/stylesheets/jquery.growl.css" />
 </head>
 	<h1>Hello</h1>
 	<div class="container">
@@ -29,7 +30,7 @@
 				<h2>Remise de devoir</h2>
 				 <form action="#">
 					<div class="form-group">
-						<label for="value_to_convert">Url du devoir à rendre :</label> 
+						<label for="url_dev">Url du devoir à rendre :</label> 
 						<input type="text" class="form-control" id="url_dev">
 					</div>
 					<button type="button" data-rel="send_dev"  class="btn btn-primary">Envoyer Devoir</button>
@@ -40,11 +41,30 @@
 		</div>
 		
 		
+		<div class="row">
+			<div class="col-lg-12" data-rel="credibility_event">
+				<h2>Remise de devoir V2 + Event</h2>
+				 <form action="#">
+					<div class="form-group">
+						<label for="url_dev_event">Url du devoir à rendre(event) :</label> 
+						<input type="text" class="form-control" id="url_dev_event">
+					</div>
+					<button type="button" data-rel="send_dev_event"  class="btn btn-primary">Envoyer Devoir Event</button>
+				</form>
+				<div class="alert alert-primary d-none" data-rel="cred_event" role="alert">
+				</div>
+			</div>
+		</div>
+		
+		
+		
+		
 	</div>
  
 
 <!-- This exposes the library as a global variable: ethers -->
 <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"></script>
+<script src="/assets/jquery.growl/javascripts/jquery.growl.js"></script>
 <script	src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
 <script src="https://cdn.ethers.io/scripts/ethers-v4.min.js" charset="utf-8"type="text/javascript"></script>
 <script src="/assets/data.js"></script>
