@@ -3,13 +3,66 @@ $(function() {
     
     stackFunction.push(myBalance);
     stackFunction.push(blockNumber);
-    stackFunction.push(gazPrice)
+    stackFunction.push(gazPrice);
+    
+    stackFunction.push(function(){$('[data-rel="result"]').removeClass('d-none');});
+    
 	$('[data-rel="connect"]').click({functionToCall: stackFunction},createMetaMaskDapp);
+	
+	$('[data-rel="send_dev"]').click(function(e){
+		let urlDev=$("#url_dev").val().trim();
+		
+		if(url_dev==""){
+			alert("Veuillez saisir l'url de votre devoir");
+			return false;
+		}
+		let event={data:{functionToCall:[sendDev]}};
+		createMetaMaskDapp(event);
+		
+	});
+	
+	
 });
 
 let printResult = function(target,text){
 	$(target).html(text);
 }
+
+let contractCredibility = async function(){
+	 
+	let contratCredibilite=new ethers.Contract(contractAddress, abiContract, dapp.provider);
+	let maCredibilite = await contratCredibilite.cred(dapp.address);
+	
+	
+	let text="Crédit actuel : " + maCredibilite.toString()
+	console.log(text);
+	printResult('[data-rel="cred"]',text);
+	$('[data-rel="cred"]').removeClass('d-none')
+	
+};
+
+
+let sendDev = async function(){
+	let contratCredibilite=new ethers.Contract(contractAddress, abiContract, dapp.provider);
+	
+	
+	let urlDev=$("#url_dev").val().trim();
+	//Récupération du hash du devoir
+	let hashDevoir = await contratCredibilite.produireHash(urlDev);
+	
+	
+	//Envoie du hash du devoir
+	//console.log(hashDevoir.toString());
+	
+	contractWithSigner=contratCredibilite.connect(dapp.provider.getSigner());
+	let tx = await contractWithSigner.remettre(hashDevoir.toString());
+	
+	console.log(tx.hash);
+	
+	await tx.wait();
+	
+	contractCredibility();
+};
 
 
 let myBalance = async function(){
@@ -49,11 +102,11 @@ async function createMetaMaskDapp(event) {
 	   const provider = new ethers.providers.Web3Provider(ethereum);
 	   dapp = { address, provider };
 	   
-	   
+	   console.log(event.data);
 	   $.each(event.data.functionToCall,function(index, value){
 		   value();
 	   })
-	   $('[data-rel="result"]').removeClass('d-none');
+	   
 	   
 	 } catch(err) {
 	   // Gestion des erreurs
