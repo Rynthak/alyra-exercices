@@ -7,22 +7,35 @@ $(function() {
 	$('[data-rel="connect"]').click({functionToCall: stackFunction},createMetaMaskDapp);
 });
 
+let printResult = function(target,text){
+	$(target).html(text);
+}
+
+
 let myBalance = async function(){
 	 dapp.provider.getBalance(dapp.address).then((balance) => {
 	   let etherString = ethers.utils.formatEther(balance);
-	   console.log("Balance: " + etherString);
+	   let text="Balance : " + etherString;
+	   console.log(text);
+	   printResult('[data-rel="balance"]',text);
 	 });
 };
 
 let blockNumber = async function(){
 	dapp.provider.getBlockNumber().then((blockNumber) => {
-		console.log("Numéro de block : " + blockNumber);
+		
+		let text="Numéro de block : " + blockNumber
+		console.log(text);
+		printResult('[data-rel="block_number"]',text);
 	});
 };
 
 let gazPrice = async function(){
 	dapp.provider.getGasPrice ( ).then((gas) => {
-		console.log("Gas: " + gas.toString());
+		 
+		let text="Gas Price : " + gas.toString()
+		console.log(text);
+		printResult('[data-rel="gaz_price"]',text);
 	}); 
 }
 
@@ -40,6 +53,7 @@ async function createMetaMaskDapp(event) {
 	   $.each(event.data.functionToCall,function(index, value){
 		   value();
 	   })
+	   $('[data-rel="result"]').removeClass('d-none');
 	   
 	 } catch(err) {
 	   // Gestion des erreurs
