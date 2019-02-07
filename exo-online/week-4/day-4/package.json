@@ -1,0 +1,17 @@
+{
+  "name": "exo-day-4",
+  "version": "1.0.0",
+  "description": "Excercice du day 4 sur etherJs",
+  "main": "index.html",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "etherjs"
+  ],
+  "author": "Rynthak",
+  "license": "ISC",
+  "devDependencies": {
+    "live-server": "^1.2.1"
+  }
+}
