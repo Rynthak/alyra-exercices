@@ -3,34 +3,37 @@ pragma experimental ABIEncoderV2;
 
 import "github.com/OpenZeppelin/openzeppelin-solidity/contracts/math/SafeMath.sol";
 import "github.com/OpenZeppelin/openzeppelin-solidity/contracts/ownership/Ownable.sol";
-import "myStruct.sol";
+import "./myStruct.sol";
+import "./demande.sol";
 
 contract Marketplace is Ownable {
 	
 	using SafeMath for uint256;
 	
-	mapping (address => Illustrator) private illustrators;
-	mapping (address => Entreprise) private entreprises;
+	mapping (address => SharedStructs.Illustrator) private illustrators;
+	mapping (address => SharedStructs.Entreprise) private entreprises;
 	
-	function inscription(string name) public{
+	function inscription(string memory name) public{
 		require(illustrators[msg.sender].illustrator_address == address(0),"Vous êtes déjà inscrit");
-		illustrators[msg.sender]=Illustrator({name:name,reputation:1,illustrator_address:msg.sender});
+		illustrators[msg.sender]=SharedStructs.Illustrator({name:name,reputation:1,illustrator_address:msg.sender,status:SharedStructs.StatusIllustratorChoice.ACCEPTE});
 	}
-	function inscriptionEntreprises(string name){
+	function inscriptionEntreprises(string  memory name) public{
 		require(entreprises[msg.sender].entreprise_address== address(0),"Vous êtes déjà inscrit");
-		entreprises[msg.sender]=Entreprise({name:name,entreprise_address:msg.sender});
+		entreprises[msg.sender]=SharedStructs.Entreprise(name,msg.sender);
 	}
 	
 	function banIllustrator(address illustrator) public onlyOwner(){
 		require(illustrators[msg.sender].illustrator_address != address(0),"Vous êtes déjà inscrit");
-		bannedIllustrator[illustrator].status=StatusIllustratorChoice.BAN;
-		bannedIllustrator[illustrator].reputation=0;
+		illustrators[illustrator].status=SharedStructs.StatusIllustratorChoice.BAN;
+		illustrators[illustrator].reputation=0;
 	}
 	
-	function ajouterDemande( uint256 remuneration,uint256 accept_delay,string description,uint256 minimumReput) public payable {
+	function ajouterDemande( uint256 remuneration,uint256 accept_delay,string memory description,uint256 minimumReput) public payable {
 		
+		//require(msg.value  == (remuneration * 1.2) );
+		//SharedStructs.Demande myDemande= SharedStructs.Demande({remuneration: remuneration, accept_delay: accept_delay,description:description,minimumReput:minimumReput});
 		
-		entreprises[msg.sender].demandes.push(Demande({remuneration: remuneration, accept_delay: accept_delay,description:description,minimumReput:minimumReput}));
+		entreprises[msg.sender].demandes[];
 	}
 	
 }
