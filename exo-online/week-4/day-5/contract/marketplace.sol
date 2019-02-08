@@ -22,4 +22,9 @@ contract Marketplace is Ownable {
 		illustratorName[msg.sender]=name;
 	}
 	
+	function banIllustrator(address illustrator) public onlyOwner(){
+		bannedIllustrator[illustrator]=true;
+		illustratorReputation[illustrator]=0;
+	}
+	
 }
