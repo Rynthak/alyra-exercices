@@ -3,7 +3,7 @@ pragma experimental ABIEncoderV2;
 
 import "github.com/OpenZeppelin/openzeppelin-solidity/contracts/math/SafeMath.sol";
 import "github.com/OpenZeppelin/openzeppelin-solidity/contracts/ownership/Ownable.sol";
-
+import "myStruct.sol";
 
 contract Marketplace is Ownable {
 	
@@ -12,6 +12,8 @@ contract Marketplace is Ownable {
 	mapping (address => uint256) private illustratorReputation;
 	mapping (address => string) private illustratorName;
 	mapping (address => bool) private bannedIllustrator;
+	
+	
 	
 	function inscription(string name) public{
 		
