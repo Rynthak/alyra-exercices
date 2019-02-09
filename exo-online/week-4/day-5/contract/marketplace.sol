@@ -33,6 +33,8 @@ contract Demande{
     uint256 minimumReput ;
     address[] private illustrators;
     mapping (address => bool) public illustratorsPostuled;
+    address private myIllustrator ;
+    bytes32 private urlHash;
     
     constructor(uint256 _remuneration,uint256 _accept_delay,string memory _description,uint256 _minimumReput) public{
 		 
@@ -68,7 +70,10 @@ contract Marketplace is Ownable {
        require(illustrators[msg.sender].status !=SharedStructs.StatusIllustratorChoice.BAN);
        _;
     }
-	
+	modifier onlyEntrepriseOwner(uint256 offerIndex) {
+       require(entreprisesDemandes[offerIndex]==msg.sender);
+       _;
+    }
 	
 	function inscription(string memory name) public{
 		require(illustrators[msg.sender].illustrator_address == address(0),"Vous êtes déjà inscrit");
@@ -104,8 +109,33 @@ contract Marketplace is Ownable {
 	function postuler(uint256 offerIndex) public onlyIllustrator() onlyIllustratorNotBanned(){
 		require(demandes[offerIndex].status==Demande.StatusChoice.OUVERTE);
 		require(demandes[offerIndex].illustratorsPostuled[msg.sender]==false);
+		//Vérification réputation minimul du graphiste
+		require(illustrators[msg.sender].reputation>=demandes[offerIndex].minimumReput);
+		
+		//Vérification date limite dépôt candisature
+		require(now<=demandes[offerIndex].accept_delay);
 		
 		demandes[offerIndex].illustrators.push(msg.sender);
 		demandes[offerIndex].illustratorsPostuled[msg.sender]=true;
 	}
+	function accepterOffre(uint256 offerIndex,address illustrator) public onlyEntrepriseOwner(offerIndex){
+		require(demandes[offerIndex].status==Demande.StatusChoice.OUVERTE);				
+		demandes[offerIndex].status=Demande.StatusChoice.ENCOURS;
+		demandes[offerIndex].myIllustrator=illustrator;		
+	}
+	function livraison(uint256 offerIndex,bytes32 hashUrl)public {
+		require(demandes[offerIndex].status==Demande.StatusChoice.ENCOURS);
+		require(msg.sender==demandes[offerIndex].myIllustrator);		
+		demandes[offerIndex].urlHash=hashUrl;	
+		
+		//On modifie la répuration du graphiste
+		illustrators[msg.sender].reputation=illustrators[msg.sender].reputation.add(1);		
+		illustrators[msg.sender].status=Demande.StatusChoice.FERMEE;
+		
+		msg.sender.transfert(demandes[offerIndex].remuneration);
+		
+			
+	}
+	
+	
 }
