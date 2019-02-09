@@ -70,7 +70,13 @@ contract Demande is Ownable{
 	}	
 	function updateWork(bytes32 _urlHash) public onlyOwner(){
 		urlHash=_urlHash;
-	}    
+	}
+	
+	function produireHash(string memory url) public pure returns(bytes32){
+   		return keccak256(bytes(url));
+	}
+   
+	    
 }
 
 
