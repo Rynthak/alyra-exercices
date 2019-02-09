@@ -6,18 +6,35 @@
 <meta name="viewport"content="width=device-width, initial-scale=1, shrink-to-fit=no">
 <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" />
 <link rel="stylesheet" href="/assets/jquery.growl/stylesheets/jquery.growl.css" />
+<link rel="stylesheet" href="/assets/login.css" />
 </head>
+	
+<div class="container">	
 	<h1>Bienvenue sur la MarketPlace</h1>
-	<div class="container">
-	 <button id="login_button"    type="button" class="btn btn-primary">Se Connecter</button>
-	 <button id="register_button" type="button" class="btn btn-primary">S'inscrire</button>
-		
-		
-	</div>
+			<div class="login-page">
+	  <div data-rel="form-home">	    
+		    <form action="#" data-rel="register-form">
+		    	<div class="form-group">
+		    		<label for="exampleInputEmail1">Votre nom</label>
+		      		<input type="text" id="name" " class="form-control" required name="name" placeholder="Votre nom"/>
+		      	</div>
+		      	<div class="form-group">
+		      	  <label for="type_account">Votre nom</label>
+			      <select class="form-control" required id="type_account"  name="type_account">
+			      	<option value="">-- Please Select --</option>
+			      	<option value="0">Illustrator</option>
+			      	<option value="1">Entreprise</option>
+			      </select>
+			   </div>
+		      <button type="submit" class="btn btn-primary">Inscription</button>		   
+		    </form>
+	   </div>
+	</div>	
+</div>
  
 
 <!-- This exposes the library as a global variable: ethers -->
-<script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"></script>
+<script src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
 <script src="/assets/jquery.growl/javascripts/jquery.growl.js"></script>
 <script	src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
 <script src="https://cdn.ethers.io/scripts/ethers-v4.min.js" charset="utf-8"type="text/javascript"></script>
