@@ -12,7 +12,7 @@ library SharedStructs {
     struct Entreprise{
     	 string name;
     	 address entreprise_address;
-    	 Demande[] demandes;
+    	
     }
     
     struct Illustrator{
@@ -31,7 +31,7 @@ contract Demande{
     enum StatusChoice { OUVERTE, ENCOURS, FERMEE }
     StatusChoice status ;
     uint256 minimumReput ;
-    mapping (address => SharedStructs.Illustrator) illustrators;
+    mapping (address => SharedStructs.Illustrator) private illustrators;
     
     constructor(uint256 _remuneration,uint256 _accept_delay,string memory _description,uint256 _minimumReput) public{
 		 
@@ -52,14 +52,20 @@ contract Marketplace is Ownable {
 	
 	mapping (address => SharedStructs.Illustrator) private illustrators;
 	mapping (address => SharedStructs.Entreprise) private entreprises;
+	mapping (uint => address) private entreprisesDemandes;
+	address[] entreprisesList;
+	address[] illustratorsList;
+	Demande[] private demandes ;
 	
 	function inscription(string memory name) public{
 		require(illustrators[msg.sender].illustrator_address == address(0),"Vous êtes déjà inscrit");
 		illustrators[msg.sender]=SharedStructs.Illustrator({name:name,reputation:1,illustrator_address:msg.sender,status:SharedStructs.StatusIllustratorChoice.ACCEPTE});
+		illustratorsList.push(msg.sender);
 	}
 	function inscriptionEntreprises(string  memory name) public{
 		require(entreprises[msg.sender].entreprise_address== address(0),"Vous êtes déjà inscrit");
-		entreprises[msg.sender]=SharedStructs.Entreprise(name,msg.sender,new Demande[](0));
+		entreprises[msg.sender]=SharedStructs.Entreprise(name,msg.sender);
+		entreprisesList.push(msg.sender);
 	}
 	
 	function banIllustrator(address illustrator) public onlyOwner(){
@@ -70,9 +76,16 @@ contract Marketplace is Ownable {
 	
 	function ajouterDemande( uint256 remuneration,uint256 accept_delay,string memory description,uint256 minimumReput) public payable {
 		//On check que la remunaration + 2 % = le paiement reçu
+		require(entreprises[msg.sender].entreprise_address != address(0),"Pas d'entreprises à ce nom");
 		uint256 commission = SafeMath.div(SafeMath.mul(remuneration,2),100);
-		require(msg.value  == commission + remuneration );		
-		entreprises[msg.sender].demandes.push(new Demande(remuneration,accept_delay,description,minimumReput));
+		require(msg.value  == commission + remuneration );	
+		entreprisesDemandes[demandes.length]=msg.sender;	
+		demandes.push(new Demande(remuneration,accept_delay,description,minimumReput));
+		
+	}
+	
+	function listsOffers() public view returns (Demande[] memory){
+		 return demandes;
 	}
 	
 }
