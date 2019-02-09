@@ -31,7 +31,17 @@ contract Demande{
     enum StatusChoice { OUVERTE, ENCOURS, FERMEE }
     StatusChoice status ;
     uint256 minimumReput ;
-    mapping (address => Illustrator) illustrators;
+    mapping (address => SharedStructs.Illustrator) illustrators;
+    
+    constructor(uint256 _remuneration,uint256 _accept_delay,string memory _description,uint256 _minimumReput) public{
+		 
+		remuneration=_remuneration;
+		accept_delay=_accept_delay;
+		description=_description;
+		minimumReput=_minimumReput;
+		status=StatusChoice.OUVERTE;
+	} 
+    
 }
 
 
@@ -49,7 +59,7 @@ contract Marketplace is Ownable {
 	}
 	function inscriptionEntreprises(string  memory name) public{
 		require(entreprises[msg.sender].entreprise_address== address(0),"Vous êtes déjà inscrit");
-		entreprises[msg.sender]=SharedStructs.Entreprise(name,msg.sender);
+		entreprises[msg.sender]=SharedStructs.Entreprise(name,msg.sender,new Demande[](0));
 	}
 	
 	function banIllustrator(address illustrator) public onlyOwner(){
