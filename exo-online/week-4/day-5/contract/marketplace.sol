@@ -69,10 +69,9 @@ contract Marketplace is Ownable {
 	}
 	
 	function ajouterDemande( uint256 remuneration,uint256 accept_delay,string memory description,uint256 minimumReput) public payable {
-		
-		//require(msg.value  == (remuneration * 1.2) );
-		//SharedStructs.Demande myDemande= SharedStructs.Demande({remuneration: remuneration, accept_delay: accept_delay,description:description,minimumReput:minimumReput});
-		
+		//On check que la remunaration + 2 % = le paiement reçu
+		uint256 commission = SafeMath.div(SafeMath.mul(remuneration,2),100);
+		require(msg.value  == commission + remuneration );		
 		entreprises[msg.sender].demandes.push(new Demande(remuneration,accept_delay,description,minimumReput));
 	}
 	
