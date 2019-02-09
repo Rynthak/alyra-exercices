@@ -41,6 +41,8 @@ contract Demande{
 		minimumReput=_minimumReput;
 		status=StatusChoice.OUVERTE;
 	} 
+	
+	
     
 }
 
@@ -56,6 +58,16 @@ contract Marketplace is Ownable {
 	address[] entreprisesList;
 	address[] illustratorsList;
 	Demande[] private demandes ;
+	
+	modifier onlyIllustrator() {
+       require(illustrators[msg.sender].illustrator_address != address(0));
+       _;
+    }
+    modifier onlyIllustratorNotBanned() {
+       require(illustrators[msg.sender].status !=SharedStructs.StatusIllustratorChoice.BAN);
+       _;
+    }
+	
 	
 	function inscription(string memory name) public{
 		require(illustrators[msg.sender].illustrator_address == address(0),"Vous êtes déjà inscrit");
@@ -88,4 +100,8 @@ contract Marketplace is Ownable {
 		 return demandes;
 	}
 	
+	function postuler(uint256 offerIndex) public onlyIllustrator() onlyIllustratorNotBanned(){
+		require(demandes[offerIndex].status==Demande.StatusChoice.OUVERTE);
+		
+	}
 }
