@@ -1,10 +1,11 @@
  
 $(function() {
     
-	$('.message a').click(function(){
-		   $('[data-rel="form-home"]').animate({height: "toggle", opacity: "toggle"}, "slow");
+	$('#theModal').on('show.bs.modal', function (e) {
+	    var button = $(e.relatedTarget);
+	    var modal = $(this);    
+	    modal.find('.modal-dialog').load(button.data("remote"));
 	});
-	
 	
     
 	$('[data-rel="connect"]').click(function(){

@@ -9,28 +9,18 @@
 <link rel="stylesheet" href="/assets/login.css" />
 </head>
 	
-<div class="container">	
+<div class="container-fluid">	
 	<h1>Bienvenue sur la MarketPlace</h1>
-			<div class="login-page">
-	  <div data-rel="form-home">	    
-		    <form action="#" data-rel="register-form">
-		    	<div class="form-group">
-		    		<label for="exampleInputEmail1">Votre nom</label>
-		      		<input type="text" id="name" " class="form-control" required name="name" placeholder="Votre nom"/>
-		      	</div>
-		      	<div class="form-group">
-		      	  <label for="type_account">Votre nom</label>
-			      <select class="form-control" required id="type_account"  name="type_account">
-			      	<option value="">-- Please Select --</option>
-			      	<option value="0">Illustrator</option>
-			      	<option value="1">Entreprise</option>
-			      </select>
-			   </div>
-		      <button type="submit" class="btn btn-primary">Inscription</button>		   
-		    </form>
-	   </div>
-	</div>	
+	<button type="button" class="btn btn-primary" data-remote="/register.html" data-toggle="modal" data-target="#theModal">
+	  Inscription
+	</button>	 
 </div>
+
+<div class="modal fade" id="theModal" tabindex="-1" role="dialog">
+    <div class="modal-dialog" role="document">        
+    </div>
+</div>
+
  
 
 <!-- This exposes the library as a global variable: ethers -->
