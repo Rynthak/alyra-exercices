@@ -45,15 +45,15 @@ contract Demande is Ownable{
 		status=StatusChoice.OUVERTE;
 	} 
 	
-	function isOpen() public returns (bool){
+	function isOpen() public view returns (bool){
 		return uint(status)==uint(StatusChoice.OUVERTE);
 	}
 	
-	function isPending() public returns (bool){
+	function isPending() public view returns (bool){
 		return uint(status)==uint(StatusChoice.ENCOURS);
 	}
-	function checkPostuled(address illustrator) public returns (bool){
-	    return (illustratorsPostuled[msg.sender] == false);
+	function checkPostuled(address illustrator) public view returns (bool){
+	    return (illustratorsPostuled[illustrator] == false);
 	}
 	function addIllustrator(address illustrator) public onlyOwner() {
 	    illustratorsPostuled[illustrator]=true;
@@ -62,7 +62,7 @@ contract Demande is Ownable{
 	function acceptOneIllustrator(address illustrator) public onlyOwner() {
 	    myIllustrator=illustrator;	    
 	}	
-	function isMyIllustrator(address illustrator) public onlyOwner() returns (bool) {
+	function isMyIllustrator(address illustrator) public view onlyOwner() returns (bool) {
 	    return (myIllustrator==illustrator);	    
 	}	
 	function changeStatus(StatusChoice newstatus) public onlyOwner(){
