@@ -23,16 +23,16 @@ library SharedStructs {
     }    
 }
 
-contract Demande{
-	uint256 remuneration;
-    uint256 accept_delay;
+contract Demande is Ownable{
+	uint256 public remuneration;
+    uint256 public accept_delay;
     string description;
     
     enum StatusChoice { OUVERTE, ENCOURS, FERMEE }
     StatusChoice public status ;
-    uint256 minimumReput ;
-    address[] private illustrators;
-    mapping (address => bool) public illustratorsPostuled;
+    uint256 public minimumReput ;
+    address[] illustrators;
+    mapping (address => bool)  illustratorsPostuled;
     address private myIllustrator ;
     bytes32 private urlHash;
     
@@ -52,9 +52,25 @@ contract Demande{
 	function isPending() public returns (bool){
 		return uint(status)==uint(StatusChoice.ENCOURS);
 	}
-	
-	
-    
+	function checkPostuled(address illustrator) public returns (bool){
+	    return (illustratorsPostuled[msg.sender] == false);
+	}
+	function addIllustrator(address illustrator) public onlyOwner() {
+	    illustratorsPostuled[illustrator]=true;
+	    illustrators.push(illustrator);
+	}	
+	function acceptOneIllustrator(address illustrator) public onlyOwner() {
+	    myIllustrator=illustrator;	    
+	}	
+	function isMyIllustrator(address illustrator) public onlyOwner() returns (bool) {
+	    return (myIllustrator==illustrator);	    
+	}	
+	function changeStatus(StatusChoice newstatus) public onlyOwner(){
+		status=newstatus;
+	}	
+	function updateWork(bytes32 _urlHash) public onlyOwner(){
+		urlHash=_urlHash;
+	}    
 }
 
 
@@ -116,31 +132,29 @@ contract Marketplace is Ownable {
 	
 	function postuler(uint256 offerIndex) public onlyIllustrator() onlyIllustratorNotBanned(){
 		require(demandes[offerIndex].isOpen());
-		require(demandes[offerIndex].illustratorsPostuled[msg.sender] == false);
+		require(!demandes[offerIndex].checkPostuled(msg.sender));
 		//Vérification réputation minimul du graphiste
-		require(illustrators[msg.sender].reputation>=demandes[offerIndex].minimumReput);
+		require(illustrators[msg.sender].reputation >= demandes[offerIndex].minimumReput());
 		
 		//Vérification date limite dépôt candisature
-		require(now<=demandes[offerIndex].accept_delay);
-		
-		demandes[offerIndex].illustrators.push(msg.sender);
-		demandes[offerIndex].illustratorsPostuled[msg.sender]=true;
+		require(now<=demandes[offerIndex].accept_delay());		
+		demandes[offerIndex].addIllustrator(msg.sender);
 	}
 	function accepterOffre(uint256 offerIndex,address illustrator) public onlyEntrepriseOwner(offerIndex){
 		require(demandes[offerIndex].isOpen());				
-		demandes[offerIndex].status=Demande.StatusChoice.ENCOURS;
-		demandes[offerIndex].myIllustrator=illustrator;		
+		demandes[offerIndex].changeStatus(Demande.StatusChoice.ENCOURS);
+		demandes[offerIndex].acceptOneIllustrator(illustrator);		
 	}
 	function livraison(uint256 offerIndex,bytes32 hashUrl)public {
 		require(demandes[offerIndex].isPending());
-		require(msg.sender==demandes[offerIndex].myIllustrator);		
-		demandes[offerIndex].urlHash=hashUrl;	
-		
+		require(demandes[offerIndex].isMyIllustrator(msg.sender));		
+		demandes[offerIndex].updateWork(hashUrl);	
+		demandes[offerIndex].changeStatus(Demande.StatusChoice.FERMEE);
 		//On modifie la répuration du graphiste
 		illustrators[msg.sender].reputation=illustrators[msg.sender].reputation.add(1);		
-		illustrators[msg.sender].status=Demande.StatusChoice.FERMEE;
 		
-		msg.sender.transfert(demandes[offerIndex].remuneration);
+		
+		msg.sender.transfer(demandes[offerIndex].remuneration());
 		
 			
 	}
