@@ -1,0 +1,2 @@
+const abiContract = [];
+const contractAddress = '';
