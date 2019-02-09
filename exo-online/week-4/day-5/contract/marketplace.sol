@@ -29,7 +29,7 @@ contract Demande{
     string description;
     
     enum StatusChoice { OUVERTE, ENCOURS, FERMEE }
-    StatusChoice status ;
+    StatusChoice public status ;
     uint256 minimumReput ;
     address[] private illustrators;
     mapping (address => bool) public illustratorsPostuled;
@@ -44,6 +44,14 @@ contract Demande{
 		minimumReput=_minimumReput;
 		status=StatusChoice.OUVERTE;
 	} 
+	
+	function isOpen() public returns (bool){
+		return uint(status)==uint(StatusChoice.OUVERTE);
+	}
+	
+	function isPending() public returns (bool){
+		return uint(status)==uint(StatusChoice.ENCOURS);
+	}
 	
 	
     
@@ -107,8 +115,8 @@ contract Marketplace is Ownable {
 	}
 	
 	function postuler(uint256 offerIndex) public onlyIllustrator() onlyIllustratorNotBanned(){
-		require(demandes[offerIndex].status==Demande.StatusChoice.OUVERTE);
-		require(demandes[offerIndex].illustratorsPostuled[msg.sender]==false);
+		require(demandes[offerIndex].isOpen());
+		require(demandes[offerIndex].illustratorsPostuled[msg.sender] == false);
 		//Vérification réputation minimul du graphiste
 		require(illustrators[msg.sender].reputation>=demandes[offerIndex].minimumReput);
 		
@@ -119,12 +127,12 @@ contract Marketplace is Ownable {
 		demandes[offerIndex].illustratorsPostuled[msg.sender]=true;
 	}
 	function accepterOffre(uint256 offerIndex,address illustrator) public onlyEntrepriseOwner(offerIndex){
-		require(demandes[offerIndex].status==Demande.StatusChoice.OUVERTE);				
+		require(demandes[offerIndex].isOpen());				
 		demandes[offerIndex].status=Demande.StatusChoice.ENCOURS;
 		demandes[offerIndex].myIllustrator=illustrator;		
 	}
 	function livraison(uint256 offerIndex,bytes32 hashUrl)public {
-		require(demandes[offerIndex].status==Demande.StatusChoice.ENCOURS);
+		require(demandes[offerIndex].isPending());
 		require(msg.sender==demandes[offerIndex].myIllustrator);		
 		demandes[offerIndex].urlHash=hashUrl;	
 		
@@ -136,6 +144,8 @@ contract Marketplace is Ownable {
 		
 			
 	}
+	
+	
 	
 	
 }
