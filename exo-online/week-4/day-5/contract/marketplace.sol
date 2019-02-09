@@ -31,7 +31,8 @@ contract Demande{
     enum StatusChoice { OUVERTE, ENCOURS, FERMEE }
     StatusChoice status ;
     uint256 minimumReput ;
-    mapping (address => SharedStructs.Illustrator) private illustrators;
+    address[] private illustrators;
+    mapping (address => bool) public illustratorsPostuled;
     
     constructor(uint256 _remuneration,uint256 _accept_delay,string memory _description,uint256 _minimumReput) public{
 		 
@@ -102,6 +103,9 @@ contract Marketplace is Ownable {
 	
 	function postuler(uint256 offerIndex) public onlyIllustrator() onlyIllustratorNotBanned(){
 		require(demandes[offerIndex].status==Demande.StatusChoice.OUVERTE);
+		require(demandes[offerIndex].illustratorsPostuled[msg.sender]==false);
 		
+		demandes[offerIndex].illustrators.push(msg.sender);
+		demandes[offerIndex].illustratorsPostuled[msg.sender]=true;
 	}
 }
