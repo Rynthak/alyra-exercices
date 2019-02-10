@@ -1,30 +1,29 @@
  $(function() {
-    
+	 
+	
+	
 	$('#theModal').on('show.bs.modal', function (e) {
 	    var button = $(e.relatedTarget);
 	    var modal = $(this);    
 	    modal.find('.modal-dialog').load(button.data("remote"));
-	});
-	
-	loginContract();
-	$('[data-rel="connect"]').click(function(){
-		
-	});
+	});	
 	
 	$(document).on('refreshDemande',function(e){
 		
 		e.preventDefault();
+		addLoader('[data-rel="container-table-demande"]');
 		let functionToCall=[];	
 		functionToCall.push({name:listDemande,args:[]});
 		createMetaMaskDapp(functionToCall);		
-		
 		return false;
 		
 	});
+	//Tableau des demandes
 	$( document ).trigger( "refreshDemande");
 	
 	
-	//gestion du paiement
+	
+	//Ajout d'une demande
 	$(document).on('submit','[data-rel="add-demande-form"]',function(e){
 		e.preventDefault();
 		let description=$("#description").val().trim();
@@ -64,14 +63,20 @@
 	});
 	
 	
+	//Gestion de la demande d'ajout à la liste des candidats d'une demande
+	$(document).on('click','[data-rel="postul"]',function(e){
+		
+		
+		
+		
+		
+		
+		
+	});	
 	
-	
+	//Formulaire d'enregistrement
 	$(document).on('submit','[data-rel="register-form"]',function(e){
-		e.preventDefault();
-		
-		
-		
-		
+		e.preventDefault();		
 		//Création de l'entreprise ou de l'illustrateur
 		
 		let nameAccount=$("#name").val().trim();
@@ -86,9 +91,6 @@
 			return false;
 		}
 		let functionToCall=[];		
-		
-		
-		
 		functionToCall.push({name:initRegister,args:[nameAccount,typeAccount]})
 		createMetaMaskDapp(functionToCall);		
 		return false;
@@ -96,14 +98,27 @@
 	});
 });
 
-function notify(message,title="Erreur",type="error"){
-	$.growl({ title: title, message: message,style:type});
-} 
-
-let listDemande = async function(){
+let initPostuler = async function (){
 	let contratMarketPlace=new ethers.Contract(contractAddress, abiContract, dapp.provider);
 	let contractWithSigner=contratMarketPlace.connect(dapp.provider.getSigner());
 	
+	let nbDemande=await contratMarketPlace.nbDemandes();
+	
+	
+	notify("Votre demande de candidateur a été ajouté",'info','notice');		 	
+	$( document ).trigger( "refreshDemande");
+} 
+ 
+ 
+//Gestion des evenement de contract
+let  initContractEvent = async function (){
+	 
+}
+
+
+let listDemande = async function(){
+	let contratMarketPlace=new ethers.Contract(contractAddress, abiContract, dapp.provider);
+	let contractWithSigner=contratMarketPlace.connect(dapp.provider.getSigner());	
 	
 	//On récupérère la list des demande
 	let elementContainerTable = $('[data-rel="container-table-demande"]');
@@ -125,6 +140,10 @@ let listDemande = async function(){
 		let description = await contratDemande.description();
 		let reputation = await contratDemande.minimumReput();
 		let status=  await contratDemande.status();
+		//let statusIsIllustrator=  await contratDemande.isMyIllustrator(dapp.address);
+		let checkPostuled = await contratDemande.checkPostuled(dapp.address);
+		
+		
 		let tempRow="";
 		
 		let statusHTML='<span class="badge badge-success">OUVERT</span>';
@@ -144,13 +163,13 @@ let listDemande = async function(){
 		buttonList+='<div class="dropdown-menu" aria-labelledby="dropdownMenuButton">';
 			
 			if(status==0){
-				buttonList+='<a class="dropdown-item" href="#">Postuler</a>';
+				buttonList+='<a class="dropdown-item" data-rel="postul" data-index="'+i+'" href="#">Postuler</a>';
 			}
 			if(status==1){
 				buttonList+='<a class="dropdown-item" href="#">Remettre un travail</a>';
 			}
 			if(status==0){ 
-				buttonList+='<a class="dropdown-item" href="#">Choisir un candidat</a>';
+				buttonList+='<a class="dropdown-item"  href="javascript:void(0);">Choisir un candidat</a>';
 			}
 			if(status==2){
 				buttonList+='<a class="dropdown-item" href="#">Récupérer travail</a>';
@@ -217,18 +236,9 @@ let addDemande =  async function(description, remuneration,minimumReput,accept_d
 	
 	remuneration=ethers.utils.parseEther(remuneration.toString());
 	let tx = await contractWithSigner.ajouterDemande(remuneration.toString(10),accept_delay,description,minimumReput,{value:weyAmount});
-	
-	
-	
-	//let listOffers = await contractWithSigner.listsOffers() ;
-	
-	//console.log(listOffers);
-	
 	notify("Votre demande a été ajouté",'info','notice');
-	$('#theModal').modal('hide');
-	
-	$( document ).trigger( "refreshDemande");
-	
+	$('#theModal').modal('hide');	
+	$( document ).trigger( "refreshDemande");	
 };
 
  
@@ -253,46 +263,15 @@ let initRegister = async function(nameAccount, typeAccount){
 		$('#theModal').modal('hide');
 		return false;
 	}
-	
+	let tx= undefined;
 	if(typeAccount=="0"){			
-		let tx = await contractWithSigner.inscription(nameAccount);
+		tx = await contractWithSigner.inscription(nameAccount);
 	}else if(typeAccount=="1"){
-		let tx = await contractWithSigner.inscriptionEntreprises(nameAccount);
-	}
-	
-	
-	myAccount = await contractWithSigner.getMyAccountEnterpise();	
+		tx = await contractWithSigner.inscriptionEntreprises(nameAccount);
+	}	 
 	
 	notify("Inscription OK","info",'notice');
 	$('#theModal').modal('hide');
 }
 
-let dapp = null; 
 
-async function createMetaMaskDapp(functionToCall) {
-	
-	 try {
-	   // Demande à MetaMask l'autorisation de se connecter
-	   const addresses = await ethereum.enable();
-	   const address = addresses[0]
-	   // Connection au noeud fourni par l'objet web3
-	   const provider = new ethers.providers.Web3Provider(ethereum);
-	   dapp = { address, provider };
-	  
-	   $.each(functionToCall,function(index, value){
-		  
-		   value.name.apply(null,value.args);
-	   })
-	   
-	   
-	 } catch(err) {
-	    
-	   console.error(err);
-	 }
-}
-
-function timeConverter(UNIX_timestamp){
-	  var d = new Date(0);
-	  d.setUTCSeconds(UNIX_timestamp);	   
-	  return d.toUTCString();
-}

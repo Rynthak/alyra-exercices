@@ -137,16 +137,13 @@ contract Marketplace is Ownable {
 	function listsOffers() public view returns (Demande[] memory){
 		 return demandes;
 	}*/
-	function getMyAccountEnterpise() public view returns (SharedStructs.Entreprise memory){
-		
+	function getMyAccountEnterpise() public view returns (SharedStructs.Entreprise memory){		
 		return entreprises[msg.sender];
 	}
 	
-	function getMyAccountIllustrator() public view returns (SharedStructs.Entreprise memory){
-		
+	function getMyAccountIllustrator() public view returns (SharedStructs.Illustrator memory){		
 		return illustrators[msg.sender];
-	}
-	
+	}	
 	
 	function postuler(uint256 offerIndex) public onlyIllustrator() onlyIllustratorNotBanned(){
 		require(demandes[offerIndex].isOpen());
@@ -170,11 +167,7 @@ contract Marketplace is Ownable {
 		demandes[offerIndex].changeStatus(Demande.StatusChoice.FERMEE);
 		//On modifie la répuration du graphiste
 		illustrators[msg.sender].reputation=illustrators[msg.sender].reputation.add(1);		
-		
-		
-		msg.sender.transfer(demandes[offerIndex].remuneration());
-		
-			
+		msg.sender.transfer(demandes[offerIndex].remuneration());			
 	}
 	
 	
