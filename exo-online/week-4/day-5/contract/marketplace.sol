@@ -53,7 +53,7 @@ contract Demande is Ownable{
 		return uint(status)==uint(StatusChoice.ENCOURS);
 	}
 	function checkPostuled(address illustrator) public view returns (bool){
-	    return (illustratorsPostuled[illustrator] == false);
+	    return (illustratorsPostuled[illustrator] == true);
 	}
 	function addIllustrator(address illustrator) public onlyOwner() {
 	    illustratorsPostuled[illustrator]=true;
@@ -118,38 +118,32 @@ contract Marketplace is Ownable {
 	}
 	
 	function banIllustrator(address illustrator) public onlyOwner(){
-		require(illustrators[msg.sender].illustrator_address != address(0),"Vous êtes déjà inscrit");
+		require(illustrators[msg.sender].illustrator_address != address(0),"Utilisateur inexistant");
 		illustrators[illustrator].status=SharedStructs.StatusIllustratorChoice.BAN;
 		illustrators[illustrator].reputation=0;
 	}
 	
 	function ajouterDemande( uint256 remuneration,uint256 accept_delay,string memory description,uint256 minimumReput) public payable {
 		//On check que la remunaration + 2 % = le paiement reçu
-		require(entreprises[msg.sender].entreprise_address != address(0),"Pas d'entreprises à ce nom");
+		require(entreprises[msg.sender].entreprise_address != address(0),"Vous ne pouvez pas ajouter de demande");
 		uint256 commission = SafeMath.div(SafeMath.mul(remuneration,2),100);
-		require(msg.value  == commission + remuneration );	
+		require(msg.value  == commission + remuneration,"La somme envoyé n'est pas suffisante");	
 		entreprisesDemandes[demandes.length]=msg.sender;	
 		demandes.push(new Demande(remuneration,accept_delay,description,minimumReput));
 		nbDemandes=nbDemandes.add(1);
 		
-	}
-	/* 
-	function listsOffers() public view returns (Demande[] memory){
-		 return demandes;
-	}*/
+	}	
 	function getMyAccountEnterpise() public view returns (SharedStructs.Entreprise memory){		
 		return entreprises[msg.sender];
-	}
-	
+	}	
 	function getMyAccountIllustrator() public view returns (SharedStructs.Illustrator memory){		
 		return illustrators[msg.sender];
-	}	
-	
+	}		
 	function postuler(uint256 offerIndex) public onlyIllustrator() onlyIllustratorNotBanned(){
-		require(demandes[offerIndex].isOpen());
-		require(!demandes[offerIndex].checkPostuled(msg.sender));
+		require(demandes[offerIndex].isOpen(),"La demande n'est pas ouverte");
+		require(!demandes[offerIndex].checkPostuled(msg.sender),"Vous avez déjà postulé");
 		//Vérification réputation minimul du graphiste
-		require(illustrators[msg.sender].reputation >= demandes[offerIndex].minimumReput());
+		require(illustrators[msg.sender].reputation >= demandes[offerIndex].minimumReput(),"Vous n'avez pas la réputation requise");
 		
 		//Vérification date limite dépôt candisature
 		//require(now<=demandes[offerIndex].accept_delay());		

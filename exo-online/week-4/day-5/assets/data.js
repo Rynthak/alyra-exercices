@@ -85,6 +85,38 @@ const abiContract = [
 		"type": "function"
 	},
 	{
+		"constant": true,
+		"inputs": [],
+		"name": "getMyAccountIllustrator",
+		"outputs": [
+			{
+				"components": [
+					{
+						"name": "name",
+						"type": "string"
+					},
+					{
+						"name": "illustrator_address",
+						"type": "address"
+					},
+					{
+						"name": "reputation",
+						"type": "uint256"
+					},
+					{
+						"name": "status",
+						"type": "uint8"
+					}
+				],
+				"name": "",
+				"type": "tuple"
+			}
+		],
+		"payable": false,
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
 		"constant": false,
 		"inputs": [],
 		"name": "renounceOwnership",
@@ -281,7 +313,7 @@ const abiContract = [
 		"type": "event"
 	}
 ];
-const contractAddress = '0xde343360d6c03f06559a007055bced229f691697';
+const contractAddress = '0x63d63c38be2ce97720a947c319f670847cf237a3';
 
 
 
@@ -590,4 +622,4 @@ var abiContractDemande = [
 		"name": "OwnershipTransferred",
 		"type": "event"
 	}
-]
+];

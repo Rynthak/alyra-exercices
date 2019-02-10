@@ -1,7 +1,7 @@
  $(function() {
 	 
 	
-	
+	loginContract();
 	$('#theModal').on('show.bs.modal', function (e) {
 	    var button = $(e.relatedTarget);
 	    var modal = $(this);    
@@ -57,7 +57,6 @@
 		date_project=Math.floor(tempDate.getTime()/1000);
 		functionToCall.push({name:addDemande,args:[description, remuneration,reputation,date_project]})
 		createMetaMaskDapp(functionToCall);		
-		
 		return false;
 		
 	});
@@ -100,8 +99,9 @@
 let initPostuler = async function (offerIndex){
 	let contratMarketPlace=new ethers.Contract(contractAddress, abiContract, dapp.provider);
 	let contractWithSigner=contratMarketPlace.connect(dapp.provider.getSigner());
+	 
 	
-	let tx = await contratMarketPlace.postuler(offerIndex);
+	let tx = await contractWithSigner.postuler(offerIndex);
 	
 	
 	notify("Votre demande de candidateur a été ajouté",'info','notice');		 	
@@ -126,6 +126,11 @@ let listDemande = async function(){
 			
 	let nbDemande=await contratMarketPlace.nbDemandes();
 	
+	if(nbDemande==0){
+		table='<div class="alert alert-warning mx-auto" role="alert">';
+		table+="Aucune demande pour l'instant";
+		table+='</div>';
+	}
 	
 	for(let i = 0 ; i< nbDemande.toString();i++){
 		//Création 
@@ -150,6 +155,13 @@ let listDemande = async function(){
 		statusHTML=(status==2)?'<span class="badge badge-danger">FERMEE</span>':statusHTML;
 		
 		
+		if(status==0  && localStorage.getItem('type_account')=='illustrator'){
+			if(checkPostuled){
+				statusHTML+='<br><span class="badge badge-success">POSTULE</span>';
+			}else{
+				statusHTML+='<br><span class="badge badge-warning">NON POSTULE</span>';
+			}
+		}
 		
 		
 		let buttonList="";
@@ -162,7 +174,7 @@ let listDemande = async function(){
 		buttonList+='<div class="dropdown-menu" aria-labelledby="dropdownMenuButton">';
 			
 			if(status==0){
-				buttonList+='<a class="dropdown-item" data-rel="postul" data-index="'+i+'" href="#">Postuler</a>';
+				buttonList+='<a class="dropdown-item" data-rel="postul" data-index="'+i+'" href="javascript:void(0);">Postuler</a>';
 			}
 			if(status==1){
 				buttonList+='<a class="dropdown-item" href="#">Remettre un travail</a>';
@@ -201,15 +213,15 @@ let loginContract =  async function(){
 		let contratMarketPlace=new ethers.Contract(contractAddress, abiContract, dapp.provider);
 		let contractWithSigner=contratMarketPlace.connect(dapp.provider.getSigner());
 		let myAccount = await contractWithSigner.getMyAccountEnterpise();
-		if(myAccount.entreprise_address.toLowerCase()!=dapp.address.toLowerCase()){
+		if(myAccount.entreprise_address.toLowerCase()==dapp.address.toLowerCase()){
 			localStorage.setItem('type_account', 'entreprise');
 			localStorage.setItem('name', myAccount.name);
 		}
-		/*myAccount = await contractWithSigner.getMyAccountIllustrator();
-		if(myAccount.illustrator_address.toLowerCase()!=dapp.address.toLowerCase()){
+		myAccount = await contractWithSigner.getMyAccountIllustrator();
+		if(myAccount.illustrator_address.toLowerCase()==dapp.address.toLowerCase()){
 			localStorage.setItem('type_account', 'illustrator');
-			localStorage.setItem('name', myAccount.Name);			
-		}	*/	
+			localStorage.setItem('name', myAccount.name);			
+		}	
 		return false;
 		
 	};
