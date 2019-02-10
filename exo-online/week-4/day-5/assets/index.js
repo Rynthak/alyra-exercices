@@ -146,7 +146,9 @@ let listDemande = async function(){
 		let status=  await contratDemande.status();
 		//let statusIsIllustrator=  await contratDemande.isMyIllustrator(dapp.address);
 		let checkPostuled = await contratDemande.checkPostuled(dapp.address);
-		
+		let customer = await contratDemande.customer();
+		let isCustomer =customer.toLowerCase()==dapp.address.toLowerCase();
+		 
 		
 		let tempRow="";
 		
@@ -154,6 +156,9 @@ let listDemande = async function(){
 		statusHTML=(status==1)?'<span class="badge badge-warning">EN COURS</span>':statusHTML;
 		statusHTML=(status==2)?'<span class="badge badge-danger">FERMEE</span>':statusHTML;
 		
+		if(isCustomer){
+			statusHTML+='<br><span class="badge badge-primary">MY DEMANDE</span>';
+		}
 		
 		if(status==0  && localStorage.getItem('type_account')=='illustrator'){
 			if(checkPostuled){
@@ -173,17 +178,17 @@ let listDemande = async function(){
 		buttonList+='</button>';
 		buttonList+='<div class="dropdown-menu" aria-labelledby="dropdownMenuButton">';
 			
-			if(status==0){
+			if(status==0 && !checkPostuled && localStorage.getItem('type_account')=='illustrator'){
 				buttonList+='<a class="dropdown-item" data-rel="postul" data-index="'+i+'" href="javascript:void(0);">Postuler</a>';
 			}
+			if(status==0 && isCustomer){ 
+				buttonList+='<a class="dropdown-item"  data-rel="choose_candidate" data-index="'+i+'" href="javascript:void(0);">Choisir un candidat</a>';
+			}
 			if(status==1){
-				buttonList+='<a class="dropdown-item" href="#">Remettre un travail</a>';
-			}
-			if(status==0){ 
-				buttonList+='<a class="dropdown-item"  href="javascript:void(0);">Choisir un candidat</a>';
-			}
+				buttonList+='<a class="dropdown-item"  data-rel="add_dev" data-index="'+i+'" href="javascript:void(0);">Remettre un travail</a>';
+			}			
 			if(status==2){
-				buttonList+='<a class="dropdown-item" href="#">Récupérer travail</a>';
+				buttonList+='<a class="dropdown-item" data-rel="get_dev" data-index="'+i+'" href="javascript:void(0);">Récupérer travail</a>';
 			}
 		buttonList+='</div>';
 		buttonList+='</div>';

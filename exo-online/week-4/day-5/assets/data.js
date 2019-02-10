@@ -282,6 +282,25 @@ const abiContract = [
 		"type": "function"
 	},
 	{
+		"constant": true,
+		"inputs": [
+			{
+				"name": "",
+				"type": "uint256"
+			}
+		],
+		"name": "entreprisesDemandes",
+		"outputs": [
+			{
+				"name": "",
+				"type": "address"
+			}
+		],
+		"payable": false,
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
 		"constant": false,
 		"inputs": [
 			{
@@ -313,7 +332,7 @@ const abiContract = [
 		"type": "event"
 	}
 ];
-const contractAddress = '0x63d63c38be2ce97720a947c319f670847cf237a3';
+const contractAddress = '0xa3ed7089bf896ddbd3e165c481fbe15f0223a49c';
 
 
 
@@ -361,6 +380,20 @@ var abiContractDemande = [
 			{
 				"name": "",
 				"type": "uint8"
+			}
+		],
+		"payable": false,
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"constant": true,
+		"inputs": [],
+		"name": "customer",
+		"outputs": [
+			{
+				"name": "",
+				"type": "address"
 			}
 		],
 		"payable": false,
@@ -599,6 +632,10 @@ var abiContractDemande = [
 			{
 				"name": "_minimumReput",
 				"type": "uint256"
+			},
+			{
+				"name": "_customer",
+				"type": "address"
 			}
 		],
 		"payable": false,

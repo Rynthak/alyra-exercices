@@ -14,8 +14,6 @@ function addLoader(target){
 	$(target).html(loader);
 }
 
- 
-
 async function createMetaMaskDapp(functionToCall) {
 	
 	 try {

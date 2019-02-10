@@ -28,6 +28,8 @@ contract Demande is Ownable{
     uint256 public accept_delay;
     string public description;
     
+    
+    address public customer;
     enum StatusChoice { OUVERTE, ENCOURS, FERMEE }
     StatusChoice public status ;
     uint256 public minimumReput ;
@@ -36,13 +38,14 @@ contract Demande is Ownable{
     address private myIllustrator ;
     bytes32 private urlHash;
     
-    constructor(uint256 _remuneration,uint256 _accept_delay,string memory _description,uint256 _minimumReput) public{
+    constructor(uint256 _remuneration,uint256 _accept_delay,string memory _description,uint256 _minimumReput,address _customer) public{
 		 
 		remuneration=_remuneration;
 		accept_delay=_accept_delay;
 		description=_description;
 		minimumReput=_minimumReput;
 		status=StatusChoice.OUVERTE;
+		customer=_customer;
 	} 
 	
 	function isOpen() public view returns (bool){
@@ -87,7 +90,7 @@ contract Marketplace is Ownable {
 	
 	mapping (address => SharedStructs.Illustrator) private illustrators;
 	mapping (address => SharedStructs.Entreprise) private entreprises;
-	mapping (uint => address) private entreprisesDemandes;
+	mapping (uint => address) public entreprisesDemandes;
 	address[] public entreprisesList;
 	address[] public illustratorsList;
 	Demande[] public demandes ;
@@ -129,7 +132,7 @@ contract Marketplace is Ownable {
 		uint256 commission = SafeMath.div(SafeMath.mul(remuneration,2),100);
 		require(msg.value  == commission + remuneration,"La somme envoyé n'est pas suffisante");	
 		entreprisesDemandes[demandes.length]=msg.sender;	
-		demandes.push(new Demande(remuneration,accept_delay,description,minimumReput));
+		demandes.push(new Demande(remuneration,accept_delay,description,minimumReput,msg.sender));
 		nbDemandes=nbDemandes.add(1);
 		
 	}	
@@ -163,6 +166,8 @@ contract Marketplace is Ownable {
 		illustrators[msg.sender].reputation=illustrators[msg.sender].reputation.add(1);		
 		msg.sender.transfer(demandes[offerIndex].remuneration());			
 	}
+	
+	
 	
 	
 	
