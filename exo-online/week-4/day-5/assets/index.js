@@ -11,6 +11,19 @@
 		
 	});
 	
+	$(document).on('refreshDemande',function(e){
+		
+		e.preventDefault();
+		let functionToCall=[];	
+		functionToCall.push({name:listDemande,args:[]});
+		createMetaMaskDapp(functionToCall);		
+		
+		return false;
+		
+	});
+	$( document ).trigger( "refreshDemande");
+	
+	
 	//gestion du paiement
 	$(document).on('submit','[data-rel="add-demande-form"]',function(e){
 		e.preventDefault();
@@ -87,6 +100,73 @@ function notify(message,title="Erreur",type="error"){
 	$.growl({ title: title, message: message,style:type});
 } 
 
+let listDemande = async function(){
+	let contratMarketPlace=new ethers.Contract(contractAddress, abiContract, dapp.provider);
+	let contractWithSigner=contratMarketPlace.connect(dapp.provider.getSigner());
+	
+	
+	//On récupérère la list des demande
+	let elementContainerTable = $('[data-rel="container-table-demande"]');
+	let remoteUrl = elementContainerTable.data('remote');
+	let table=$(await $.ajax( remoteUrl));
+			
+	let nbDemande=await contratMarketPlace.nbDemandes();
+	
+	
+	for(let i = 0 ; i< nbDemande.toString();i++){
+		//Création 
+		
+		let contratDemandeAddress=await contratMarketPlace.demandes(i);
+		
+		let contratDemande=new ethers.Contract(contratDemandeAddress, abiContractDemande, dapp.provider);
+		
+		let remuneration = await contratDemande.remuneration();
+		let date_project_end = timeConverter(await contratDemande.accept_delay());
+		let description = await contratDemande.description();
+		let reputation = await contratDemande.minimumReput();
+		let status=  await contratDemande.status();
+		let tempRow="";
+		
+		let statusHTML='<span class="badge badge-success">OUVERT</span>';
+		statusHTML=(status==1)?'<span class="badge badge-warning">EN COURS</span>':statusHTML;
+		statusHTML=(status==2)?'<span class="badge badge-danger">FERMEE</span>':statusHTML;
+		
+		let buttonList="";
+		 
+		
+		buttonList+='<div class="dropdown">';
+		buttonList+='<button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">';
+		buttonList+='Action';
+		buttonList+='</button>';
+		buttonList+='<div class="dropdown-menu" aria-labelledby="dropdownMenuButton">';
+			buttonList+='<a class="dropdown-item" href="#">Postuler</a>';
+			buttonList+='<a class="dropdown-item" href="#">Ajouter un travail</a>';
+			buttonList+='<a class="dropdown-item" href="#">Remettre un travail</a>';
+			buttonList+='<a class="dropdown-item" href="#">Choisir un candidat</a>';
+			buttonList+='<a class="dropdown-item" href="#">Récupérer travail</a>';   
+		buttonList+='</div>';
+		buttonList+='</div>';
+		
+		
+		
+		
+		tempRow+='<tr>'
+		tempRow+='<th scope="row">'+(i+1)+'</th>';
+		tempRow+='<td>'+statusHTML+'</td>';
+		tempRow+='<td>'+ethers.utils.formatEther(remuneration)+' ethers</td>';
+		tempRow+='<td>'+date_project_end+'</td>';
+		tempRow+='<td>'+reputation+'</td>';
+		tempRow+='<td>'+description+'</td>';
+		tempRow+='<td>'+buttonList+'</td>';
+		tempRow+='</tr>';
+	
+		table.find("#body_table_demande").append(tempRow);
+	}
+	elementContainerTable.html(table);	
+	
+}
+
+
 let addDemande =  async function(description, remuneration,minimumReput,accept_delay){
 	let contratMarketPlace=new ethers.Contract(contractAddress, abiContract, dapp.provider);
 	let contractWithSigner=contratMarketPlace.connect(dapp.provider.getSigner());
@@ -111,6 +191,8 @@ let addDemande =  async function(description, remuneration,minimumReput,accept_d
 	
 	notify("Votre demande a été ajouté",'info','notice');
 	$('#theModal').modal('hide');
+	
+	$( document ).trigger( "refreshDemande");
 	
 };
 
@@ -168,4 +250,10 @@ async function createMetaMaskDapp(functionToCall) {
 	    
 	   console.error(err);
 	 }
+}
+
+function timeConverter(UNIX_timestamp){
+	  var d = new Date(0);
+	  d.setUTCSeconds(UNIX_timestamp);	   
+	  return d.toUTCString();
 }
