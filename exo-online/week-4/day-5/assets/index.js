@@ -65,13 +65,12 @@
 	
 	//Gestion de la demande d'ajout à la liste des candidats d'une demande
 	$(document).on('click','[data-rel="postul"]',function(e){
-		
-		
-		
-		
-		
-		
-		
+		e.preventDefault();	
+		let functionToCall=[];	 
+		let offerIndex = $(this).data("index");
+		functionToCall.push({name:initPostuler,args:[offerIndex]})
+		createMetaMaskDapp(functionToCall);		
+		return false;		
 	});	
 	
 	//Formulaire d'enregistrement
@@ -98,11 +97,11 @@
 	});
 });
 
-let initPostuler = async function (){
+let initPostuler = async function (offerIndex){
 	let contratMarketPlace=new ethers.Contract(contractAddress, abiContract, dapp.provider);
 	let contractWithSigner=contratMarketPlace.connect(dapp.provider.getSigner());
 	
-	let nbDemande=await contratMarketPlace.nbDemandes();
+	let tx = await contratMarketPlace.postuler(offerIndex);
 	
 	
 	notify("Votre demande de candidateur a été ajouté",'info','notice');		 	
