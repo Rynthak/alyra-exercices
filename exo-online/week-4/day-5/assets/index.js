@@ -6,7 +6,7 @@
 	    modal.find('.modal-dialog').load(button.data("remote"));
 	});
 	
-    
+	loginContract();
 	$('[data-rel="connect"]').click(function(){
 		
 	});
@@ -131,6 +131,9 @@ let listDemande = async function(){
 		statusHTML=(status==1)?'<span class="badge badge-warning">EN COURS</span>':statusHTML;
 		statusHTML=(status==2)?'<span class="badge badge-danger">FERMEE</span>':statusHTML;
 		
+		
+		
+		
 		let buttonList="";
 		 
 		
@@ -139,11 +142,19 @@ let listDemande = async function(){
 		buttonList+='Action';
 		buttonList+='</button>';
 		buttonList+='<div class="dropdown-menu" aria-labelledby="dropdownMenuButton">';
-			buttonList+='<a class="dropdown-item" href="#">Postuler</a>';
-			buttonList+='<a class="dropdown-item" href="#">Ajouter un travail</a>';
-			buttonList+='<a class="dropdown-item" href="#">Remettre un travail</a>';
-			buttonList+='<a class="dropdown-item" href="#">Choisir un candidat</a>';
-			buttonList+='<a class="dropdown-item" href="#">Récupérer travail</a>';   
+			
+			if(status==0){
+				buttonList+='<a class="dropdown-item" href="#">Postuler</a>';
+			}
+			if(status==1){
+				buttonList+='<a class="dropdown-item" href="#">Remettre un travail</a>';
+			}
+			if(status==0){ 
+				buttonList+='<a class="dropdown-item" href="#">Choisir un candidat</a>';
+			}
+			if(status==2){
+				buttonList+='<a class="dropdown-item" href="#">Récupérer travail</a>';
+			}
 		buttonList+='</div>';
 		buttonList+='</div>';
 		
@@ -163,6 +174,30 @@ let listDemande = async function(){
 		table.find("#body_table_demande").append(tempRow);
 	}
 	elementContainerTable.html(table);	
+	
+}
+let loginContract =  async function(){	
+	
+	
+	let _initConnect= async function(){
+		let contratMarketPlace=new ethers.Contract(contractAddress, abiContract, dapp.provider);
+		let contractWithSigner=contratMarketPlace.connect(dapp.provider.getSigner());
+		let myAccount = await contractWithSigner.getMyAccountEnterpise();
+		if(myAccount.entreprise_address.toLowerCase()!=dapp.address.toLowerCase()){
+			localStorage.setItem('type_account', 'entreprise');
+			localStorage.setItem('name', myAccount.name);
+		}
+		/*myAccount = await contractWithSigner.getMyAccountIllustrator();
+		if(myAccount.illustrator_address.toLowerCase()!=dapp.address.toLowerCase()){
+			localStorage.setItem('type_account', 'illustrator');
+			localStorage.setItem('name', myAccount.Name);			
+		}	*/	
+		return false;
+		
+	};
+	let functionToCall = [];
+	functionToCall.push({name:_initConnect,args:[]});
+	createMetaMaskDapp(functionToCall);
 	
 }
 
@@ -208,10 +243,17 @@ let initRegister = async function(nameAccount, typeAccount){
 	let myAccount = await contractWithSigner.getMyAccountEnterpise();
 	 
 	if(myAccount.entreprise_address.toLowerCase()==dapp.address.toLowerCase()){
-		notify("Déjà inscrit");
+		notify("Déjà inscrit en tant qu'entreprise");
 		$('#theModal').modal('hide');
 		return false;
 	}
+	myAccount = await contractWithSigner.getMyAccountIllustrator();
+	if(myAccount.illustrator_address.toLowerCase()==dapp.address.toLowerCase()){
+		notify("Déjà inscrit en tant qu'illustrateur");
+		$('#theModal').modal('hide');
+		return false;
+	}
+	
 	if(typeAccount=="0"){			
 		let tx = await contractWithSigner.inscription(nameAccount);
 	}else if(typeAccount=="1"){
@@ -224,9 +266,6 @@ let initRegister = async function(nameAccount, typeAccount){
 	notify("Inscription OK","info",'notice');
 	$('#theModal').modal('hide');
 }
-
-
-
 
 let dapp = null; 
 

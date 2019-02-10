@@ -142,6 +142,12 @@ contract Marketplace is Ownable {
 		return entreprises[msg.sender];
 	}
 	
+	function getMyAccountIllustrator() public view returns (SharedStructs.Entreprise memory){
+		
+		return illustrators[msg.sender];
+	}
+	
+	
 	function postuler(uint256 offerIndex) public onlyIllustrator() onlyIllustratorNotBanned(){
 		require(demandes[offerIndex].isOpen());
 		require(!demandes[offerIndex].checkPostuled(msg.sender));
