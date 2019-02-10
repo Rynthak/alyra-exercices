@@ -6,6 +6,11 @@
 	    var button = $(e.relatedTarget);
 	    var modal = $(this);    
 	    modal.find('.modal-dialog').load(button.data("remote"));
+	    
+	    
+	    if(button.data("callback")){
+	    	eval(button.data("callback")).apply(null,button.data('args'));
+	    }
 	});	
 	
 	$(document).on('refreshDemande',function(e){
@@ -20,6 +25,9 @@
 	});
 	//Tableau des demandes
 	$( document ).trigger( "refreshDemande");
+	
+	
+	 
 	
 	
 	
@@ -96,6 +104,13 @@
 	});
 });
 
+let initListCandidateChoice = function(index){
+	let contratMarketPlace=new ethers.Contract(contractAddress, abiContract, dapp.provider);
+	let contractWithSigner=contratMarketPlace.connect(dapp.provider.getSigner());
+	notify("Veuillez choisir un candidat en selectionnant son addresse",'info','notice');
+	
+}
+ 
 let initPostuler = async function (offerIndex){
 	let contratMarketPlace=new ethers.Contract(contractAddress, abiContract, dapp.provider);
 	let contractWithSigner=contratMarketPlace.connect(dapp.provider.getSigner());
@@ -182,7 +197,7 @@ let listDemande = async function(){
 				buttonList+='<a class="dropdown-item" data-rel="postul" data-index="'+i+'" href="javascript:void(0);">Postuler</a>';
 			}
 			if(status==0 && isCustomer){ 
-				buttonList+='<a class="dropdown-item"  data-rel="choose_candidate" data-index="'+i+'" href="javascript:void(0);">Choisir un candidat</a>';
+				buttonList+='<a class="dropdown-item"  data-remote="/accept_illustrator.html" data-callback="initListCandidateChoice" data-args="['+i+']" data-toggle="modal" data-target="#theModal">Choisir un candidat</a>';
 			}
 			if(status==1){
 				buttonList+='<a class="dropdown-item"  data-rel="add_dev" data-index="'+i+'" href="javascript:void(0);">Remettre un travail</a>';
