@@ -11,6 +11,39 @@
 		
 	});
 	
+	//gestion du paiement
+	$(document).on('submit','[data-rel="add-demande-form"]',function(e){
+		e.preventDefault();
+		let description=$("#description").val().trim();
+		
+		let remuneration=$("#remuneration").val().trim();
+		let date_project=$("#date_project").val().trim();
+		let reputation=$("#reputation").val().trim();
+		 
+		
+		if(description==""){
+			notify("Veuillez préciser une description");
+			return false;
+		}
+		if(remuneration==""){
+			notify("Veuillez préciser une remuneration");
+			return false;
+		}
+		if(reputation==""){
+			notify("Veuillez préciser une reputation minimum");
+			return false;
+		}
+		if(date_project==""){
+			notify("Veuillez préciser une date limite d'acception");
+			return false;
+		}
+		
+		
+		
+		return false;
+		
+	});
+	
 	
 	
 	

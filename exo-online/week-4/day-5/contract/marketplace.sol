@@ -147,7 +147,7 @@ contract Marketplace is Ownable {
 		require(illustrators[msg.sender].reputation >= demandes[offerIndex].minimumReput());
 		
 		//Vérification date limite dépôt candisature
-		require(now<=demandes[offerIndex].accept_delay());		
+		//require(now<=demandes[offerIndex].accept_delay());		
 		demandes[offerIndex].addIllustrator(msg.sender);
 	}
 	function accepterOffre(uint256 offerIndex,address illustrator) public onlyEntrepriseOwner(offerIndex){
