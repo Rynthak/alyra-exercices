@@ -26,7 +26,7 @@ library SharedStructs {
 contract Demande is Ownable{
 	uint256 public remuneration;
     uint256 public accept_delay;
-    string description;
+    string public description;
     
     enum StatusChoice { OUVERTE, ENCOURS, FERMEE }
     StatusChoice public status ;
@@ -90,7 +90,8 @@ contract Marketplace is Ownable {
 	mapping (uint => address) private entreprisesDemandes;
 	address[] public entreprisesList;
 	address[] public illustratorsList;
-	Demande[] private demandes ;
+	Demande[] public demandes ;
+	uint256 public nbDemandes;
 	
 	modifier onlyIllustrator() {
        require(illustrators[msg.sender].illustrator_address != address(0));
@@ -129,12 +130,13 @@ contract Marketplace is Ownable {
 		require(msg.value  == commission + remuneration );	
 		entreprisesDemandes[demandes.length]=msg.sender;	
 		demandes.push(new Demande(remuneration,accept_delay,description,minimumReput));
+		nbDemandes=nbDemandes.add(1);
 		
 	}
-	
+	/* 
 	function listsOffers() public view returns (Demande[] memory){
 		 return demandes;
-	}
+	}*/
 	function getMyAccountEnterpise() public view returns (SharedStructs.Entreprise memory){
 		
 		return entreprises[msg.sender];

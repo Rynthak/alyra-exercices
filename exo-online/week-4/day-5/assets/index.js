@@ -37,8 +37,14 @@
 			notify("Veuillez préciser une date limite d'acception");
 			return false;
 		}
+		//Appel de l'insertion de la demande
+		let functionToCall=[];		
 		
-		
+		//Transformation des données
+		let tempDate = new Date(date_project);
+		date_project=Math.floor(tempDate.getTime()/1000);
+		functionToCall.push({name:addDemande,args:[description, remuneration,reputation,date_project]})
+		createMetaMaskDapp(functionToCall);		
 		
 		return false;
 		
@@ -67,6 +73,9 @@
 			return false;
 		}
 		let functionToCall=[];		
+		
+		
+		
 		functionToCall.push({name:initRegister,args:[nameAccount,typeAccount]})
 		createMetaMaskDapp(functionToCall);		
 		return false;
@@ -77,6 +86,34 @@
 function notify(message,title="Erreur",type="error"){
 	$.growl({ title: title, message: message,style:type});
 } 
+
+let addDemande =  async function(description, remuneration,minimumReput,accept_delay){
+	let contratMarketPlace=new ethers.Contract(contractAddress, abiContract, dapp.provider);
+	let contractWithSigner=contratMarketPlace.connect(dapp.provider.getSigner());
+	
+	let myAccount = await contractWithSigner.getMyAccountEnterpise();
+	 
+	if(myAccount.entreprise_address.toLowerCase()!=dapp.address.toLowerCase()){
+		notify("Vous devez vous connecter");
+		return false;
+	}
+	let etherAmount = (remuneration  * 1.02); 
+	let weyAmount = ethers.utils.parseEther(etherAmount.toString());
+	
+	remuneration=ethers.utils.parseEther(remuneration.toString());
+	let tx = await contractWithSigner.ajouterDemande(remuneration.toString(10),accept_delay,description,minimumReput,{value:weyAmount});
+	
+	
+	
+	//let listOffers = await contractWithSigner.listsOffers() ;
+	
+	//console.log(listOffers);
+	
+	notify("Votre demande a été ajouté",'info','notice');
+	$('#theModal').modal('hide');
+	
+};
+
  
 let initRegister = async function(nameAccount, typeAccount){
 	
@@ -90,6 +127,7 @@ let initRegister = async function(nameAccount, typeAccount){
 	 
 	if(myAccount.entreprise_address.toLowerCase()==dapp.address.toLowerCase()){
 		notify("Déjà inscrit");
+		$('#theModal').modal('hide');
 		return false;
 	}
 	if(typeAccount=="0"){			
@@ -102,6 +140,7 @@ let initRegister = async function(nameAccount, typeAccount){
 	myAccount = await contractWithSigner.getMyAccountEnterpise();	
 	
 	notify("Inscription OK","info",'notice');
+	$('#theModal').modal('hide');
 }
 
 
