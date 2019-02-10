@@ -88,8 +88,8 @@ contract Marketplace is Ownable {
 	mapping (address => SharedStructs.Illustrator) private illustrators;
 	mapping (address => SharedStructs.Entreprise) private entreprises;
 	mapping (uint => address) private entreprisesDemandes;
-	address[] entreprisesList;
-	address[] illustratorsList;
+	address[] public entreprisesList;
+	address[] public illustratorsList;
 	Demande[] private demandes ;
 	
 	modifier onlyIllustrator() {
@@ -134,6 +134,10 @@ contract Marketplace is Ownable {
 	
 	function listsOffers() public view returns (Demande[] memory){
 		 return demandes;
+	}
+	function getMyAccountEnterpise() public view returns (SharedStructs.Entreprise memory){
+		
+		return entreprises[msg.sender];
 	}
 	
 	function postuler(uint256 offerIndex) public onlyIllustrator() onlyIllustratorNotBanned(){

@@ -11,6 +11,9 @@
 		
 	});
 	
+	
+	
+	
 	$(document).on('submit','[data-rel="register-form"]',function(e){
 		e.preventDefault();
 		
@@ -49,15 +52,21 @@ let initRegister = async function(nameAccount, typeAccount){
 	let contratMarketPlace=new ethers.Contract(contractAddress, abiContract, dapp.provider);
 	
 	let contractWithSigner=contratMarketPlace.connect(dapp.provider.getSigner());
+	
+	let myAccount = await contractWithSigner.getMyAccountEnterpise();
 	 
+	if(myAccount.entreprise_address.toLowerCase()==dapp.address.toLowerCase()){
+		notify("Déjà inscrit");
+		return false;
+	}
 	if(typeAccount=="0"){			
 		let tx = await contractWithSigner.inscription(nameAccount);
 	}else if(typeAccount=="1"){
 		let tx = await contractWithSigner.inscriptionEntreprises(nameAccount);
 	}
-	console.log(tx.hash);
-	await tx.wait();
 	
+	
+	myAccount = await contractWithSigner.getMyAccountEnterpise();	
 	
 	notify("Inscription OK","info",'notice');
 }
