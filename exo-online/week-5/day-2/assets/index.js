@@ -3,6 +3,7 @@ $(function() {
 	 
 	
 	 
+	 
         
 	 node.on('ready', () => {
 		 notify("Le noeud est prêt","Info",'notice');
@@ -22,6 +23,18 @@ $(function() {
 	 });
 	 
 	 
+	 $(document).on('submit','[data-rel="get-charipfs"]',function(e){
+		 e.preventDefault();
+		 let txt=$("#hash").val().trim();
+		 if(txt==""){
+			notify("Veuillez préciser le hash à récupérer");
+				return false;
+			}
+		 getText(txt);
+		 return false;
+	 });
+	 
+	 
  });
  //Ajout du texte
  var addText =  function(txt){
@@ -37,6 +50,13 @@ $(function() {
 		 notify("Voici le hash :"+result[0].hash+'',"Info",'notice');
 	 });
  }
+ 
+ var getText = function(txt){
+	 node.cat(txt).then( result =>(
+		 notify("La chaine est "+ result.toString(),"Info",'notice')
+	 ));
+ };
+ 
  
  function notify(message,title="Erreur",type="error"){
 	$.growl({ title: title, message: message,style:type});
