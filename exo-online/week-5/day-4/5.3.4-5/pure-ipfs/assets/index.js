@@ -57,7 +57,7 @@ var getTenFirstImages = function(){
 	
 	for(let i = 0 ;i < nbCards && i<10;i++ ){
 		let card=await contractWithSigner.cards(i);
-		loadImageByHash(card);
+		loadImageByHash(ethers.utils.toUtf8String(card));
 	}	
 }
 
