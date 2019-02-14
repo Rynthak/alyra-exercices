@@ -11,10 +11,16 @@
 </head>
 	
 <div class="container-fluid">	
-	<h1>Bienvenue sur cette app IPFS(Jeu De carte5)</h1>	
+	<h1>Bienvenue sur cette app IPFS(Jeu De carte)</h1>	
 	 <div class="row">	
 		<div class="col-sm-12">    
-		     
+		      <div data-rel="addpicture-charipfs">		    	 
+    			<div class="form-group">
+					<label for="image_file">Fichier image:</label> 
+					<input type="file" id="image_file" />
+				</div>		      	 
+		     	<img id="output" style="max-width: 330px; padding-top: 10px;" />		      	   
+		    </div>
 		</div>
 	</div>		 
 </div>
@@ -25,6 +31,7 @@
 <!-- loading the minified version -->
 <script src="https://unpkg.com/ipfs/dist/index.min.js"></script>
 <script src="https://unpkg.com/ipfs-http-client/dist/index.min.js" ></script>
+ 
 <script src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
 <script src="/assets/jquery.growl/javascripts/jquery.growl.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
