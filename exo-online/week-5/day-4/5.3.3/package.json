@@ -1,0 +1,18 @@
+{
+  "name": "ipfs.add",
+  "version": "1.0.0",
+  "description": "Exercice 5.3.3 - Ecrire une fonction pour publier une chaîne sur IPFS",
+  "main": "index.html",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "ipfs",
+    "add"
+  ],
+  "author": "Rynthak",
+  "license": "ISC",
+  "devDependencies": {
+    "live-server": "^1.2.1"
+  }
+}
