@@ -39,7 +39,10 @@ var loadImageByHash = function(hash){
 	    if (err) {
 	        throw err
 	    }    
-	    $("#output").attr('src', "data:image/blob;base64," + file.toString("base64"));
+	    $('<img id="output" style="max-width: 330px; padding-top: 10px;" />')
+	    .attr('src', "data:image/blob;base64," + file.toString("base64")).appendTo('#result');
+		 
+		 $('<br>').appendTo('#result');;
     });
 } 
 
