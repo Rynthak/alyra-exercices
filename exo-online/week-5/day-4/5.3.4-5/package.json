@@ -1,0 +1,17 @@
+{
+  "name": "exo-5.3.4-5",
+  "version": "1.0.0",
+  "description": "Exercice 5.3.4 - Créer un jeu de cartes à collectionner décentralisé - Exercice 5.3.5 - Publication du jeu de cartes à collectionner décentralisé ",
+  "main": "index.html",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "ipfs"
+  ],
+  "author": "rynthak",
+  "license": "ISC",
+  "devDependencies": {
+    "live-server": "^1.2.1"
+  }
+}
