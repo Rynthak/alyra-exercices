@@ -23,7 +23,11 @@ var ping =  function(txt){
 			 notify(err);
 			 return false;
 		 }
-		 
+		 let text= '';
+		 for (let i = 0 ;i<result.length; i++ ) {
+			 text+=result[i].text+'<br>';
+		 }
+		 $('#result').html(text);
 		 console.log(result);
 		  
 	 });
