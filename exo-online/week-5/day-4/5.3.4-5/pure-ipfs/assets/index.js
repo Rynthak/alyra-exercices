@@ -21,6 +21,7 @@ $(function() {
 		          let hash = result[0].hash;
 		          notify("L'image a bien été uplaoder <br>"+url,"Info",'notice');
 		          loadImageByHash(hash);
+		          addImageToContract(hash);
 		         
 		        })
 		    
@@ -35,6 +36,8 @@ $(function() {
  
 var loadImageByHash = function(hash){
 	 
+	
+	
     node.cat(hash, function (err, file) {
 	    if (err) {
 	        throw err
@@ -45,6 +48,48 @@ var loadImageByHash = function(hash){
 		 $('<br>').appendTo('#result');;
     });
 } 
+
+var getTenFirstImages = function(){
+	let contratCards=new ethers.Contract(contractAddress, abiContract, dapp.provider);
+	let contractWithSigner=contratCards.connect(dapp.provider.getSigner());
+	
+	let nbCards=await contratMarketPlace.nbCards();	
+	
+	for(let i = 0 ;i < nbCards && i<10;i++ ){
+		let card=await contractWithSigner.cards(i);
+		loadImageByHash(card);
+	}	
+}
+
+var addImageToContract function(hash){
+	let contratCards=new ethers.Contract(contractAddress, abiContract, dapp.provider);
+	let contractWithSigner=contratCards.connect(dapp.provider.getSigner());
+	let hashByte32 = ethers.utils.toUtf8Bytes(hash);
+	contractWithSigner.addCard(hash);
+}
+
+
+async function createMetaMaskDapp(functionToCall) {
+	
+	 try {
+	   // Demande à MetaMask l'autorisation de se connecter
+	   const addresses = await ethereum.enable();
+	   const address = addresses[0]
+	   // Connection au noeud fourni par l'objet web3
+	   const provider = new ethers.providers.Web3Provider(ethereum);
+	   dapp = { address, provider };
+	  
+	   $.each(functionToCall,function(index, value){
+		  
+		   value.name.apply(null,value.args);
+	   })
+	   
+	   
+	 } catch(err) {
+	    
+	   console.error(err);
+	 }
+}
 
 
  function notify(message,title="Erreur",type="error"){
