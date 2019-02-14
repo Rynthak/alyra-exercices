@@ -1,3 +1,4 @@
+#Exercice 5.3.3 - Ecrire une fonction pour publier une chaîne sur IPFS
 npm install<br>
 npx live-server --port=8000<br>
 
@@ -7,9 +8,4 @@ ipfs config --json API.HTTPHeaders.Access-Control-Allow-Methods '["PUT", "GET", 
 ipfs config --json API.HTTPHeaders.Access-Control-Allow-Credentials '["true"]'<br>
 ipfs daemon<br>
 
-<br>
-#LIST of PEER ADDRESS<br>
-https://ipfs.io/ipfs/QmSDgpiHco5yXdyVTfhKxr3aiJ82ynz8V14QcGKicM3rVh/#/welcome<br>
-<br>
-QmQuQAdKjD1EkbUPmF7QPRyxevWsNarJk6AZzYoqu71zLC<br>
-QmZEvpGZfGqNFtAVGgF2ntJnsLiWhzB2C9Kiccr5Wzb2hk<br>
+ 
