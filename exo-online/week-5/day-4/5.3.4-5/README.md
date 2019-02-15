@@ -2,6 +2,10 @@
 #Exercice 5.3.4 - Créer un jeu de cartes à collectionner décentralisé
 #Exercice 5.3.5 - Publication du jeu de cartes à collectionner décentralisé
 
+CONTRACT ADDRESS ON ROPSTEN
+
+
+
 
 npm install<br>
 cd pure-ipfs

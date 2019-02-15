@@ -2,6 +2,13 @@
 const node = window.IpfsHttpClient('localhost',5001);
 $(function() {
 	
+	$('[data-rel="load_card"]').on('click',function(e){
+		let functionToCall=[];	
+		functionToCall.push({name:getTenFirstImages,args:[]});
+        createMetaMaskDapp(functionToCall);	
+	});
+	
+	
 	$("#image_file").on('change',function(e){
 		var file = e.target.files[0];
 		  if (!file) {
@@ -20,7 +27,7 @@ $(function() {
 		          console.log(`Url --> ${url}`)
 		          let hash = result[0].hash;
 		          notify("L'image a bien été uplaoder <br>"+url,"Info",'notice');
-		          loadImageByHash(hash);
+		          
 		          let functionToCall=[];	
 		  		  functionToCall.push({name:addImageToContract,args:[hash]});
 		          createMetaMaskDapp(functionToCall);		          
@@ -55,9 +62,9 @@ var getTenFirstImages = async function(){
 	let contratCards=new ethers.Contract(contractAddress, abiContract, dapp.provider);
 	let contractWithSigner=contratCards.connect(dapp.provider.getSigner());
 	
-	let nbCards=await contratMarketPlace.nbCards();	
-	
-	for(let i = 0 ;i < nbCards && i<10;i++ ){
+	let nbCards=await contractWithSigner.nbCards();	
+	$('#result').html('');
+	for(let i = 0 ;i < nbCards && i<=10;i++ ){
 		let card=await contractWithSigner.cards(i);
 		loadImageByHash(card);
 	}	
@@ -68,7 +75,9 @@ var addImageToContract= async function(hash){
 	let contractWithSigner=contratCards.connect(dapp.provider.getSigner());
 	console.log(hash);
 	//Transform hash to bytes32
-	contractWithSigner.addCard(hash);
+	let temp = await contractWithSigner.addCard(hash);
+	
+	loadImageByHash(hash);
 }
  
 

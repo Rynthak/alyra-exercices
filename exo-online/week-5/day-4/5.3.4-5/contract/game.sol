@@ -6,10 +6,10 @@ import "github.com/OpenZeppelin/openzeppelin-solidity/contracts/ownership/Ownabl
 
 
 contract CardsGame is Ownable{	
-	bytes[] public cards;
+	string[] public cards;
 	uint256 public nbCards;
 	using SafeMath for uint256;
-	function addCard(bytes memory hashUrl)public {
+	function addCard(string memory hashUrl)public {
 		cards.push(hashUrl);
 		nbCards=nbCards.add(1);
 	}

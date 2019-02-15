@@ -48,7 +48,7 @@ const abiContract = [
 		"outputs": [
 			{
 				"name": "",
-				"type": "bytes32"
+				"type": "string"
 			}
 		],
 		"payable": false,
@@ -74,7 +74,7 @@ const abiContract = [
 		"inputs": [
 			{
 				"name": "hashUrl",
-				"type": "bytes32"
+				"type": "string"
 			}
 		],
 		"name": "addCard",
@@ -115,4 +115,4 @@ const abiContract = [
 		"type": "event"
 	}
 ];
-const contractAddress = '0xa54c165e62933abd71ca48f18b2c96efc11f7a2a';
+const contractAddress = '0xfbb134b9d88279cd8084dab2e8eb1f8ee5e9592d';
