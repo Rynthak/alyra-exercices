@@ -1,6 +1,7 @@
 $(function() {
 	
-	 
+	contractAddress = $('body').data('contractaddress');
+	abiContract =$('body').data('abicontract');
 	
 	// On form submit, handle the file uploads.
 	$("[data-rel='add-charipfs']").on('submit', function (event) {
@@ -34,6 +35,11 @@ $(function() {
 	 
 	 
 });
+
+var contractAddress ='';
+var abiContract ='';
+
+
 var addImageToContract= async function(hash){
 	let contratPin=new ethers.Contract(contractAddress, abiContract, dapp.provider);
 	let contractWithSigner=contratPin.connect(dapp.provider.getSigner());
