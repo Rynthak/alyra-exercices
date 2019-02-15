@@ -3,6 +3,11 @@ var express = require('express');
 var path = require('path');
 var cookieParser = require('cookie-parser');
 var logger = require('morgan');
+var ethers = require('ethers');
+var Ipfs= require('ipfs');
+
+var provider = new ethers.providers.JsonRpcProvider("http://localhost:8545");
+var node = new Ipfs();
 
 var indexRouter = require('./routes/index');
 var usersRouter = require('./routes/users');
@@ -37,5 +42,15 @@ app.use(function(err, req, res, next) {
   res.status(err.status || 500);
   res.render('error');
 });
+
+
+node.on('ready', () => {
+	 console.log("IPFS prêt")
+	 provider.getNetwork().then(
+	   r =>  console.log("Ethereum connecté sur ", r)
+	 )
+});
+
+
 
 module.exports = app;
