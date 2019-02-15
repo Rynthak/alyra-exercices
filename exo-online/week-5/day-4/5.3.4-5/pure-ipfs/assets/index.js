@@ -21,7 +21,9 @@ $(function() {
 		          let hash = result[0].hash;
 		          notify("L'image a bien été uplaoder <br>"+url,"Info",'notice');
 		          loadImageByHash(hash);
-		          addImageToContract(hash);
+		          let functionToCall=[];	
+		  		  functionToCall.push({name:addImageToContract,args:[hash]});
+		          createMetaMaskDapp(functionToCall);		          
 		         
 		        })
 		    
@@ -49,7 +51,7 @@ var loadImageByHash = function(hash){
     });
 } 
 
-var getTenFirstImages = function(){
+var getTenFirstImages = async function(){
 	let contratCards=new ethers.Contract(contractAddress, abiContract, dapp.provider);
 	let contractWithSigner=contratCards.connect(dapp.provider.getSigner());
 	
@@ -57,17 +59,18 @@ var getTenFirstImages = function(){
 	
 	for(let i = 0 ;i < nbCards && i<10;i++ ){
 		let card=await contractWithSigner.cards(i);
-		loadImageByHash(ethers.utils.toUtf8String(card));
+		loadImageByHash(card);
 	}	
 }
 
-var addImageToContract function(hash){
+var addImageToContract= async function(hash){
 	let contratCards=new ethers.Contract(contractAddress, abiContract, dapp.provider);
 	let contractWithSigner=contratCards.connect(dapp.provider.getSigner());
-	let hashByte32 = ethers.utils.toUtf8Bytes(hash);
+	console.log(hash);
+	//Transform hash to bytes32
 	contractWithSigner.addCard(hash);
 }
-
+ 
 
 async function createMetaMaskDapp(functionToCall) {
 	
