@@ -22,5 +22,9 @@ ipfs config --json API.HTTPHeaders.Access-Control-Allow-Credentials '["true"]'<b
 ipfs daemon<br>
 
 
+#PIN
+ipfs add -r pure-ipfs
+ipfs pin add -r QmRaXgdqW5CDjxSdfyUhyAdgx3kpYXv5GUw5hBSu9AngY7
+
 
  
