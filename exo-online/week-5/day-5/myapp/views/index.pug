@@ -3,3 +3,13 @@ extends layout
 block content
   h1= title
   p Welcome to #{title}
+  .row
+  .col-sm-12
+    form(action='/ipfs/add/' data-rel='add-charipfs' enctype='multipart/form-data' method='post')
+      .form-group
+        label(for='image_file') Fichier image:
+        input#filesinput(type='file' name='filesinput')
+      button.btn.btn-primary(type='submit')
+        | Ajouter l'image
+      #result
+

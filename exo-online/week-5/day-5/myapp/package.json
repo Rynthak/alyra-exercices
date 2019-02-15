@@ -6,13 +6,19 @@
     "start": "node ./bin/www"
   },
   "dependencies": {
+    "bs58": "^4.0.1",
     "cookie-parser": "~1.4.3",
     "debug": "~2.6.9",
     "ethers": "^4.0.25",
     "express": "~4.16.0",
+    "file-type": "^10.7.1",
+    "formidable": "^1.2.1",
+    "fs": "0.0.1-security",
     "http-errors": "~1.6.2",
     "ipfs": "^0.34.4",
+    "ipfs-api": "^26.1.2",
     "morgan": "~1.9.0",
-    "pug": "2.0.0-beta11"
+    "pug": "2.0.0-beta11",
+    "read-chunk": "^3.0.0"
   }
 }
