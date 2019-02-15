@@ -4,12 +4,29 @@ var path = require('path');
 var cookieParser = require('cookie-parser');
 var logger = require('morgan');
 
-
+const _ = require('lodash');
+const config = require('./config/config.json');
+const defaultConfig = config.development;
+const environment = process.env.NODE_ENV || 'development';
+const environmentConfig = config[environment];
+const finalConfig = _.merge(defaultConfig, environmentConfig);
+global.gConfig = finalConfig;
 
 var indexRouter = require('./routes/index');
 var ipfsRouter = require('./routes/ipfs');
 
 var app = express();
+
+
+
+ 
+app.use(function locals(req, res, next){
+    res.locals.abicontract = finalConfig.abicontract;
+    res.locals.contractaddress = finalConfig.contractaddress;
+    
+    next();
+  });
+ 
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));

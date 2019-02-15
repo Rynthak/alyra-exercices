@@ -17,6 +17,7 @@
     "http-errors": "~1.6.2",
     "ipfs": "^0.34.4",
     "ipfs-api": "^26.1.2",
+    "lodash": "^4.17.11",
     "morgan": "~1.9.0",
     "pug": "2.0.0-beta11",
     "read-chunk": "^3.0.0"

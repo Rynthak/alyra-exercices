@@ -1,21 +1,21 @@
 pragma solidity ^0.5.3;
-pragma experimental ABIEncoderV2;
+
 
 import "github.com/OpenZeppelin/openzeppelin-solidity/contracts/math/SafeMath.sol";
 import "github.com/OpenZeppelin/openzeppelin-solidity/contracts/ownership/Ownable.sol";
 
 
 contract Epinglage is Ownable{	
-	string[] public pin;
+	bytes32[] public pin;
 	uint256 public nbPin;
 	using SafeMath for uint256;
 	mapping (uint256 => address) public  pinAddress;
 	mapping (uint256 => uint256) public  pinDuration;
 	event Epingler(
-        string pin
+        bytes32 pin
     );
 	 
-	function payerStockage(string memory pinUrl,uint256 duration)public payable {
+	function payerStockage(bytes32 pinUrl,uint256 duration)public payable {
 	 	require(msg.value  >= 100 finney,"La somme envoyé n'est pas suffisante");
 	 	uint256 tempduration = now;
 		pin.push(pinUrl);
