@@ -9,13 +9,31 @@ contract Epinglage is Ownable{
 	string[] public pin;
 	uint256 public nbPin;
 	using SafeMath for uint256;
+	mapping (uint256 => address) public  pinAddress;
+	mapping (uint256 => uint256) public  pinDuration;
 	event Epingler(
         string pin
     );
 	 
-	 function payerStockage(string memory pinUrl)public payable {
+	function payerStockage(string memory pinUrl,uint256 duration)public payable {
+	 	require(msg.value  >= 100 finney,"La somme envoyé n'est pas suffisante");
+	 	uint256 tempduration = now;
 		pin.push(pinUrl);
+		pinAddress[nbPin]=msg.sender;
+		/* DURATION in second */
+		pinDuration[nbPin]=tempduration.add(duration);
 		nbPin=nbPin.add(1);
-		emit Epingler(pin);
+		emit Epingler(pinUrl);
 	}
+	
+	function removeOldPin() public {
+		for (uint i=0; i<nbPin; i++) {
+		   if(pinDuration[nbPin]<now){
+		   		delete pinDuration[nbPin];
+		   		delete pinAddress[nbPin];
+		   }
+		}
+	}
+	
+	
 }
