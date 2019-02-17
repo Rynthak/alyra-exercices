@@ -27,14 +27,5 @@ contract Epinglage is Ownable{
 		emit Epingler(pinUrl,tempduration);
 	}
 	
-	function removeOldPin() public {
-		for (uint i=0; i<nbPin; i++) {
-		   if(pinDuration[nbPin]<now){
-		   		delete pinDuration[nbPin];
-		   		delete pinAddress[nbPin];
-		   }
-		}
-	}
-	
 	
 }

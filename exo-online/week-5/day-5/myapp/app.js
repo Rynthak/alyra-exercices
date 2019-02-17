@@ -18,14 +18,15 @@ global.gConfig = finalConfig;
 
 var indexRouter = require('./routes/index');
 var ipfsRouter = require('./routes/ipfs');
-
+var bs58 = require('bs58');
 var provider = new ethers.providers.JsonRpcProvider("http://localhost:8545");
-const node = new Ipfs()
+global.node = node = new Ipfs()
 var app = express();
 
 
 node.on('ready', () => {
 	 console.log("IPFS prêt")
+	
 	 provider.getNetwork().then( (r) =>{  console.log("Ethereum connecté sur ", r)
 			 
 		//On écoute l'evenement Epingler
@@ -33,7 +34,23 @@ node.on('ready', () => {
 		 const contractInstance = new ethers.Contract(finalConfig.contractaddress,finalConfig.abicontract,provider)
 		 contractInstance.on('Epingler', ( pin,duration, event) =>{
 			 //ON PIN LE HASH DE L'EVENT
-			 console.log(pin,duration)
+			 console.log(pin,duration.toString());
+			 
+			 //Il faut decoder le pin
+			 
+			 const hashHex = "1220" + pin.slice(2)
+			 const hashBytes = Buffer.from(hashHex, 'hex');
+			 const HashToPIn = bs58.encode(hashBytes);
+			 
+			 node.pin.add(HashToPIn, (err, result) => {
+				 if (err) {
+					 console.er('Error pin', err);
+					 return false;
+				 }
+				 console.log(result[0].hash +' was pinned');
+				 
+			 });
+			 
 	     });
 	 
 	 	
@@ -46,7 +63,7 @@ node.on('ready', () => {
 app.use(function locals(req, res, next){
     res.locals.abicontract = finalConfig.abicontract;
     res.locals.contractaddress = finalConfig.contractaddress;
-    
+    res.locals.node = node;
     next();
   });
  
