@@ -9,6 +9,6 @@ npm install<br>
 
 UPDATE CONTRACT ADDRESS in myapp/config/config.js
 
-nohup PORT=8080 NODE_ENV=production  npm start >> myapp.log &
+PORT=8080 NODE_ENV=production  npm start >> myapp.log &
 
 
