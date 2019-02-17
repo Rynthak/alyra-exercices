@@ -16,7 +16,7 @@ $(function() {
 	        success: function (data) {
 	           if(data.hash){
 	        	   let url = `https://ipfs.io/ipfs/${data.hash}`
-	        	   notify("L'image a bien été uplaoder <br>"+url,"Info",'notice');
+	        	   
 	        	   //On call Le contract pour paiement
 	        	   let functionToCall=[];	
 	        	   functionToCall.push({name:addImageToContract,args:[data.hashHex]});
@@ -40,21 +40,16 @@ var contractAddress ='';
 var abiContract ='';
 
 
-var addImageToContract= async function(hash){
+var addImageToContract= async function(HashUrl){
 	let contratPin=new ethers.Contract(contractAddress, abiContract, dapp.provider);
 	let contractWithSigner=contratPin.connect(dapp.provider.getSigner());
 	var hours = 1;
 	//Can cahnge hours
 	var duration = hours * 60 * 60;
-	 
+	let weyAmount = ethers.utils.parseEther('0.1');
+	let temp = await contractWithSigner.payerStockage(HashUrl,duration,{value:weyAmount});
 	
-	//On enelève le QM
-	let HashUrl=hash.substring(2);
-	HashUrl=ethers.utils.formatBytes32String(HashUrl);
 	
-	let temp = await contractWithSigner.payerStockage(HashUrl,duration);
-	
-	console.log(temp);
 } 
 
 async function createMetaMaskDapp(functionToCall) {
