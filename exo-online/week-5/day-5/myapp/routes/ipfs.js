@@ -45,7 +45,9 @@ router.get('/getmypin', function(req, res, next) {
 	let nbPin = await contractInstance.nbPin();
 	
 	let pins = [];
-	 
+	var date = new Date();
+	var timestamp = ~~(date.getTime()/1000); 
+	
 	 for(let i = 0; i<nbPin ;i++){
 		 let pinAddress = await contractInstance.pinAddress(i);
 		 if(req.query.address.toLowerCase() == pinAddress.toLowerCase()){
@@ -53,7 +55,8 @@ router.get('/getmypin', function(req, res, next) {
 			 let duration = await contractInstance.pinDuration(i);
 			 
 			 let HashPin=global.decodeHash32(hash);
-			 pins.push({hash:HashPin,duration:duration.toString()});
+			 let expired=duration.toString()< timestamp;
+			 pins.push({hash:HashPin,duration:duration.toString(),expired:expired});
 		 }
 	 }
 	 

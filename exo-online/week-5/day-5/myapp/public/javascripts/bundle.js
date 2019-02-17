@@ -65,14 +65,16 @@ var addImageToContract= async function(HashUrl){
     			 	  href:'https://ipfs.io/ipfs/'+data[i].hash,
     			 	  target:'_blank'}).appendTo('#result');
     		 $('<div id="count-'+i+data[i].hash+'">').appendTo('#result');
-    		 
-    		 $("#count-"+i+data[i].hash)
-    		  .countdown(data[i].duration*1000, function(event) {
-    		    $(this).text(
-    		      event.strftime('Expire dans %D days %H:%M:%S')
-    		    );
-    		  });
-    		 
+    		 if(data[i].expired==false){
+	    		 $("#count-"+i+data[i].hash)
+	    		  .countdown(data[i].duration*1000, function(event) {
+	    		    $(this).text(
+	    		      event.strftime('Expire dans %D days %H:%M:%S')
+	    		    );
+	    		  });
+    	 	}else{
+    	 		$("#count-"+i+data[i].hash).html('<span class="text-danger">Expiré</span>')
+    	 	}
     		 $('<br>').appendTo('#result');
     	 }
     }).fail(function() {
