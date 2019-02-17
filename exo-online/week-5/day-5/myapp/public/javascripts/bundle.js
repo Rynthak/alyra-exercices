@@ -33,7 +33,9 @@ $(function() {
 	    });
 	});
 	 
-	 
+	 let functionToCall=[];	
+	 functionToCall.push({name:myPin,args:[]});
+	 createMetaMaskDapp(functionToCall);
 });
 
 var contractAddress ='';
@@ -48,33 +50,27 @@ var addImageToContract= async function(HashUrl){
 	var duration = hours * 60 * 60;
 	let weyAmount = ethers.utils.parseEther('0.1');
 	let temp = await contractWithSigner.payerStockage(HashUrl,duration,{value:weyAmount});
-	
-	
+}
+ var myPin =  function(){
+
+	 var parameters = { address: dapp.address.toLowerCase() };
+     $.get( '/ipfs/getmypin',parameters, function(data) {
+    	 if(data.length>0){
+    		 $('<h1>My Pins</h1><br>').appendTo('#result');
+    	 }
+    	 for(var i in data){
+    		  
+    		 let link = $('<a>',
+    				 {text:'https://ipfs.io/ipfs/'+data[i].hash,
+    			 	  href:'https://ipfs.io/ipfs/'+data[i].hash,
+    			 	  target:'_blank'}).appendTo('#result');
+    		 
+    		 $('<br>').appendTo('#result');
+    	 }
+    }).fail(function() {
+        console.log( "fail get pin" );
+    });
 } 
 
-async function createMetaMaskDapp(functionToCall) {
-	
-	 try {
-	   // Demande à MetaMask l'autorisation de se connecter
-	   const addresses = await ethereum.enable();
-	   const address = addresses[0]
-	   // Connection au noeud fourni par l'objet web3
-	   const provider = new ethers.providers.Web3Provider(ethereum);
-	   dapp = { address, provider };
-	  
-	   $.each(functionToCall,function(index, value){
-		  
-		   value.name.apply(null,value.args);
-	   })
-	   
-	   
-	 } catch(err) {
-	    
-	   console.error(err);
-	 }
-}
 
 
- function notify(message,title="Erreur",type="error"){
-	$.growl({ title: title, message: message,style:type});
-}

@@ -20,7 +20,7 @@ var indexRouter = require('./routes/index');
 var ipfsRouter = require('./routes/ipfs');
 var bs58 = require('bs58');
 const cron = require("node-cron");
-var provider = new ethers.providers.JsonRpcProvider("http://localhost:8545");
+var provider = global.provider =new ethers.providers.JsonRpcProvider("http://localhost:8545");
 global.node = node = new Ipfs()
 var app = express();
 
@@ -60,7 +60,7 @@ node.on('ready', () => {
 	 });
 })
 
-var decodeHash32 = function (pin){
+var decodeHash32 = global.decodeHash32 = function (pin){
 	 const hashHex = "1220" + pin.slice(2)
 	 const hashBytes = Buffer.from(hashHex, 'hex');
 	 const HashToPIn = bs58.encode(hashBytes);

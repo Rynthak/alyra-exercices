@@ -6,7 +6,7 @@ var fileType = require('file-type');
 var path = require('path');
 var fs = require('fs');
 var bs58 = require('bs58');
-
+var ethers = require('ethers');
  
 
 /* GET add page ipfs. */
@@ -36,5 +36,34 @@ router.post('/add', function(req, res, next) {
   
   
 });
+
+router.get('/getmypin', function(req, res, next) {
+	var getMyPin = async function (req, res, next){
+	const contractInstance = new ethers.Contract(global.gConfig.contractaddress,global.gConfig.abicontract,global.provider);
+	 
+	 
+	let nbPin = await contractInstance.nbPin();
+	
+	let pins = [];
+	 
+	 for(let i = 0; i<nbPin ;i++){
+		 let pinAddress = await contractInstance.pinAddress(i);
+		 if(req.query.address.toLowerCase() == pinAddress.toLowerCase()){
+			 let hash = await contractInstance.pin(i);
+			 let duration = await contractInstance.pinDuration(i);
+			 
+			 let HashPin=global.decodeHash32(hash);
+			 pins.push({hash:HashPin,duration:duration.toString()});
+		 }
+	 }
+	 
+	 //On génére la liste de pins
+	 res.status(200).json(pins);
+	  
+	}
+   getMyPin(req, res, next);
+});
+
+
 
 module.exports = router;
