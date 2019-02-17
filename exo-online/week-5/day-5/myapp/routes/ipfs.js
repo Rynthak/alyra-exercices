@@ -25,8 +25,7 @@ router.post('/add', function(req, res, next) {
     	    }else{
     	    	let data = result[0];
     	    	let unencodedData= data.hash;
-    	    	//console.log(`global.gConfig: ${JSON.stringify(global.gConfig, undefined, global.gConfig.json_indentation)}`);
-				const hashHex = "0x"+bs58.decode(unencodedData).slice(2).toString('hex');
+    	    	const hashHex = "0x"+bs58.decode(unencodedData).slice(2).toString('hex');
 				data.hashHex=hashHex;
     	    	  res.status(200).json(data);
     	    }    

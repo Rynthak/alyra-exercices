@@ -5,7 +5,7 @@ var cookieParser = require('cookie-parser');
 var logger = require('morgan');
 const _ = require('lodash');
 var ethers = require('ethers');
-var ipfsAPI = require('ipfs-api');
+
 const Ipfs= require('ipfs');
 
 
@@ -19,6 +19,7 @@ global.gConfig = finalConfig;
 var indexRouter = require('./routes/index');
 var ipfsRouter = require('./routes/ipfs');
 var bs58 = require('bs58');
+const cron = require("node-cron");
 var provider = new ethers.providers.JsonRpcProvider("http://localhost:8545");
 global.node = node = new Ipfs()
 var app = express();
@@ -36,28 +37,71 @@ node.on('ready', () => {
 			 //ON PIN LE HASH DE L'EVENT
 			 console.log(pin,duration.toString());
 			 
-			 //Il faut decoder le pin
+		
 			 
-			 const hashHex = "1220" + pin.slice(2)
-			 const hashBytes = Buffer.from(hashHex, 'hex');
-			 const HashToPIn = bs58.encode(hashBytes);
+			 let HashToPIn = decodeHash32(pin);
+			 var date = new Date();
+			 var timestamp = ~~(date.getTime()/1000);
 			 
-			 node.pin.add(HashToPIn, (err, result) => {
-				 if (err) {
-					 console.er('Error pin', err);
-					 return false;
-				 }
-				 console.log(result[0].hash +' was pinned');
-				 
-			 });
+			 if(duration.toString() >= timestamp){
 			 
+				 node.pin.add(HashToPIn, (err, result) => {
+					 if (err) {
+						 console.er('Error pin', err);
+						 return false;
+					 }
+					 console.log(result[0].hash +' was pinned');
+					 
+				 });
+			 };
 	     });
 	 
 	 	
 	 });
 })
 
+var decodeHash32 = function (pin){
+	 const hashHex = "1220" + pin.slice(2)
+	 const hashBytes = Buffer.from(hashHex, 'hex');
+	 const HashToPIn = bs58.encode(hashBytes);
+	 return HashToPIn;
+}
 
+var unPin = async function(){
+	   //Depinage des PIN expiré
+	const contractInstance = new ethers.Contract(finalConfig.contractaddress,finalConfig.abicontract,provider);
+	var date = new Date();
+	var timestamp = ~~(date.getTime()/1000);
+	
+	let nbPin = await contractInstance.nbPin();
+	console.log('Pin to check : '+nbPin.toString());
+	console.log('Current Date timestamp : '+ timestamp);
+	for(let i = 0; i<nbPin.toString();i++){
+		let pinDuration = await contractInstance.pinDuration(i);
+		let pinHash = decodeHash32(await contractInstance.pin(i));
+		console.log("Pin Hash "+ pinHash +' duration :'+pinDuration.toString() );
+		if(pinDuration.toString()< timestamp){
+			//Unpin
+			node.pin.add(pinHash, (err, result) => {
+				 if (err) {
+					 console.er('Error unpin', err);
+					 return false;
+				 }
+				 console.log(result[0].hash +' was unpinned');
+				 
+		   });
+			
+			
+		}
+		
+	}
+	
+};
+
+
+cron.schedule("0/5 * * * * *", function() {
+	unPin();
+});
 
  
 app.use(function locals(req, res, next){
