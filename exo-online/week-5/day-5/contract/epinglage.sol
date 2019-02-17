@@ -12,7 +12,8 @@ contract Epinglage is Ownable{
 	mapping (uint256 => address) public  pinAddress;
 	mapping (uint256 => uint256) public  pinDuration;
 	event Epingler(
-        bytes32 pin
+        bytes32 pin,
+        uint256 duration
     );
 	 
 	function payerStockage(bytes32 pinUrl,uint256 duration)public payable {
@@ -23,7 +24,7 @@ contract Epinglage is Ownable{
 		pinAddress[nbPin]=msg.sender;
 		pinDuration[nbPin]=tempduration;
 		nbPin=nbPin.add(1);
-		emit Epingler(pinUrl);
+		emit Epingler(pinUrl,tempduration);
 	}
 	
 	function removeOldPin() public {

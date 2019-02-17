@@ -3,8 +3,12 @@ var express = require('express');
 var path = require('path');
 var cookieParser = require('cookie-parser');
 var logger = require('morgan');
-
 const _ = require('lodash');
+var ethers = require('ethers');
+var ipfsAPI = require('ipfs-api');
+const Ipfs= require('ipfs');
+
+
 const config = require('./config/config.json');
 const defaultConfig = config.development;
 const environment = process.env.NODE_ENV || 'development';
@@ -15,7 +19,26 @@ global.gConfig = finalConfig;
 var indexRouter = require('./routes/index');
 var ipfsRouter = require('./routes/ipfs');
 
+var provider = new ethers.providers.JsonRpcProvider("http://localhost:8545");
+const node = new Ipfs()
 var app = express();
+
+
+node.on('ready', () => {
+	 console.log("IPFS prêt")
+	 provider.getNetwork().then( (r) =>{  console.log("Ethereum connecté sur ", r)
+			 
+		//On écoute l'evenement Epingler
+			 
+		 const contractInstance = new ethers.Contract(finalConfig.contractaddress,finalConfig.abicontract,provider)
+		 contractInstance.on('Epingler', ( pin,duration, event) =>{
+			 //ON PIN LE HASH DE L'EVENT
+			 console.log(pin,duration)
+	     });
+	 
+	 	
+	 });
+})
 
 
 

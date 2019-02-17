@@ -157,6 +157,11 @@
 				"indexed": false,
 				"name": "pin",
 				"type": "bytes32"
+			},
+			{
+				"indexed": false,
+				"name": "duration",
+				"type": "uint256"
 			}
 		],
 		"name": "Epingler",
@@ -180,7 +185,7 @@
 		"type": "event"
 	}
 ],
-        "contractaddress":"0x6373dcc3137518c2ee8856d2ce4292456ae8883d"
+        "contractaddress":"0xa3ed7089bf896ddbd3e165c481fbe15f0223a49c"
     },
      
     "production": {
@@ -341,6 +346,11 @@
 				"indexed": false,
 				"name": "pin",
 				"type": "bytes32"
+			},
+			{
+				"indexed": false,
+				"name": "duration",
+				"type": "uint256"
 			}
 		],
 		"name": "Epingler",

@@ -6,6 +6,7 @@ var fileType = require('file-type');
 var path = require('path');
 var ethers = require('ethers');
 var ipfsAPI = require('ipfs-api');
+
 var fs = require('fs');
 var provider = new ethers.providers.JsonRpcProvider("http://localhost:8545");
 var ipfs = ipfsAPI('localhost', '5001');
