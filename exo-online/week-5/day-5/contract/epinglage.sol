@@ -18,10 +18,10 @@ contract Epinglage is Ownable{
 	function payerStockage(bytes32 pinUrl,uint256 duration)public payable {
 	 	require(msg.value  >= 100 finney,"La somme envoyé n'est pas suffisante");
 	 	uint256 tempduration = now;
+	 	tempduration=tempduration.add(duration);
 		pin.push(pinUrl);
 		pinAddress[nbPin]=msg.sender;
-		/* DURATION in second */
-		pinDuration[nbPin]=tempduration.add(duration);
+		pinDuration[nbPin]=tempduration;
 		nbPin=nbPin.add(1);
 		emit Epingler(pinUrl);
 	}
