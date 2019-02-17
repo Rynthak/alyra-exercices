@@ -64,6 +64,14 @@ var addImageToContract= async function(HashUrl){
     				 {text:'https://ipfs.io/ipfs/'+data[i].hash,
     			 	  href:'https://ipfs.io/ipfs/'+data[i].hash,
     			 	  target:'_blank'}).appendTo('#result');
+    		 $('<div id="count-'+i+data[i].hash+'">').appendTo('#result');
+    		 
+    		 $("#count-"+i+data[i].hash)
+    		  .countdown(data[i].duration*1000, function(event) {
+    		    $(this).text(
+    		      event.strftime('Expire dans %D days %H:%M:%S')
+    		    );
+    		  });
     		 
     		 $('<br>').appendTo('#result');
     	 }
