@@ -85,7 +85,7 @@ contract Marketplace is Ownable {
 		demandes[offerIndex].status = StatusChoice.FERMEE;
 		//On modifie la répuration du graphiste
 		accountList[msg.sender].reputation=accountList[msg.sender].reputation.add(1);		
-		msg.sender.transfer(demandes[offerIndex].remuneration);			
+		address(msg.sender).transfer(demandes[offerIndex].remuneration);			
 	}
 	function getListOfIllustrator(uint256 offerIndex,uint256 index) public view returns(address){
 		return demandes[offerIndex].listIllustrator[index];
