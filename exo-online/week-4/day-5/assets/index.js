@@ -5,12 +5,14 @@
 	$('#theModal').on('show.bs.modal', function (e) {
 	    var button = $(e.relatedTarget);
 	    var modal = $(this);    
-	    modal.find('.modal-dialog').load(button.data("remote"));
+	    modal.find('.modal-dialog').load(button.data("remote"),function(){
+	    	 if(button.data("callback")){
+	 	    	eval(button.data("callback")).apply(null,button.data('args'));
+	 	    }
+	    });
 	    
 	    
-	    if(button.data("callback")){
-	    	eval(button.data("callback")).apply(null,button.data('args'));
-	    }
+	   
 	});	
 	
 	$(document).on('refreshDemande',function(e){
@@ -34,9 +36,20 @@
 		createMetaMaskDapp(functionToCall);
 		 
 	});
+	$(document).on('submit','[data-rel="add-dev-form"]',function(e){
+		e.preventDefault();
+		let dev=$("#dev").val().trim();
+		let index=$("#add_dev_index").val().trim();
+		if(dev==""){
+			notify("Veuillez préciser une url");
+			return false;
+		}
+		let functionToCall=[];	 
+		functionToCall.push({name:addDev,args:[index,dev]})
+		createMetaMaskDapp(functionToCall);		
+		return false;
 	
-	
-	
+	});
 	//Ajout d'une demande
 	$(document).on('submit','[data-rel="add-demande-form"]',function(e){
 		e.preventDefault();
@@ -109,6 +122,24 @@
 		
 	});
 });
+ 
+
+let initAddDev =  function(index){
+ 	$('#add_dev_index').val(index);
+ 	 
+}
+ 
+let addDev = async function(index,url){
+	let contratMarketPlace=new ethers.Contract(contractAddress, abiContract, dapp.provider);
+	let contractWithSigner=contratMarketPlace.connect(dapp.provider.getSigner());
+	let UrlHash = ethers.utils.id(url);
+	let tx=await contractWithSigner.livraison(index,UrlHash);
+	
+	notify("Votre dev a bien été ajouté",'info','notice');
+	
+}
+ 
+ 
 
 let initListCandidateChoice = async function(index){
 	let contratMarketPlace=new ethers.Contract(contractAddress, abiContract, dapp.provider);
@@ -243,7 +274,7 @@ let listDemande = async function(){
 				buttonList+='<a class="dropdown-item"  data-remote="/accept_illustrator.html" data-callback="initListCandidateChoice" data-args="['+i+']" data-toggle="modal" data-target="#theModal">Choisir un candidat</a>';
 			}
 			if(status==1){
-				buttonList+='<a class="dropdown-item"  data-rel="add_dev" data-index="'+i+'" href="javascript:void(0);">Remettre un travail</a>';
+				buttonList+='<a class="dropdown-item" data-remote="/add_dev.html" data-callback="initAddDev" data-args="['+i+']" data-toggle="modal" data-target="#theModal">Remettre un travail</a>';
 			}			
 			if(status==2){
 				buttonList+='<a class="dropdown-item" data-rel="get_dev" data-index="'+i+'" href="javascript:void(0);">Récupérer travail</a>';
