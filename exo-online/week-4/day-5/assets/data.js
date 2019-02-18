@@ -334,7 +334,7 @@ const abiContract = [
 		"type": "function"
 	}
 ];
-const contractAddress = '0x84521c4d8f36d371d81b1299cf9af4a49acb6ecf';
+const contractAddress = '0xca5e97cfb2b2c9df13e37a0eaeb4cbe085612dd6';
 
 
 
