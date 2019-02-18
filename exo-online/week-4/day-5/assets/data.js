@@ -1,73 +1,25 @@
 const abiContract = [
 	{
-		"constant": false,
-		"inputs": [
-			{
-				"name": "illustrator",
-				"type": "address"
-			}
-		],
-		"name": "banIllustrator",
-		"outputs": [],
-		"payable": false,
-		"stateMutability": "nonpayable",
-		"type": "function"
-	},
-	{
-		"constant": true,
-		"inputs": [],
-		"name": "getMyAccountEnterpise",
-		"outputs": [
-			{
-				"components": [
-					{
-						"name": "name",
-						"type": "string"
-					},
-					{
-						"name": "entreprise_address",
-						"type": "address"
-					}
-				],
-				"name": "",
-				"type": "tuple"
-			}
-		],
-		"payable": false,
-		"stateMutability": "view",
-		"type": "function"
-	},
-	{
 		"constant": true,
 		"inputs": [
 			{
 				"name": "",
 				"type": "uint256"
-			}
-		],
-		"name": "illustratorsList",
-		"outputs": [
+			},
 			{
 				"name": "",
 				"type": "address"
 			}
 		],
-		"payable": false,
-		"stateMutability": "view",
-		"type": "function"
-	},
-	{
-		"constant": false,
-		"inputs": [
+		"name": "postuled",
+		"outputs": [
 			{
-				"name": "name",
-				"type": "string"
+				"name": "",
+				"type": "bool"
 			}
 		],
-		"name": "inscription",
-		"outputs": [],
 		"payable": false,
-		"stateMutability": "nonpayable",
+		"stateMutability": "view",
 		"type": "function"
 	},
 	{
@@ -85,55 +37,9 @@ const abiContract = [
 		"type": "function"
 	},
 	{
-		"constant": true,
-		"inputs": [],
-		"name": "getMyAccountIllustrator",
-		"outputs": [
-			{
-				"components": [
-					{
-						"name": "name",
-						"type": "string"
-					},
-					{
-						"name": "illustrator_address",
-						"type": "address"
-					},
-					{
-						"name": "reputation",
-						"type": "uint256"
-					},
-					{
-						"name": "status",
-						"type": "uint8"
-					}
-				],
-				"name": "",
-				"type": "tuple"
-			}
-		],
-		"payable": false,
-		"stateMutability": "view",
-		"type": "function"
-	},
-	{
 		"constant": false,
 		"inputs": [],
 		"name": "renounceOwnership",
-		"outputs": [],
-		"payable": false,
-		"stateMutability": "nonpayable",
-		"type": "function"
-	},
-	{
-		"constant": false,
-		"inputs": [
-			{
-				"name": "name",
-				"type": "string"
-			}
-		],
-		"name": "inscriptionEntreprises",
 		"outputs": [],
 		"payable": false,
 		"stateMutability": "nonpayable",
@@ -168,24 +74,6 @@ const abiContract = [
 		"type": "function"
 	},
 	{
-		"constant": false,
-		"inputs": [
-			{
-				"name": "offerIndex",
-				"type": "uint256"
-			},
-			{
-				"name": "hashUrl",
-				"type": "bytes32"
-			}
-		],
-		"name": "livraison",
-		"outputs": [],
-		"payable": false,
-		"stateMutability": "nonpayable",
-		"type": "function"
-	},
-	{
 		"constant": true,
 		"inputs": [
 			{
@@ -196,8 +84,24 @@ const abiContract = [
 		"name": "demandes",
 		"outputs": [
 			{
-				"name": "",
-				"type": "address"
+				"name": "remuneration",
+				"type": "uint256"
+			},
+			{
+				"name": "minimumReput",
+				"type": "uint256"
+			},
+			{
+				"name": "description",
+				"type": "string"
+			},
+			{
+				"name": "status",
+				"type": "uint8"
+			},
+			{
+				"name": "accept_delay",
+				"type": "uint256"
 			}
 		],
 		"payable": false,
@@ -249,14 +153,30 @@ const abiContract = [
 		"inputs": [
 			{
 				"name": "",
-				"type": "uint256"
+				"type": "address"
 			}
 		],
-		"name": "entreprisesList",
+		"name": "accountList",
 		"outputs": [
 			{
-				"name": "",
+				"name": "name",
+				"type": "string"
+			},
+			{
+				"name": "account_address",
 				"type": "address"
+			},
+			{
+				"name": "reputation",
+				"type": "uint256"
+			},
+			{
+				"name": "status",
+				"type": "uint8"
+			},
+			{
+				"name": "role",
+				"type": "uint8"
 			}
 		],
 		"payable": false,
@@ -267,15 +187,15 @@ const abiContract = [
 		"constant": false,
 		"inputs": [
 			{
-				"name": "offerIndex",
-				"type": "uint256"
+				"name": "name",
+				"type": "string"
 			},
 			{
-				"name": "illustrator",
-				"type": "address"
+				"name": "role",
+				"type": "uint8"
 			}
 		],
-		"name": "accepterOffre",
+		"name": "inscription",
 		"outputs": [],
 		"payable": false,
 		"stateMutability": "nonpayable",
@@ -332,331 +252,8 @@ const abiContract = [
 		"type": "event"
 	}
 ];
-const contractAddress = '0xa3ed7089bf896ddbd3e165c481fbe15f0223a49c';
+const contractAddress = '0xd091729c50d34ecd4fb6f29d8f0c684b2ca5bc27';
 
 
 
-/* ABI DEMANDE*/
-
-var abiContractDemande = [
-	{
-		"constant": true,
-		"inputs": [
-			{
-				"name": "illustrator",
-				"type": "address"
-			}
-		],
-		"name": "isMyIllustrator",
-		"outputs": [
-			{
-				"name": "",
-				"type": "bool"
-			}
-		],
-		"payable": false,
-		"stateMutability": "view",
-		"type": "function"
-	},
-	{
-		"constant": false,
-		"inputs": [
-			{
-				"name": "illustrator",
-				"type": "address"
-			}
-		],
-		"name": "addIllustrator",
-		"outputs": [],
-		"payable": false,
-		"stateMutability": "nonpayable",
-		"type": "function"
-	},
-	{
-		"constant": true,
-		"inputs": [],
-		"name": "status",
-		"outputs": [
-			{
-				"name": "",
-				"type": "uint8"
-			}
-		],
-		"payable": false,
-		"stateMutability": "view",
-		"type": "function"
-	},
-	{
-		"constant": true,
-		"inputs": [],
-		"name": "customer",
-		"outputs": [
-			{
-				"name": "",
-				"type": "address"
-			}
-		],
-		"payable": false,
-		"stateMutability": "view",
-		"type": "function"
-	},
-	{
-		"constant": true,
-		"inputs": [
-			{
-				"name": "url",
-				"type": "string"
-			}
-		],
-		"name": "produireHash",
-		"outputs": [
-			{
-				"name": "",
-				"type": "bytes32"
-			}
-		],
-		"payable": false,
-		"stateMutability": "pure",
-		"type": "function"
-	},
-	{
-		"constant": true,
-		"inputs": [],
-		"name": "isOpen",
-		"outputs": [
-			{
-				"name": "",
-				"type": "bool"
-			}
-		],
-		"payable": false,
-		"stateMutability": "view",
-		"type": "function"
-	},
-	{
-		"constant": true,
-		"inputs": [],
-		"name": "minimumReput",
-		"outputs": [
-			{
-				"name": "",
-				"type": "uint256"
-			}
-		],
-		"payable": false,
-		"stateMutability": "view",
-		"type": "function"
-	},
-	{
-		"constant": false,
-		"inputs": [],
-		"name": "renounceOwnership",
-		"outputs": [],
-		"payable": false,
-		"stateMutability": "nonpayable",
-		"type": "function"
-	},
-	{
-		"constant": true,
-		"inputs": [],
-		"name": "description",
-		"outputs": [
-			{
-				"name": "",
-				"type": "string"
-			}
-		],
-		"payable": false,
-		"stateMutability": "view",
-		"type": "function"
-	},
-	{
-		"constant": true,
-		"inputs": [
-			{
-				"name": "illustrator",
-				"type": "address"
-			}
-		],
-		"name": "checkPostuled",
-		"outputs": [
-			{
-				"name": "",
-				"type": "bool"
-			}
-		],
-		"payable": false,
-		"stateMutability": "view",
-		"type": "function"
-	},
-	{
-		"constant": true,
-		"inputs": [],
-		"name": "owner",
-		"outputs": [
-			{
-				"name": "",
-				"type": "address"
-			}
-		],
-		"payable": false,
-		"stateMutability": "view",
-		"type": "function"
-	},
-	{
-		"constant": true,
-		"inputs": [],
-		"name": "isOwner",
-		"outputs": [
-			{
-				"name": "",
-				"type": "bool"
-			}
-		],
-		"payable": false,
-		"stateMutability": "view",
-		"type": "function"
-	},
-	{
-		"constant": false,
-		"inputs": [
-			{
-				"name": "newstatus",
-				"type": "uint8"
-			}
-		],
-		"name": "changeStatus",
-		"outputs": [],
-		"payable": false,
-		"stateMutability": "nonpayable",
-		"type": "function"
-	},
-	{
-		"constant": false,
-		"inputs": [
-			{
-				"name": "_urlHash",
-				"type": "bytes32"
-			}
-		],
-		"name": "updateWork",
-		"outputs": [],
-		"payable": false,
-		"stateMutability": "nonpayable",
-		"type": "function"
-	},
-	{
-		"constant": true,
-		"inputs": [],
-		"name": "isPending",
-		"outputs": [
-			{
-				"name": "",
-				"type": "bool"
-			}
-		],
-		"payable": false,
-		"stateMutability": "view",
-		"type": "function"
-	},
-	{
-		"constant": false,
-		"inputs": [
-			{
-				"name": "illustrator",
-				"type": "address"
-			}
-		],
-		"name": "acceptOneIllustrator",
-		"outputs": [],
-		"payable": false,
-		"stateMutability": "nonpayable",
-		"type": "function"
-	},
-	{
-		"constant": true,
-		"inputs": [],
-		"name": "remuneration",
-		"outputs": [
-			{
-				"name": "",
-				"type": "uint256"
-			}
-		],
-		"payable": false,
-		"stateMutability": "view",
-		"type": "function"
-	},
-	{
-		"constant": false,
-		"inputs": [
-			{
-				"name": "newOwner",
-				"type": "address"
-			}
-		],
-		"name": "transferOwnership",
-		"outputs": [],
-		"payable": false,
-		"stateMutability": "nonpayable",
-		"type": "function"
-	},
-	{
-		"constant": true,
-		"inputs": [],
-		"name": "accept_delay",
-		"outputs": [
-			{
-				"name": "",
-				"type": "uint256"
-			}
-		],
-		"payable": false,
-		"stateMutability": "view",
-		"type": "function"
-	},
-	{
-		"inputs": [
-			{
-				"name": "_remuneration",
-				"type": "uint256"
-			},
-			{
-				"name": "_accept_delay",
-				"type": "uint256"
-			},
-			{
-				"name": "_description",
-				"type": "string"
-			},
-			{
-				"name": "_minimumReput",
-				"type": "uint256"
-			},
-			{
-				"name": "_customer",
-				"type": "address"
-			}
-		],
-		"payable": false,
-		"stateMutability": "nonpayable",
-		"type": "constructor"
-	},
-	{
-		"anonymous": false,
-		"inputs": [
-			{
-				"indexed": true,
-				"name": "previousOwner",
-				"type": "address"
-			},
-			{
-				"indexed": true,
-				"name": "newOwner",
-				"type": "address"
-			}
-		],
-		"name": "OwnershipTransferred",
-		"type": "event"
-	}
-];
+ 

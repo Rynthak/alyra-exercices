@@ -23,7 +23,7 @@ library SharedStructs {
     }    
 }
 
-contract Demande is Ownable{
+contract Demande{
 	uint256 public remuneration;
     uint256 public accept_delay;
     string public description;
@@ -33,9 +33,9 @@ contract Demande is Ownable{
     enum StatusChoice { OUVERTE, ENCOURS, FERMEE }
     StatusChoice public status ;
     uint256 public minimumReput ;
-    address[] illustrators;
-    mapping (address => bool)  illustratorsPostuled;
-    address private myIllustrator ;
+    address[] public illustrators;
+    mapping (address => bool) public illustratorsPostuled;
+    address public myIllustrator ;
     bytes32 private urlHash;
     
     constructor(uint256 _remuneration,uint256 _accept_delay,string memory _description,uint256 _minimumReput,address _customer) public{
@@ -58,20 +58,20 @@ contract Demande is Ownable{
 	function checkPostuled(address illustrator) public view returns (bool){
 	    return (illustratorsPostuled[illustrator] == true);
 	}
-	function addIllustrator(address illustrator) public onlyOwner() {
+	function addIllustrator(address illustrator) public  {
 	    illustratorsPostuled[illustrator]=true;
 	    illustrators.push(illustrator);
 	}	
-	function acceptOneIllustrator(address illustrator) public onlyOwner() {
+	function acceptOneIllustrator(address illustrator) public {
 	    myIllustrator=illustrator;	    
 	}	
-	function isMyIllustrator(address illustrator) public view onlyOwner() returns (bool) {
+	function isMyIllustrator(address illustrator) public view  returns (bool) {
 	    return (myIllustrator==illustrator);	    
 	}	
-	function changeStatus(StatusChoice newstatus) public onlyOwner(){
+	function changeStatus(StatusChoice newstatus) public {
 		status=newstatus;
 	}	
-	function updateWork(bytes32 _urlHash) public onlyOwner(){
+	function updateWork(bytes32 _urlHash) public {
 		urlHash=_urlHash;
 	}
 	
@@ -88,8 +88,8 @@ contract Marketplace is Ownable {
 	
 	using SafeMath for uint256;
 	
-	mapping (address => SharedStructs.Illustrator) private illustrators;
-	mapping (address => SharedStructs.Entreprise) private entreprises;
+	mapping (address => SharedStructs.Illustrator) public illustrators;
+	mapping (address => SharedStructs.Entreprise) public entreprises;
 	mapping (uint => address) public entreprisesDemandes;
 	address[] public entreprisesList;
 	address[] public illustratorsList;
@@ -142,15 +142,16 @@ contract Marketplace is Ownable {
 	function getMyAccountIllustrator() public view returns (SharedStructs.Illustrator memory){		
 		return illustrators[msg.sender];
 	}		
-	function postuler(uint256 offerIndex) public onlyIllustrator() onlyIllustratorNotBanned(){
-		require(demandes[offerIndex].isOpen(),"La demande n'est pas ouverte");
-		require(!demandes[offerIndex].checkPostuled(msg.sender),"Vous avez déjà postulé");
+	function postuler(uint256 offerIndex) public {
+		//require(demandes[offerIndex].isOpen(),"La demande n'est pas ouverte");
+		//require(!demandes[offerIndex].checkPostuled(msg.sender),"Vous avez déjà postulé");
 		//Vérification réputation minimul du graphiste
-		require(illustrators[msg.sender].reputation >= demandes[offerIndex].minimumReput(),"Vous n'avez pas la réputation requise");
+		//require(illustrators[msg.sender].reputation >= demandes[offerIndex].minimumReput(),"Vous n'avez pas la réputation requise");
 		
 		//Vérification date limite dépôt candisature
-		//require(now<=demandes[offerIndex].accept_delay());		
-		demandes[offerIndex].addIllustrator(msg.sender);
+		//require(now<=demandes[offerIndex].accept_delay());	
+		Demande d  = Demande(demandes[offerIndex]);			
+		d.addIllustrator(msg.sender);
 	}
 	function accepterOffre(uint256 offerIndex,address illustrator) public onlyEntrepriseOwner(offerIndex){
 		require(demandes[offerIndex].isOpen());				

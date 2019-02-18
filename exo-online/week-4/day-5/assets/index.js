@@ -131,6 +131,7 @@ let  initContractEvent = async function (){
 
 
 let listDemande = async function(){
+	 
 	let contratMarketPlace=new ethers.Contract(contractAddress, abiContract, dapp.provider);
 	let contractWithSigner=contratMarketPlace.connect(dapp.provider.getSigner());	
 	
@@ -139,7 +140,7 @@ let listDemande = async function(){
 	let remoteUrl = elementContainerTable.data('remote');
 	let table=$(await $.ajax( remoteUrl));
 			
-	let nbDemande=await contratMarketPlace.nbDemandes();
+	let nbDemande=await contractWithSigner.nbDemandes();
 	
 	if(nbDemande==0){
 		table='<div class="alert alert-warning mx-auto" role="alert">';
@@ -150,20 +151,21 @@ let listDemande = async function(){
 	for(let i = 0 ; i< nbDemande.toString();i++){
 		//Création 
 		
-		let contratDemandeAddress=await contratMarketPlace.demandes(i);
+		let demande=await contractWithSigner.demandes(i);
 		
-		let contratDemande=new ethers.Contract(contratDemandeAddress, abiContractDemande, dapp.provider);
+		 console.log(demande);
 		
-		let remuneration = await contratDemande.remuneration();
-		let date_project_end = timeConverter(await contratDemande.accept_delay());
-		let description = await contratDemande.description();
-		let reputation = await contratDemande.minimumReput();
-		let status=  await contratDemande.status();
+		let remuneration = demande.remuneration;
+		let date_project_end = timeConverter( demande.accept_delay);
+		let description = demande.description;
+		let reputation =demande.minimumReput;
+		let status=  demande.status;
 		//let statusIsIllustrator=  await contratDemande.isMyIllustrator(dapp.address);
-		let checkPostuled = await contratDemande.checkPostuled(dapp.address);
-		let customer = await contratDemande.customer();
+		let checkPostuled =  await contractWithSigner.postuled(i,dapp.address);
+		let customer = await contractWithSigner.entreprisesDemandes(i);
 		let isCustomer =customer.toLowerCase()==dapp.address.toLowerCase();
 		 
+		
 		
 		let tempRow="";
 		
@@ -175,7 +177,7 @@ let listDemande = async function(){
 			statusHTML+='<br><span class="badge badge-primary">MY DEMANDE</span>';
 		}
 		
-		if(status==0  && localStorage.getItem('type_account')=='illustrator'){
+		if(status==0  && localStorage.getItem('type_account')=='1'){
 			if(checkPostuled){
 				statusHTML+='<br><span class="badge badge-success">POSTULE</span>';
 			}else{
@@ -193,7 +195,7 @@ let listDemande = async function(){
 		buttonList+='</button>';
 		buttonList+='<div class="dropdown-menu" aria-labelledby="dropdownMenuButton">';
 			
-			if(status==0 && !checkPostuled && localStorage.getItem('type_account')=='illustrator'){
+			if(status==0 && !checkPostuled && localStorage.getItem('type_account')=='1'){
 				buttonList+='<a class="dropdown-item" data-rel="postul" data-index="'+i+'" href="javascript:void(0);">Postuler</a>';
 			}
 			if(status==0 && isCustomer){ 
@@ -232,16 +234,11 @@ let loginContract =  async function(){
 	let _initConnect= async function(){
 		let contratMarketPlace=new ethers.Contract(contractAddress, abiContract, dapp.provider);
 		let contractWithSigner=contratMarketPlace.connect(dapp.provider.getSigner());
-		let myAccount = await contractWithSigner.getMyAccountEnterpise();
-		if(myAccount.entreprise_address.toLowerCase()==dapp.address.toLowerCase()){
-			localStorage.setItem('type_account', 'entreprise');
+		let myAccount = await contractWithSigner.accountList(dapp.address.toLowerCase());		
+		if(myAccount.account_address.toLowerCase()==dapp.address.toLowerCase()){
+			localStorage.setItem('type_account', myAccount.role);
 			localStorage.setItem('name', myAccount.name);
-		}
-		myAccount = await contractWithSigner.getMyAccountIllustrator();
-		if(myAccount.illustrator_address.toLowerCase()==dapp.address.toLowerCase()){
-			localStorage.setItem('type_account', 'illustrator');
-			localStorage.setItem('name', myAccount.name);			
-		}	
+		}		 	
 		return false;
 		
 	};
@@ -256,9 +253,9 @@ let addDemande =  async function(description, remuneration,minimumReput,accept_d
 	let contratMarketPlace=new ethers.Contract(contractAddress, abiContract, dapp.provider);
 	let contractWithSigner=contratMarketPlace.connect(dapp.provider.getSigner());
 	
-	let myAccount = await contractWithSigner.getMyAccountEnterpise();
+	let myAccount = await contractWithSigner.accountList(dapp.address.toLowerCase());
 	 
-	if(myAccount.entreprise_address.toLowerCase()!=dapp.address.toLowerCase()){
+	if(myAccount.account_address.toLowerCase()!=dapp.address.toLowerCase() || myAccount.role=='1'){
 		notify("Vous devez vous connecter");
 		return false;
 	}
@@ -281,25 +278,16 @@ let initRegister = async function(nameAccount, typeAccount){
 	
 	let contractWithSigner=contratMarketPlace.connect(dapp.provider.getSigner());
 	
-	let myAccount = await contractWithSigner.getMyAccountEnterpise();
+	let myAccount = await contractWithSigner.accountList(dapp.address.toLowerCase());
 	 
-	if(myAccount.entreprise_address.toLowerCase()==dapp.address.toLowerCase()){
-		notify("Déjà inscrit en tant qu'entreprise");
+	if(myAccount.account_address.toLowerCase()==dapp.address.toLowerCase()){
+		notify("Déjà inscrit ");
 		$('#theModal').modal('hide');
 		return false;
 	}
-	myAccount = await contractWithSigner.getMyAccountIllustrator();
-	if(myAccount.illustrator_address.toLowerCase()==dapp.address.toLowerCase()){
-		notify("Déjà inscrit en tant qu'illustrateur");
-		$('#theModal').modal('hide');
-		return false;
-	}
-	let tx= undefined;
-	if(typeAccount=="0"){			
-		tx = await contractWithSigner.inscription(nameAccount);
-	}else if(typeAccount=="1"){
-		tx = await contractWithSigner.inscriptionEntreprises(nameAccount);
-	}	 
+	 
+	let tx= await contractWithSigner.inscription(nameAccount,typeAccount);
+	 
 	
 	notify("Inscription OK","info",'notice');
 	$('#theModal').modal('hide');
