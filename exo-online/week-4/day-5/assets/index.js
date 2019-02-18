@@ -27,7 +27,13 @@
 	$( document ).trigger( "refreshDemande");
 	
 	
-	 
+	$(document).on('click','.accept-candidate',function(e){
+		e.preventDefault();
+		let functionToCall=[];	
+		functionToCall.push({name:acceptDemande,args:[$(this).data('value'),$(this).data('address')]});
+		createMetaMaskDapp(functionToCall);
+		 
+	});
 	
 	
 	
@@ -104,10 +110,33 @@
 	});
 });
 
-let initListCandidateChoice = function(index){
+let initListCandidateChoice = async function(index){
 	let contratMarketPlace=new ethers.Contract(contractAddress, abiContract, dapp.provider);
 	let contractWithSigner=contratMarketPlace.connect(dapp.provider.getSigner());
 	notify("Veuillez choisir un candidat en selectionnant son addresse",'info','notice');
+	
+	let demande=await contractWithSigner.demandes(index);
+	
+	for(let i = 0 ; i<demande.nbIllustrator;i++){
+		let address = await contractWithSigner.getListOfIllustrator(index,i);
+		let account =  await contractWithSigner.accountList(address);
+		
+		
+		 let link = $('<a>',
+				 {
+			      
+			      'data-value':index,
+			      'data-address':address,
+			      class:'accept-candidate',
+			 	  text:"Nom :"+account.name +' | Reputation ='+account.reputation,
+			 	  href:'javscript:void(0);'}).appendTo('[data-rel="accept_illustrators_list"]');
+		
+		 $('<br>').appendTo('[data-rel="accept_illustrators_list"]');
+	}
+	
+	 
+	 
+	
 	
 }
  
@@ -129,6 +158,15 @@ let  initContractEvent = async function (){
 	 
 }
 
+let acceptDemande = async function(offerIndex,address){
+	let contratMarketPlace=new ethers.Contract(contractAddress, abiContract, dapp.provider);
+	let contractWithSigner=contratMarketPlace.connect(dapp.provider.getSigner());
+	let tx = await contractWithSigner.accepterOffre(offerIndex,address);
+	
+	notify("Votre candidate a bien été choisit",'info','notice');
+	$('#theModal').modal('hide');
+	
+}
 
 let listDemande = async function(){
 	 
@@ -153,7 +191,7 @@ let listDemande = async function(){
 		
 		let demande=await contractWithSigner.demandes(i);
 		
-		 console.log(demande);
+		  
 		
 		let remuneration = demande.remuneration;
 		let date_project_end = timeConverter( demande.accept_delay);
@@ -162,8 +200,9 @@ let listDemande = async function(){
 		let status=  demande.status;
 		//let statusIsIllustrator=  await contratDemande.isMyIllustrator(dapp.address);
 		let checkPostuled =  await contractWithSigner.postuled(i,dapp.address);
-		let customer = await contractWithSigner.entreprisesDemandes(i);
-		let isCustomer =customer.toLowerCase()==dapp.address.toLowerCase();
+		let isCustomer = (await contractWithSigner.entreprisesDemandes(i)).toLowerCase()==dapp.address.toLowerCase();
+		let isthedev = (await contractWithSigner.affectedDev(i)).toLowerCase()==dapp.address.toLowerCase();
+		 
 		 
 		
 		
@@ -183,6 +222,8 @@ let listDemande = async function(){
 			}else{
 				statusHTML+='<br><span class="badge badge-warning">NON POSTULE</span>';
 			}
+		}else if(isthedev){
+			statusHTML+='<br><span class="badge badge-success">ACCEPTE SUR LE PROJET</span>';
 		}
 		
 		
