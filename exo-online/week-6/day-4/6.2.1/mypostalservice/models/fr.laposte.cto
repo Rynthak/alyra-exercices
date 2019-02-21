@@ -17,3 +17,20 @@
  */
 
 namespace fr.laposte
+
+
+asset Colis identified by numeroDeColis {
+  o String numeroDeColis
+  o String localisation
+  --> Personne destinataire
+  --> Personne emetteur
+}
+
+participant Personne identified by nom {
+  o String nom
+  --> Address adr
+}
+
+participant Address identified by id {
+  o String id
+}
