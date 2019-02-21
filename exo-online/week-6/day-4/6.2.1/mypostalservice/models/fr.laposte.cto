@@ -34,3 +34,7 @@ participant Personne identified by nom {
 participant Address identified by id {
   o String id
 }
+
+transaction Deplacement {
+  o String arrivee
+}
