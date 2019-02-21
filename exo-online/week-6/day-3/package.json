@@ -1,0 +1,17 @@
+{
+  "name": "tendermin-counter",
+  "version": "1.0.0",
+  "description": "Nous allons développer notre propre application en javascript pour implémenter la logique de validation des transactions. Notre script consistera en un compteur qui accepte les nombres pairs successifs 0, 2, 4, 6, ...",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "tendermint"
+  ],
+  "author": "rynthak",
+  "license": "ISC",
+  "dependencies": {
+    "abci": "git+https://github.com/tendermint/js-abci.git"
+  }
+}
