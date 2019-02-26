@@ -19,9 +19,17 @@
 namespace fr.laposte
 
 
+enum Etat{
+  o BON
+  o ENDOMMAGE 
+  o DETRUIT
+}
+
+
 asset Colis identified by numeroDeColis {
   o String numeroDeColis
   o String localisation
+  o Etat statut
   --> Personne destinataire
   --> Personne emetteur
 }
