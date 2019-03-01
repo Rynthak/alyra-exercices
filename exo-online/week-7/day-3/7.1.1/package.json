@@ -2,13 +2,14 @@
   "name": "7.1.1",
   "version": "1.0.0",
   "description": "Exercice 7.1.1 - Comparer les livres d’ordres",
-  "main": "index.html",
+  "main": "app.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "",
   "license": "ISC",
-  "devDependencies": {
-    "live-server": "^1.2.1"
+  "devDependencies": {},
+  "dependencies": {
+    "sync-request": "^6.0.0"
   }
 }
