@@ -72,9 +72,12 @@ contract ERC721Simple {
 }
 
 
-contract ObjetsMagiques is ERC721Simple, Ownable {
-
+contract ObjetsMagiques is ERC721Simple , Ownable {
+	using SafeMath for uint256;
 	
-	
+	function buyToken(uint256 tokenId)public payable{
+		require(msg.value  >= 100 finney,"La somme envoyé n'est pas suffisante");		
+		_mint(msg.sender,tokenId);
+	}
 	
 }
