@@ -1,0 +1,15 @@
+{
+  "name": "7.1.3",
+  "version": "1.0.0",
+  "description": "Exercice 7.1.3 Créer le dashboard d’un jeton",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "rynthak",
+  "license": "ISC",
+  "dependencies": {
+    "console.table": "^0.10.0",
+    "sync-request": "^6.0.0"
+  }
+}
