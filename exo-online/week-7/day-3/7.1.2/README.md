@@ -4,6 +4,6 @@ npm install<br>
 
 node index.js <symbol><br>
 <br>
-Ex: node index.js  bteur<br>
+Ex: node index.js bteur<br>
 
 <br>
