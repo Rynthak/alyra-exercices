@@ -27,50 +27,44 @@ library Counters {
 }
 
 contract ERC721Simple {
- event Transfer(address indexed _from, address indexed _to, uint256 _tokenId);
- using SafeMath for uint256;	
- mapping (uint256 => address) private tokens;
- using Counters for Counters.Counter;
- mapping (address => Counters.Counter) private _ownedTokensCount;
+ 	event Transfer(address indexed _from, address indexed _to, uint256 _tokenId);
+ 	using SafeMath for uint256;	
+ 	mapping (uint256 => address) private tokens;
+ 	using Counters for Counters.Counter;
+ 	mapping (address => Counters.Counter) private _ownedTokensCount;
+
+	function balanceOf(address _owner) public view returns (uint256 balance){
+ 		require(_owner != address(0));
+		return _ownedTokensCount[_owner].current();
+	}
+	function ownerOf(uint256 _tokenId) public view returns (address _owner){
+ 		return tokens[_tokenId];
+	}
+	function exists(uint256 _tokenId) public view returns (bool){
+ 		address owner = tokens[_tokenId];
+    	return owner != address(0);
+	}
+
+	function transferFrom(address _from, address _to, uint256 _tokenId) public{
+	 	require(tokens[_tokenId] == msg.sender);
+	 	require(tokens[_tokenId] == _from);
+	 	require(_to != address(0));
+	 	tokens[_tokenId]=_to;	 	
+	 	_ownedTokensCount[_from].decrement();
+	    _ownedTokensCount[_to].increment();	 	
+	 	emit Transfer(_from,_to,_tokenId);
+	}
  
-
- function balanceOf(address _owner) public view returns (uint256 balance){
- 	require(_owner != address(0));
- 	return _ownedTokensCount[_owner].current();
- }
- function ownerOf(uint256 _tokenId) public view returns (address _owner){
- 	return tokens[_tokenId];
- }
- function exists(uint256 _tokenId) public view returns (bool){
- 	address owner = tokens[_tokenId];
-    return owner != address(0);
- }
-
- function transferFrom(address _from, address _to, uint256 _tokenId) public{
- 	require(tokens[_tokenId] == msg.sender);
- 	require(tokens[_tokenId] == _from);
- 	require(_to != address(0));
- 	tokens[_tokenId]=_to;
- 	
- 	_ownedTokensCount[_from].decrement();
-    _ownedTokensCount[_to].increment();
- 	
- 	emit Transfer(_from,_to,_tokenId);
- }
- 
- function _mint(address to, uint256 tokenId) internal {
-        require(to != address(0));
-        require(!exists(tokenId));
-
-        tokens[tokenId] = to;
-        _ownedTokensCount[to].increment();
-
-        emit Transfer(address(0), to, tokenId);
- }
+	function _mint(address to, uint256 tokenId) internal {
+		require(to != address(0));
+		require(!exists(tokenId));		
+		tokens[tokenId] = to;
+		_ownedTokensCount[to].increment();		
+		emit Transfer(address(0), to, tokenId);
+	}
  
  
 }
-
 
 contract ObjetsMagiques is ERC721Simple , Ownable {
 	using SafeMath for uint256;
@@ -78,6 +72,5 @@ contract ObjetsMagiques is ERC721Simple , Ownable {
 	function buyToken(uint256 tokenId)public payable{
 		require(msg.value  >= 100 finney,"La somme envoyé n'est pas suffisante");		
 		_mint(msg.sender,tokenId);
-	}
-	
+	}	
 }
