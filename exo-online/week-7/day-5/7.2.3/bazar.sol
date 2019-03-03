@@ -30,7 +30,7 @@ contract bazarV3 is bazarV2{
 		}else{
 			//Calcul de l'enchère hollandaise
 			uint256 nbBlocks	= SafeMath.sub(1000, SafeMath.sub(bids[_objet].finEnchere,block.number));
-			uint256 discount 	= SafeMath.div(allbids[_objet].value * nbBlocks *10,100); 
+			uint256 discount 	= SafeMath.div(allbids[_objet].value * nbBlocks ,1000); 
 			uint256 minPrices	= SafeMath.sub(allbids[_objet].value,discount);
 			require(msg.value>=minPrices);
 			super.offre(_objet);
