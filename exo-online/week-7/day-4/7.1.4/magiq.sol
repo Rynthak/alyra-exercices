@@ -29,9 +29,9 @@ library Counters {
 contract ERC721Simple {
  	event Transfer(address indexed _from, address indexed _to, uint256 _tokenId);
  	using SafeMath for uint256;	
- 	mapping (uint256 => address) private tokens;
+ 	mapping (uint256 => address) public tokens;
  	using Counters for Counters.Counter;
- 	mapping (address => Counters.Counter) private _ownedTokensCount;
+ 	mapping (address => Counters.Counter) public _ownedTokensCount;
 
 	function balanceOf(address _owner) public view returns (uint256 balance){
  		require(_owner != address(0));
