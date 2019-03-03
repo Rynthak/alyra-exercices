@@ -11,17 +11,18 @@ contract bazarV3 is bazarV2{
 	     uint256 objet;
 	     BidChoice typebid;
 	     uint256 value;
+	     uint256 dutchamountPerBlock;
 	}
 	mapping (uint256 => MultiBids) public allbids;
 	
-	function proposerALaVenteDutch(uint256 _objet,uint256 value) public {
+	function proposerALaVenteDutch(uint256 _objet,uint256 value, uint256 _dutchamountPerBlock) public {
     	require(value>0);
 		super.proposerALaVente(_objet);
-		allbids[_objet]=MultiBids(_objet,BidChoice.DUTCH,value);
+		allbids[_objet]=MultiBids(_objet,BidChoice.DUTCH,value,_dutchamountPerBlock);
     }
 	function proposerALaVente(uint256 _objet) public{
 		super.proposerALaVente(_objet);
-		allbids[_objet]=MultiBids(_objet,BidChoice.CLASSIC,0);
+		allbids[_objet]=MultiBids(_objet,BidChoice.CLASSIC,0,0);
 	}
 	function offre(uint256 _objet) public payable{
 		require(allbids[_objet].objet==_objet);
@@ -30,7 +31,7 @@ contract bazarV3 is bazarV2{
 		}else{
 			//Calcul de l'enchère hollandaise
 			uint256 nbBlocks	= SafeMath.sub(1000, SafeMath.sub(bids[_objet].finEnchere,block.number));
-			uint256 discount 	= SafeMath.div(allbids[_objet].value * nbBlocks ,1000); 
+			uint256 discount 	= SafeMath.div(allbids[_objet].value * nbBlocks * allbids[_objet].dutchamountPerBlock ,1000); 
 			uint256 minPrices	= SafeMath.sub(allbids[_objet].value,discount);
 			require(msg.value>=minPrices);
 			super.offre(_objet);
