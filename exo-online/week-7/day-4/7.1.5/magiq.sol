@@ -8,7 +8,7 @@ contract ObjetsMagiquesV2 is ObjetsMagiques {
 	
 	
 	function creuser() public payable{
-		uint256 tokenId = uint256((blockhash(block.number-1)) );
+		uint256 tokenId = uint256((blockhash(block.number-1)) )%2999;
 		require(msg.value  >= 100 finney,"La somme envoyé n'est pas suffisante");		
 		_mint(msg.sender,tokenId);
 	}

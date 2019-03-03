@@ -10,12 +10,21 @@ contract ObjetsMagiquesV3 is ObjetsMagiquesV2 {
 	function utiliser(uint256 tokenId) public returns (uint256){
 		require(ownerOf(tokenId)==msg.sender);
 		
-		uint256 random = blockhash(block.number-1)%10;
+		uint256 random = uint256(blockhash(block.number-1))%10;
 		if(random==0){
 			_burn(msg.sender,tokenId);
 		} 
 		return random;
 	}
+	
+	function transferFrom(address _from, address _to, uint256 _tokenId) public{ 
+		require(!_isDivin(_tokenId));
+		super.transferFrom(_from,_to,_tokenId);
+	}
+	function _isDivin(uint256 _tokenId) public pure returns (bool){
+		
+		return uint(_tokenId/1000)==2;
+	} 
 	
 	
 	function _burn(address owner, uint256 tokenId) internal {
