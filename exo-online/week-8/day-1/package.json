@@ -9,6 +9,6 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "waffle": "0.0.4"
+    "ethereum-waffle": "^2.0.7"
   }
 }
