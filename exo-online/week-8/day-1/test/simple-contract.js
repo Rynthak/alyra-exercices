@@ -29,6 +29,11 @@ describe('Test SimpleContract', () => {
 		      .to.emit(contract, 'NameChanged')
 		      .withArgs('Hi Buddy');
 	  });
+	 
+	 it('Should setName reverted', async () => {
+		 	const contractFromOtherWallet = contract.connect(walletTo);
+		    await expect(contractFromOtherWallet.setName('Hi Buddy 2')).to.be.reverted;
+	 });
 
 	
 });
