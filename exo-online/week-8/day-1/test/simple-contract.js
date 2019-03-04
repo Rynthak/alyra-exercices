@@ -6,7 +6,7 @@ const {expect} = chai;
 chai.use(solidity);
 describe('Test SimpleContract', () => {
 	  const provider = createMockProvider();
-	  const [ wallet ] = getWallets(provider);
+	  const [ wallet , walletTo ] = getWallets(provider);
 	  let contract;
 	  const baseName = 'Simple Name';
 	  beforeEach(async () => {
@@ -19,14 +19,16 @@ describe('Test SimpleContract', () => {
 	  });
 	  
 	 it('Should change the name', async () => {
-		  
 		  await contract.setName('Simple Name Modified');
 		  const nameModified = await contract.name();
 		  expect(nameModified).to.eq('Simple Name Modified');
-		  
-		  await contract.setName(baseName);
-		  const nameModifiedBase = await contract.name();
-		  expect(nameModifiedBase).to.eq(baseName);
 	  });
+	 
+	 it('Should setName emits event', async () => {
+		    await expect(contract.setName('Hi Buddy'))
+		      .to.emit(contract, 'NameChanged')
+		      .withArgs('Hi Buddy');
+	  });
+
 	
 });
