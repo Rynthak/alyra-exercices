@@ -1,8 +1,9 @@
 const chai = require('chai');
-const {createMockProvider, deployContract, getWallets} = require('ethereum-waffle');
+const {createMockProvider, deployContract, getWallets,solidity} = require('ethereum-waffle');
 const SimpleContractMock = require('../build/SimpleContract.json');
 const {expect} = chai;
 
+chai.use(solidity);
 describe('Test SimpleContract', () => {
 	  const provider = createMockProvider();
 	  const [ wallet ] = getWallets(provider);
