@@ -30,7 +30,7 @@ describe('Test SimpleContract', () => {
 		      .withArgs('Hi Buddy');
 	  });
 	 
-	 it('Should setName reverted', async () => {
+	 it('Should setName reverted for non-Owner', async () => {
 		 	const contractFromOtherWallet = contract.connect(walletTo);
 		    await expect(contractFromOtherWallet.setName('Hi Buddy 2')).to.be.reverted;
 	 });
