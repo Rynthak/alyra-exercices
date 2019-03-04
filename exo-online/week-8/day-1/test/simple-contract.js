@@ -7,13 +7,14 @@ describe('Test SimpleContract', () => {
 	  const provider = createMockProvider();
 	  const [ wallet ] = getWallets(provider);
 	  let contract;
+	  const baseName = 'Simple Name';
 	  beforeEach(async () => {
-		 contract = await deployContract(wallet, SimpleContractMock, ['Simple Name']);
+		 contract = await deployContract(wallet, SimpleContractMock, [baseName]);
 	  });
 	
 	  it('Should give a name', async () => {
 		  const name = await contract.name();
-		  expect(name).to.eq('Simple Name');
+		  expect(name).to.eq(baseName);
 	  });
 	  
 	 it('Should change the name', async () => {
@@ -22,9 +23,9 @@ describe('Test SimpleContract', () => {
 		  const nameModified = await contract.name();
 		  expect(nameModified).to.eq('Simple Name Modified');
 		  
-		  await contract.setName('Simple Name');
+		  await contract.setName(baseName);
 		  const nameModifiedBase = await contract.name();
-		  expect(nameModifiedBase).to.eq('Simple Name');
+		  expect(nameModifiedBase).to.eq(baseName);
 	  });
 	
 });
