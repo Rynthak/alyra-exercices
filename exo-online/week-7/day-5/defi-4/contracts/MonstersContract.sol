@@ -22,13 +22,7 @@ contract MonstersContract is ERC721 {
    Monster[] public monsters;
    Battle[] public battles;
    
-   mapping (uint256 => address) public monsterIndexToOwner;
-
    
-   mapping (address => uint256) ownershipTokenCount;
-
-   // Adresse vers laquelle le transfert à été approuvé
-   mapping (uint256 => address) public monsterIndexToApproved;
  
 	function buymonster() public {
 		uint256 tokenId = _createMonster();		
