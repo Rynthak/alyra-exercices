@@ -1,8 +1,0 @@
-{
-  "zosversion": "2.2",
-  "name": "defi-4",
-  "version": "0.1.0",
-  "contracts": {
-    "MonstersContract": "MonstersContract"
-  }
-}
