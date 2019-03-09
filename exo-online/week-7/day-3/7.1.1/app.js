@@ -16,7 +16,13 @@ tablebitfinex =makeRequest('https://api.bitfinex.com/v1/book/btcusd?limit_bids=1
 function calcBestDeal(amount){
 	
 }
+console.table(tablebitmex);
 
-console.log(tablebitmex,tablebitfinex);
+//Build
+
+
+
+//console.log(tablebitfinex);
+
 
 

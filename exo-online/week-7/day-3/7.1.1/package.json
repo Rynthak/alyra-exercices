@@ -10,6 +10,7 @@
   "license": "ISC",
   "devDependencies": {},
   "dependencies": {
+    "console.table": "^0.10.0",
     "sync-request": "^6.0.0"
   }
 }
