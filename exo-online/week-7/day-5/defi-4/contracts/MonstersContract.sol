@@ -2,11 +2,11 @@ pragma solidity ^0.5.3;
 
 
 import "github.com/OpenZeppelin/openzeppelin-solidity/contracts/token/ERC721/ERC721.sol";
-
+import "github.com/OpenZeppelin/openzeppelin-solidity/contracts/math/Math.sol";
 
 contract MonstersContract is ERC721 {
 	
-	
+   using SafeMath for uint256;
    struct Monster {
    		string name;
    		uint dna;
@@ -27,13 +27,16 @@ contract MonstersContract is ERC721 {
    uint dnaDigits = 16;
    uint dnaModulus = 10 ** dnaDigits;
    uint cooldownTime = 1 days;
+   uint randNonce = 0;
+   uint attackVictoryProbability = 70;
  
-	function buymonster(string _name) public {
+ 
+	function buymonster(string memory _name) public {
 		uint256 tokenId = _createMonster(_name);		
 		_mint(msg.sender,tokenId);
 	}
 	
-	function _createMonster(string _name) internal  returns (uint){
+	function _createMonster(string memory _name) internal  returns (uint){
 		uint randDna = _generateRandomDna(_name);
 		randDna = randDna - randDna % 100;
 		Monster memory _monster = Monster({
@@ -45,19 +48,22 @@ contract MonstersContract is ERC721 {
         uint256 newMonsterId = monsters.push(_monster) - 1;       
         return newMonsterId;
     }
-    function _generateRandomDna(string _str) private view returns (uint) {
-		uint rand = uint(keccak256(_str));
+    function _generateRandomDna(string memory _str) private view returns (uint) {
+		uint rand = uint(keccak256(abi.encodePacked(_str)));
 		return rand % dnaModulus;
     }
-    
+    function randMod(uint _modulus) internal returns(uint) {
+     randNonce = randNonce.add(1);
+     return uint(keccak256(abi.encodePacked(now, msg.sender, randNonce))) % _modulus;
+    }
     
     
     function battleMonsters(uint256 firstMonster,uint256 secondMonster) public{
     	require(_exists(firstMonster) && _exists(secondMonster));
     	require(ownerOf(firstMonster) == msg.sender);
     	
-    	uint256 random=uint256(blockhash(block.number-1));
-    	uint256 resultBattle = (random%monsters[firstMonster].birthTime < random%monsters[secondMonster].birthTime)?secondMonster:firstMonster;
+    	uint rand = randMod(100);
+    	uint256 resultBattle = (rand <= attackVictoryProbability)?firstMonster:secondMonster;
     	
     	Battle memory _battle = Battle({
     		dateBattle : uint64(now),
