@@ -1,8 +1,8 @@
-pragma solidity ^0.5.3;
+pragma solidity ^0.5.0;
 
 
-import "github.com/OpenZeppelin/openzeppelin-solidity/contracts/token/ERC721/ERC721.sol";
-import "github.com/OpenZeppelin/openzeppelin-solidity/contracts/math/Math.sol";
+import "openzeppelin-solidity/contracts/token/ERC721/ERC721.sol";
+import "openzeppelin-solidity/contracts/math/Math.sol";
 
 contract MonstersContract is ERC721 {
 	

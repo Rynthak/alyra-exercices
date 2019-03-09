@@ -1,3 +1,6 @@
 /node_modules/
 /package-lock.json
 /build/
+
+.zos.session
+/zos.dev-1552157430044.json
