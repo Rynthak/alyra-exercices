@@ -1,7 +1,7 @@
 pragma solidity ^0.5.3;
 
 
-import "openzeppelin-solidity/contracts/token/ERC721/ERC721.sol";
+import "github.com/OpenZeppelin/openzeppelin-solidity/contracts/token/ERC721/ERC721.sol";
 
 
 contract MonstersContract is ERC721 {
@@ -22,7 +22,7 @@ contract MonstersContract is ERC721 {
    // Adresse vers laquelle le transfert à été approuvé
    mapping (uint256 => address) public monsterIndexToApproved;
  
-	function buymonster() public payable{
+	function buymonster() public {
 		uint256 tokenId = _createMonster();		
 		_mint(msg.sender,tokenId);
 	}
@@ -34,6 +34,11 @@ contract MonstersContract is ERC721 {
         });        
         uint256 newMonsterId = monsters.push(_monster) - 1;       
         return newMonsterId;
-	}
+    }
+    
+    function batteMonsters(uint256 firstMonster,uint256 secondMonster){
+    	
+    }
+    
 	
 }
