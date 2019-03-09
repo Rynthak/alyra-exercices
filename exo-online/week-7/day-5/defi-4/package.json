@@ -1,0 +1,22 @@
+{
+  "name": "defi-4",
+  "version": "1.0.0",
+  "description": "Défi #4 Le défi Ubisoft : un jeu basé sur les cryptoactifs",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "game",
+    "token"
+  ],
+  "author": "rynthak",
+  "license": "ISC",
+  "dependencies": {
+    "ethereum-waffle": "^2.0.7",
+    "openzeppelin-solidity": "^2.1.3"
+  },
+  "devDependencies": {
+    "chai": "^4.2.0"
+  }
+}
