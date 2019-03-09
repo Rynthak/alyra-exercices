@@ -60,6 +60,7 @@ contract MonstersContract is ERC721 {
     
     function battleMonsters(uint256 firstMonster,uint256 secondMonster) public{
     	require(_exists(firstMonster) && _exists(secondMonster));
+    	require(firstMonster!=secondMonster);
     	require(ownerOf(firstMonster) == msg.sender);
     	
     	uint rand = randMod(100);
