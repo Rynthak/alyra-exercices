@@ -49,7 +49,7 @@ contract MonstersContract is ERC721 {
         return newMonsterId;
     }
     function _generateRandomDna(string memory _str) private view returns (uint) {
-		uint rand = uint(keccak256(abi.encodePacked(_str)));
+		uint rand = uint(keccak256(abi.encodePacked(_str,msg.sender,now)));
 		return rand % dnaModulus;
     }
     function randMod(uint _modulus) internal returns(uint) {
