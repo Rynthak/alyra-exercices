@@ -8,6 +8,8 @@ contract MonstersContract is ERC721 {
 	
 	
    struct Monster {
+   		string name;
+   		uint dna;
 		uint64 birthTime;
 		uint256[] battles;
    }
@@ -22,21 +24,33 @@ contract MonstersContract is ERC721 {
    Monster[] public monsters;
    Battle[] public battles;
    
-   
+   uint dnaDigits = 16;
+   uint dnaModulus = 10 ** dnaDigits;
+   uint cooldownTime = 1 days;
  
-	function buymonster() public {
-		uint256 tokenId = _createMonster();		
+	function buymonster(string _name) public {
+		uint256 tokenId = _createMonster(_name);		
 		_mint(msg.sender,tokenId);
 	}
 	
-	function _createMonster() internal  returns (uint){
-		Monster memory _monster = Monster({            
+	function _createMonster(string _name) internal  returns (uint){
+		uint randDna = _generateRandomDna(_name);
+		randDna = randDna - randDna % 100;
+		Monster memory _monster = Monster({
+			name: _name,
+			dna:   randDna,        
             birthTime: uint64(now),
            	battles: new uint256[](0)
         });        
         uint256 newMonsterId = monsters.push(_monster) - 1;       
         return newMonsterId;
     }
+    function _generateRandomDna(string _str) private view returns (uint) {
+		uint rand = uint(keccak256(_str));
+		return rand % dnaModulus;
+    }
+    
+    
     
     function battleMonsters(uint256 firstMonster,uint256 secondMonster) public{
     	require(_exists(firstMonster) && _exists(secondMonster));
