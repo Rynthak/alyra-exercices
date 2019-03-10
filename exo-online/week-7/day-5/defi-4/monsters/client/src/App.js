@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import SimpleStorageContract from "./contracts/SimpleStorage.json";
+import MonstersContract from "./contracts/MonstersContract.json";
 import getWeb3 from "./utils/getWeb3";
 
 import "./App.css";
@@ -17,9 +17,9 @@ class App extends Component {
 
       // Get the contract instance.
       const networkId = await web3.eth.net.getId();
-      const deployedNetwork = SimpleStorageContract.networks[networkId];
+      const deployedNetwork = MonstersContract.networks[networkId];
       const instance = new web3.eth.Contract(
-        SimpleStorageContract.abi,
+    	MonstersContract.abi,
         deployedNetwork && deployedNetwork.address,
       );
 
@@ -36,14 +36,11 @@ class App extends Component {
   };
 
   runExample = async () => {
-    const { accounts, contract } = this.state;
-
-    // Stores a given value, 5 by default.
-    await contract.methods.set(5).send({ from: accounts[0] });
+    const { accounts, contract } = this.state;    
 
     // Get the value from the contract to prove it worked.
-    const response = await contract.methods.get().call();
-
+    const response = await contract.methods.monsters(0).call();
+    console.log(response);
     // Update state with the result.
     this.setState({ storageValue: response });
   };
@@ -64,7 +61,7 @@ class App extends Component {
         <p>
           Try changing the value stored on <strong>line 40</strong> of App.js.
         </p>
-        <div>The stored value is: {this.state.storageValue}</div>
+        <div>The stored value is: {this.state.storageValue.dateBattle}</div>
       </div>
     );
   }
