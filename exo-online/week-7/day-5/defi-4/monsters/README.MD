@@ -9,3 +9,8 @@
 # build and deploy contract to ganache 
 
 > truffle migrate ––reset ––compile-all --network ganache
+
+
+#go to Dapp
+
+> cd app-monsters && npm run dev
