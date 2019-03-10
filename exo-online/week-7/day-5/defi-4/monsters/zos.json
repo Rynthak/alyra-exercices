@@ -2,5 +2,7 @@
   "zosversion": "2.2",
   "name": "monsters",
   "version": "0.1.0",
-  "contracts": {}
+  "contracts": {
+    "MonstersContract": "MonstersContract"
+  }
 }
