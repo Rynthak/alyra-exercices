@@ -13,18 +13,20 @@
         <table class="table table-striped" v-show="!isLoading">
             <thead class="thead-dark">
                 <tr>
-                    <th>Monster DNA</th>
                     <th>Name</th>
+                    <th>Monster DNA</th> 
+                    <th>Image</th>                   
                     <th>Status</th>                     
                     <th>Created At</th>                   
                 </tr>
             </thead>
             <tbody>
                 <tr v-for="monster in monsters">
-                    <td>{{ monster[0].toNumber() }}</td>
-                    <td>{{ monster[1] }}</td>
+                    <td>{{ monster[0] }}</td>
+                    <td>{{ monster[1].toNumber() }}</td>
+                    <td><img :src="'https://robohash.org/'+monster[1].toNumber()+'?set=set2&size=150x150'" width="150" height="150"/></td>
                     <td>{{ monster[2] }}</td>
-                    <td>{{ toDate( user[3].toNumber() ) }}</td>
+                    <td>{{ toDate(monster[4].toNumber() ) }}</td>
                 </tr>
             </tbody>
         </table>
@@ -34,14 +36,13 @@
 <script>
     // importing common function
     import mixin from '../libs/mixinViews';
-
+    
     /**
      * List view component: this component shows list of the registered users
      * and their statuses.
      */
     export default {
         mixins: [mixin],
-
         data() {
             return {
                 monsters: [], // array that stores all the registered users
@@ -68,6 +69,7 @@
                     this.getAllMonsters(monsterProfile => {
                         this.isLoading = false
                         this.monsters.push(monsterProfile)
+                        console.log(monsterProfile);
                     })
                 }
             },

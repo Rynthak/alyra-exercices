@@ -85,7 +85,7 @@
                             this.successMessage = true
 
                             // it emits a global event in order to update the top menu bar
-                            Event.$emit('monstersbuy', txHash);
+                            //Event.$emit('monstersbuy', txHash);
 
                             // the transaction was submitted and the user will be redirected to the
                             // profile page once the block will be mined
@@ -108,7 +108,7 @@
             redirectWhenBlockMined() {
                 this.tmoReg = setInterval(() => {
                     if (this.blockchainIsConnected()) {
-                        this.$router.push("list")
+                        this.$router.push("/")
                     }
                 }, 1000)
             }

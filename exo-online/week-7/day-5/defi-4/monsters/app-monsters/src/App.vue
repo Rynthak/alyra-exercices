@@ -31,9 +31,10 @@
     // importing common function
     import mixin from './libs/mixinViews';
     import TopMenu from './components/TopMenu';
+   
 
     export default {
-        components: { TopMenu },
+        components: { TopMenu},
         mixins: [mixin],
 
         name: 'App'
