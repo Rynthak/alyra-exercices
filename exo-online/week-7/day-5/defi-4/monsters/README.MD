@@ -1,3 +1,8 @@
+# contract-monsters
+
+> Monster Contract
+
+``` bash
 # install truffle
 
 > npm install truffle -g
@@ -14,3 +19,5 @@
 # go to Dapp
 
 > cd app-monsters && npm run dev
+
+```
