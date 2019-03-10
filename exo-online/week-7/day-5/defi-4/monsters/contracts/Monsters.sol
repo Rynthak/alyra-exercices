@@ -35,7 +35,7 @@ contract Monsters is ERC721 {
    uint cooldownTime = 1 days;
    uint randNonce = 0;
    uint attackVictoryProbability = 70;
- 
+   uint256 public totalMonsters;
  
 	function buymonster(string memory _name) public payable{
 		require(msg.value  >= 100 finney,"La somme envoyé n'est pas suffisante");
@@ -54,7 +54,8 @@ contract Monsters is ERC721 {
             birthTime: uint64(now),
            	battles: new uint256[](0)
         });        
-        uint256 newMonsterId = monsters.push(_monster) - 1;       
+        uint256 newMonsterId = monsters.push(_monster) - 1;    
+        totalMonsters= totalMonsters.add(1);
         return newMonsterId;
     }
     function _generateRandomDna(string memory _str) private view returns (uint) {
@@ -118,12 +119,5 @@ contract Monsters is ERC721 {
     	myMonster.value = 0;
     	_burn(ownerOf(_tokenId),_tokenId);
     }
-    /**
-     * Return the number of total registered users.
-     */
-    function totalMonsters() public view returns (uint)
-    {
-        return monsters.length - 1;
-    }
-	
+    
 }
