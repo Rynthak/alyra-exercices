@@ -5,6 +5,7 @@
   "dependencies": {
     "react": "^16.6.3",
     "react-dom": "^16.6.3",
+    "react-router-dom": "^4.2.2",
     "react-scripts": "2.1.1",
     "web3": "^1.0.0-beta.37"
   },
@@ -22,5 +23,30 @@
     "not dead",
     "not ie <= 11",
     "not op_mini all"
-  ]
+  ],
+  "devDependencies": {
+    "autoprefixer": "^8.3.0",
+    "babel-core": "^6.24.1",
+    "babel-loader": "^7.0.0",
+    "babel-preset-env": "^1.5.1",
+    "babel-preset-es2015": "^6.24.1",
+    "babel-preset-react": "^6.24.1",
+    "babel-preset-stage-0": "^6.24.1",
+    "css-loader": "^0.28.4",
+    "css-mqpacker": "^6.0.2",
+    "extract-text-webpack-plugin": "^3.0.2",
+    "isomorphic-style-loader": "^4.0.0",
+    "postcss": "^6.0.21",
+    "postcss-apply": "^0.10.0",
+    "postcss-cssnext": "^3.1.0",
+    "postcss-custom-properties": "^7.0.0",
+    "postcss-extend": "^1.0.5",
+    "postcss-loader": "^2.1.4",
+    "postcss-nested": "^3.0.0",
+    "postcss-nested-ancestors": "^2.0.0",
+    "postcss-partial-import": "^4.1.0",
+    "postcss-scss": "^1.0.5",
+    "style-loader": "^0.21.0",
+    "webpack": "^3.11.0"
+  }
 }
