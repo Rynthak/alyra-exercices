@@ -6,14 +6,11 @@
 			<div class="col-md-3">
 
 	            <div class="form-group">
-	                <label for="description">Name</label>
-	                <input class="form-control" placeholder="Enter your name" type="text" v-model="userName">
+	                <label for="description">Monster's Name</label>
+	                <input class="form-control" placeholder="Enters Monster's Name" type="text" v-model="monsterName">
 	            </div>
 
-	            <div class="form-group">
-	                <label for="description">Status</label>
-	                <input class="form-control" placeholder="Enter your status" type="text" v-model="userStatus">
-	            </div>
+	             
 
 	            <button class="btn btn-primary" :disabled="disableSubmit" @click="performSubmit">Register</button>
                 <strong v-show="submitting">Submitting...</strong>
@@ -38,8 +35,8 @@
 
     	data() {
     		return {
-    			userName: '', // variable binded with the input field: name
-    			userStatus: '', // variable binded with the input field: status
+    			monsterName: '', // variable binded with the input field: name
+    			 
                 submitting: false, // true once the submit button is pressed
                 successMessage: false, // true when the user has been registered successfully
 
@@ -56,7 +53,7 @@
              * not established.
              */
             disableSubmit() {
-                return (!this.userName.length || !this.userStatus.length || this.submitting || !this.blockchainIsConnected())
+                return (!this.monsterName.length || this.submitting || !this.blockchainIsConnected())
             }
         },
 
@@ -70,12 +67,14 @@
                 this.successMessage = false
 
                 // calling the function registerUser of the smart contract
-                window.bc.contract().registerUser(
-                    this.userName,
-                    this.userStatus,
+                
+                window.bc.contract().buymonster(
+                    this.monsterName,
+                     
                     {
                         from: window.bc.web3().eth.coinbase,
-                        gas: 800000
+                        gas: 800000,
+                        value : window.bc.web3().toWei(0.1)
                     },
                     (err, txHash) => {
                         if (err) {
@@ -86,7 +85,7 @@
                             this.successMessage = true
 
                             // it emits a global event in order to update the top menu bar
-                            Event.$emit('userregistered', txHash);
+                            Event.$emit('monstersbuy', txHash);
 
                             // the transaction was submitted and the user will be redirected to the
                             // profile page once the block will be mined
@@ -96,28 +95,7 @@
                 )
         	},
 
-            /**
-             * Check if the user visitng this page is registered: if the user is already
-             * registered he will be redirected to the Profile page.
-             */
-            redirectIfUserRegistered() {
-                this.tmoConn = setInterval(() => {
-                    // checking first the connection
-                    if (this.blockchainIsConnected()) {
-                        // stopping the interval
-                        clearInterval(this.tmoConn)
-
-                        // calling the smart contract
-                        window.bc.contract().isRegistered.call((error, res) => {
-                            if (res) {
-                                // redirecting to the profile page
-                                this.$router.push("profile")
-                            }
-                        })
-                    }
-                }, 500)
-            },
-
+             
             /**
              * Once the user submitted his registration this funciton checks every 1000 ms
 			 * if the registration is successfully. Once the user is registered he will be
@@ -130,18 +108,7 @@
             redirectWhenBlockMined() {
                 this.tmoReg = setInterval(() => {
                     if (this.blockchainIsConnected()) {
-                        window.bc.contract().isRegistered.call((error, res) => {
-                            if (error) {
-                                console.error(error)
-                            }
-                            else if (res) {
-                                // stopping the setInterval
-                                clearInterval(this.tmoReg)
-
-								// redirecting the user to the profile page
-                                this.$router.push("profile")
-                            }
-                        })
+                        this.$router.push("list")
                     }
                 }, 1000)
             }
@@ -149,7 +116,7 @@
 
         created() {
             // it checks every 500ms if the user is registered until the connection is established
-            this.redirectIfUserRegistered()
+            
         }
     }
 </script>

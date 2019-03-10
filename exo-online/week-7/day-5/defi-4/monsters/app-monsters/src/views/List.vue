@@ -1,7 +1,8 @@
 <template>
 	<div>
 		<button class="btn btn-primary float-right btn-top" @click="reloadList">Reload</button>
-        <h1 class="title">User List</h1>
+         
+        <h1 class="title">Monsters List</h1>
 
         <div class="clearfix"></div>
 
@@ -14,19 +15,16 @@
                 <tr>
                     <th>Monster DNA</th>
                     <th>Name</th>
-                    <th>Status</th>
-                    <th>Address</th>
+                    <th>Status</th>                     
                     <th>Created At</th>                   
                 </tr>
             </thead>
             <tbody>
                 <tr v-for="monster in monsters">
-                    <td>{{ user[0].toNumber() }}</td>
-                    <td>{{ user[1] }}</td>
-                    <td>{{ toAscii(user[2]) }}</td>
-                    <td>{{ user[3] }}</td>
-                    <td>{{ toDate( user[4].toNumber() ) }}</td>
-                    <td>{{ toDate( user[5].toNumber() ) }}</td>
+                    <td>{{ monster[0].toNumber() }}</td>
+                    <td>{{ monster[1] }}</td>
+                    <td>{{ monster[2] }}</td>
+                    <td>{{ toDate( user[3].toNumber() ) }}</td>
                 </tr>
             </tbody>
         </table>

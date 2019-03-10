@@ -9,8 +9,8 @@
                 <a>Profile</a>
             </router-link>
 
-            <router-link tag="li" class="nav-link" to="/register" exact v-show="!userIsRegistered">
-                <a><strong>Register</strong></a>
+            <router-link tag="li" class="nav-link" to="/buymonster" exact>
+                <a><strong>Buy Monster</strong></a>
             </router-link>
 
             <li class="nav-link"></li>

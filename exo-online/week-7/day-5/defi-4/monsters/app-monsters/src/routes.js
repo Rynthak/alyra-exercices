@@ -2,7 +2,7 @@ import Vue from 'vue'
 import Router from 'vue-router'
 import Profile from '@/views/Profile'
 import List from '@/views/List'
-import Register from '@/views/Register'
+import Buy from '@/views/Buy'
 
 Vue.use(Router)
 
@@ -19,9 +19,9 @@ export default new Router({
             component: Profile
         },
         {
-            path: '/register',
-            name: 'Register',
-            component: Register
+            path: '/buymonster',
+            name: 'Buy',
+            component: Buy
         },
     ],
     linkActiveClass: 'active'
