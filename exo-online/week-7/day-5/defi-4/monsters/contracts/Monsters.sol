@@ -118,6 +118,12 @@ contract Monsters is ERC721 {
     	myMonster.value = 0;
     	_burn(ownerOf(_tokenId),_tokenId);
     }
-    
+    /**
+     * Return the number of total registered users.
+     */
+    function totalMonsters() public view returns (uint)
+    {
+        return monsters.length - 1;
+    }
 	
 }
