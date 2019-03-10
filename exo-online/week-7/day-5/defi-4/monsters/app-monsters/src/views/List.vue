@@ -69,7 +69,7 @@
                     this.getAllMonsters(monsterProfile => {
                         this.isLoading = false
                         this.monsters.push(monsterProfile)
-                        console.log(monsterProfile);
+                        
                     })
                 }
             },
