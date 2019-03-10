@@ -11,6 +11,6 @@
 > truffle migrate ––reset ––compile-all --network ganache
 
 
-#go to Dapp
+# go to Dapp
 
 > cd app-monsters && npm run dev
