@@ -1,0 +1,270 @@
+{
+  "contracts": {
+    "MonstersContract": {
+      "address": "0xC0475cD914934b41Bf456Df96a10937a0A9d58A9",
+      "constructorCode": "60806040526010600755600754600a0a600855620151806009556000600a556046600b5561005e6301ffc9a77c01000000000000000000000000000000000000000000000000000000000261009e640100000000026401000000009004565b6100996380ac58cd7c01000000000000000000000000000000000000000000000000000000000261009e640100000000026401000000009004565b61015b565b63ffffffff7c010000000000000000000000000000000000000000000000000000000002817bffffffffffffffffffffffffffffffffffffffffffffffffffffffff1916141515156100ef57600080fd5b6001600080837bffffffffffffffffffffffffffffffffffffffffffffffffffffffff19167bffffffffffffffffffffffffffffffffffffffffffffffffffffffff1916815260200190815260200160002060006101000a81548160ff02191690831515021790555050565b612245806200016b6000396000f3fe",
+      "bodyBytecodeHash": "da5a93b33184ab75c2618f8be371289d11e1b83e36999282d24f2c6a3b0745a4",
+      "localBytecodeHash": "cf19c0e3f022f4fd32a1ae9a1c9aa2bdd954f7803ba35929b0809b1efaf13163",
+      "deployedBytecodeHash": "cf19c0e3f022f4fd32a1ae9a1c9aa2bdd954f7803ba35929b0809b1efaf13163",
+      "types": {
+        "t_bool": {
+          "id": "t_bool",
+          "kind": "elementary",
+          "label": "bool"
+        },
+        "t_mapping<t_bool>": {
+          "id": "t_mapping<t_bool>",
+          "valueType": "t_bool",
+          "label": "mapping(key => bool)",
+          "kind": "mapping"
+        },
+        "t_address": {
+          "id": "t_address",
+          "kind": "elementary",
+          "label": "address"
+        },
+        "t_mapping<t_address>": {
+          "id": "t_mapping<t_address>",
+          "valueType": "t_address",
+          "label": "mapping(key => address)",
+          "kind": "mapping"
+        },
+        "t_uint256": {
+          "id": "t_uint256",
+          "kind": "elementary",
+          "label": "uint256"
+        },
+        "t_mapping<t_uint256>": {
+          "id": "t_mapping<t_uint256>",
+          "valueType": "t_uint256",
+          "label": "mapping(key => uint256)",
+          "kind": "mapping"
+        },
+        "t_struct<MonstersContract.Monster>": {
+          "id": "t_struct<MonstersContract.Monster>",
+          "kind": "struct",
+          "label": "MonstersContract.Monster",
+          "members": [
+            {
+              "label": "name",
+              "astId": 14,
+              "type": "t_string",
+              "src": "296:11:0"
+            },
+            {
+              "label": "dna",
+              "astId": 16,
+              "type": "t_uint256",
+              "src": "311:8:0"
+            },
+            {
+              "label": "status",
+              "astId": 18,
+              "type": "t_enum<MonstersContract.Living>",
+              "src": "323:13:0"
+            },
+            {
+              "label": "value",
+              "astId": 20,
+              "type": "t_uint256",
+              "src": "341:13:0"
+            },
+            {
+              "label": "birthTime",
+              "astId": 22,
+              "type": "t_uint64",
+              "src": "358:16:0"
+            },
+            {
+              "label": "battles",
+              "astId": 25,
+              "type": "t_array:dyn<t_uint256>",
+              "src": "378:17:0"
+            }
+          ]
+        },
+        "t_string": {
+          "id": "t_string",
+          "kind": "elementary",
+          "label": "string"
+        },
+        "t_enum<MonstersContract.Living>": {
+          "id": "t_enum<MonstersContract.Living>",
+          "kind": "enum",
+          "label": "MonstersContract.Living",
+          "members": [
+            "ALIVE",
+            "DEAD_IN_BATTLE",
+            "SUICIDE"
+          ]
+        },
+        "t_uint64": {
+          "id": "t_uint64",
+          "kind": "elementary",
+          "label": "uint64"
+        },
+        "t_array:dyn<t_uint256>": {
+          "id": "t_array:dyn<t_uint256>",
+          "valueType": "t_uint256",
+          "length": "dyn",
+          "kind": "array",
+          "label": "uint256[]"
+        },
+        "t_array:dyn<t_struct<MonstersContract.Monster>>": {
+          "id": "t_array:dyn<t_struct<MonstersContract.Monster>>",
+          "valueType": "t_struct<MonstersContract.Monster>",
+          "length": "dyn",
+          "kind": "array",
+          "label": "MonstersContract.Monster[]"
+        },
+        "t_struct<MonstersContract.Battle>": {
+          "id": "t_struct<MonstersContract.Battle>",
+          "kind": "struct",
+          "label": "MonstersContract.Battle",
+          "members": [
+            {
+              "label": "dateBattle",
+              "astId": 28,
+              "type": "t_uint256",
+              "src": "427:18:0"
+            },
+            {
+              "label": "whoWin",
+              "astId": 30,
+              "type": "t_uint256",
+              "src": "457:14:0"
+            },
+            {
+              "label": "opponent1",
+              "astId": 32,
+              "type": "t_uint256",
+              "src": "478:17:0"
+            },
+            {
+              "label": "opponent2",
+              "astId": 34,
+              "type": "t_uint256",
+              "src": "502:17:0"
+            }
+          ]
+        },
+        "t_array:dyn<t_struct<MonstersContract.Battle>>": {
+          "id": "t_array:dyn<t_struct<MonstersContract.Battle>>",
+          "valueType": "t_struct<MonstersContract.Battle>",
+          "length": "dyn",
+          "kind": "array",
+          "label": "MonstersContract.Battle[]"
+        }
+      },
+      "storage": [
+        {
+          "contract": "ERC165",
+          "path": "openzeppelin-solidity/contracts/introspection/ERC165.sol",
+          "label": "_supportedInterfaces",
+          "astId": 446,
+          "type": "t_mapping<t_bool>",
+          "src": "436:52:1"
+        },
+        {
+          "contract": "ERC721",
+          "path": "openzeppelin-solidity/contracts/token/ERC721/ERC721.sol",
+          "label": "_tokenOwner",
+          "astId": 716,
+          "type": "t_mapping<t_address>",
+          "src": "713:48:5"
+        },
+        {
+          "contract": "ERC721",
+          "path": "openzeppelin-solidity/contracts/token/ERC721/ERC721.sol",
+          "label": "_tokenApprovals",
+          "astId": 720,
+          "type": "t_mapping<t_address>",
+          "src": "817:52:5"
+        },
+        {
+          "contract": "ERC721",
+          "path": "openzeppelin-solidity/contracts/token/ERC721/ERC721.sol",
+          "label": "_ownedTokensCount",
+          "astId": 724,
+          "type": "t_mapping<t_uint256>",
+          "src": "927:54:5"
+        },
+        {
+          "contract": "ERC721",
+          "path": "openzeppelin-solidity/contracts/token/ERC721/ERC721.sol",
+          "label": "_operatorApprovals",
+          "astId": 730,
+          "type": "t_mapping<t_bool>",
+          "src": "1036:73:5"
+        },
+        {
+          "contract": "MonstersContract",
+          "path": "contracts/MonstersContract.sol",
+          "label": "monsters",
+          "astId": 38,
+          "type": "t_array:dyn<t_struct<MonstersContract.Monster>>",
+          "src": "531:25:0"
+        },
+        {
+          "contract": "MonstersContract",
+          "path": "contracts/MonstersContract.sol",
+          "label": "battles",
+          "astId": 41,
+          "type": "t_array:dyn<t_struct<MonstersContract.Battle>>",
+          "src": "561:23:0"
+        },
+        {
+          "contract": "MonstersContract",
+          "path": "contracts/MonstersContract.sol",
+          "label": "dnaDigits",
+          "astId": 44,
+          "type": "t_uint256",
+          "src": "593:19:0"
+        },
+        {
+          "contract": "MonstersContract",
+          "path": "contracts/MonstersContract.sol",
+          "label": "dnaModulus",
+          "astId": 49,
+          "type": "t_uint256",
+          "src": "617:33:0"
+        },
+        {
+          "contract": "MonstersContract",
+          "path": "contracts/MonstersContract.sol",
+          "label": "cooldownTime",
+          "astId": 52,
+          "type": "t_uint256",
+          "src": "655:26:0"
+        },
+        {
+          "contract": "MonstersContract",
+          "path": "contracts/MonstersContract.sol",
+          "label": "randNonce",
+          "astId": 55,
+          "type": "t_uint256",
+          "src": "686:18:0"
+        },
+        {
+          "contract": "MonstersContract",
+          "path": "contracts/MonstersContract.sol",
+          "label": "attackVictoryProbability",
+          "astId": 58,
+          "type": "t_uint256",
+          "src": "709:34:0"
+        }
+      ],
+      "warnings": {
+        "hasConstructor": false,
+        "hasSelfDestruct": false,
+        "hasDelegateCall": false,
+        "hasInitialValuesInDeclarations": true,
+        "uninitializedBaseContracts": []
+      }
+    }
+  },
+  "solidityLibs": {},
+  "proxies": {},
+  "zosversion": "2.2",
+  "version": "0.1.0"
+}

@@ -6,19 +6,19 @@ import "openzeppelin-solidity/contracts/math/Math.sol";
 
 contract MonstersContract is ERC721 {
 	
-  using SafeMath for uint256;
+   using SafeMath for uint256;
    
-	enum Living {ALIVE,DEAD_IN_BATTLE, SUICIDE}
+   enum Living {ALIVE,DEAD_IN_BATTLE, SUICIDE}
    
    
-	struct Monster {
-		string name;
-		uint dna;
-		Living status; 
-		uint256 value;
+   struct Monster {
+   		string name;
+   		uint dna;
+   		Living status; 
+   		uint256 value;
 		uint64 birthTime;
 		uint256[] battles;
-	}
+   }
    
    struct Battle{
    		uint256 dateBattle;   		

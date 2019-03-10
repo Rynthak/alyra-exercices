@@ -1,11 +1,7 @@
+const path = require("path");
+
 module.exports = {
-  networks: {
-    local: {
-      host: 'localhost',
-      port: 9545,
-      gas: 5000000,
-      gasPrice: 5e9,
-      network_id: '*',
-    }
-  }
-}
+  // See <http://truffleframework.com/docs/advanced/configuration>
+  // to customize your Truffle configuration!
+  contracts_build_directory: path.join(__dirname, "client/src/contracts")
+};
