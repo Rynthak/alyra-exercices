@@ -9,10 +9,13 @@ import "github.com/OpenZeppelin/openzeppelin-solidity/contracts/cryptography/ECD
 contract CanalDePaiementV4 is CanalDePaiementV3 {
 	
 	 
-	 function fermeture(uint _nonce, uint _equilibreA, uint _equilibreB, bytes _signature) public {
-	 	 
-	 	 
-	 	 
+	 function fermeture(uint _nonce, uint _equilibreA) public {
+		require(partieA == msg.sender|| partieB == msg.sender);
+		require(etat== EtatCanal.ACTIF);
+		dernierNonce=_nonce;
+		equilibreA=_equilibreA;	 
+		blocFermeture = block.number;
+     	etat = EtatCanal.FERME;
 	 }
 	 
 }
