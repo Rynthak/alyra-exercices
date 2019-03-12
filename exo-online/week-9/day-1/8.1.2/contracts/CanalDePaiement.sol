@@ -8,7 +8,14 @@ contract CanalDePaiementV2 is CanalDePaiement {
 	
 	 
 	 function () payable public{
-	 	
+	 	require(msg.value >= montant);
+	 	if(msg.sender==partieA){
+	 		equilibreA=msg.value;
+	 	}
+	 	if(msg.sender==partieB){
+	 		equilibreB=msg.value;
+	 	}
+	 	etat = EtatCanal.ACTIF;
 	 }
 	 
 }
