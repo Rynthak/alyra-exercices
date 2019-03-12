@@ -20,6 +20,7 @@ contract CanalDePaiement {
 		partieA	=_partieA;
 		partieB	=_partieB;
 		montant	= _montant;
+		etat = EtatCanal.VIDE;
     }
 	
 }
